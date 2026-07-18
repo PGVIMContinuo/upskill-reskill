@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ถอดบทเรียน — PGVIM Continuo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1c2560; --navy-deep:#141a45; --gold:#e8a53d; --sage:#5c8a72; --sage-light:#e6f0ea;
+    --clay:#c9634a; --bg:#f2f1ec; --card:#ffffff; --ink:#242540; --muted:#6c6c85; --line:#e4e2d8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--ink);}
+  h1,h2{font-family:'Fraunces',serif; margin:0;}
+  a{color:inherit; text-decoration:none;}
+  .sitelinks{background:#fbfaf6; border-bottom:1px solid var(--line); padding:9px 32px; display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px;}
+  .sitelinks a{color:var(--muted); font-weight:600;}
+  .sitelinks a.current{color:var(--navy);}
+  .sitelinks a:hover{color:#b8792c;}
+  .nav{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%); color:#fff; padding:18px 32px; display:flex; align-items:center; gap:12px;}
+  .nav .mark{width:34px;height:34px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .nav .t1{font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:var(--gold);}
+  .nav .t2{font-size:12px; color:#c9cbe8;}
+  .wrap{max-width:1000px; margin:0 auto; padding:48px 24px 80px;}
+  .eyebrow{color:var(--clay); font-size:12.5px; letter-spacing:.1em; font-weight:700; text-transform:uppercase;}
+  h1.title{font-size:32px; font-weight:600; color:var(--navy); margin:10px 0 14px; line-height:1.3;}
+  .intro{color:var(--muted); font-size:15px; line-height:1.8; max-width:640px; margin-bottom:44px;}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:760px){.grid{grid-template-columns:1fr;}}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:32px 30px; transition:.2s; display:flex; flex-direction:column;}
+  .card:hover{transform:translateY(-3px); box-shadow:0 14px 30px rgba(20,26,69,.1);}
+  .card .tag{font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--sage); background:var(--sage-light); display:inline-block; padding:4px 12px; border-radius:999px; margin-bottom:16px; width:fit-content;}
+  .card h2{font-size:21px; color:var(--navy); line-height:1.35; margin-bottom:10px;}
+  .card p{color:var(--muted); font-size:13.5px; line-height:1.75; margin:0 0 20px; flex:1;}
+  .card .go{font-size:13.5px; font-weight:700; color:var(--navy); display:flex; align-items:center; gap:8px;}
+  .card .go span{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="sitelinks">
+  <a href="../">🏠 หน้าแรก</a>
+  <a href="../performance-resilience/">Performance Resilience</a>
+  <a href="../folk-music/">Folk Music</a>
+  <a href="./" class="current">📖 ถอดบทเรียน</a>
+  <a href="../manual/">📘 คู่มือ</a>
+</div>
+<div class="nav">
+  <div class="mark">📖</div>
+  <div><div class="t1">ถอดบทเรียน</div><div class="t2">PGVIM Continuo</div></div>
+</div>
+<div class="wrap">
+  <div class="eyebrow">Lessons Learned</div>
+  <h1 class="title">ถอดบทเรียนการดำเนินโครงการ</h1>
+  <p class="intro">สรุปข้อค้นพบ สิ่งที่ทำได้ดี และอุปสรรคที่เจอ จากการดำเนินหลักสูตรทั้ง 2 หลักสูตรภายใต้โครงการ Upskill/Reskill ประจำปีงบประมาณ 2569 แยกตามหลักสูตร เพื่อให้อ่านและนำไปใช้อ้างอิงได้ตรงประเด็น</p>
+
+  <div class="grid">
+    <a class="card" href="performance-resilience.html">
+      <div class="tag">กำลังดำเนินการ</div>
+      <h2>Performance Resilience &amp; Artistic Wellbeing</h2>
+      <p>จากบทสัมภาษณ์เชิงลึกนักดนตรีอาชีพวง RBSO และ BMO สู่หลักสูตรที่ตอบโจทย์ความยืดหยุ่นทางการแสดงและสุขภาวะ</p>
+      <div class="go">อ่านบทเรียนฉบับเต็ม <span>→</span></div>
+    </a>
+    <a class="card" href="folk-music.html">
+      <div class="tag">จัดจบแล้ว</div>
+      <h2>Global Pathways for Folk Music</h2>
+      <p>เส้นทางดนตรีพื้นบ้านสู่เวทีโลก และกิจกรรม Final Pitch — บทเรียนกำลังอยู่ระหว่างรวบรวม</p>
+      <div class="go">อ่านบทเรียนฉบับเต็ม <span>→</span></div>
+    </a>
+  </div>
+</div>
+</body>
+</html>
