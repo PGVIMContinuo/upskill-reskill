@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ถอดบทเรียน: Performance Resilience & Artistic Wellbeing — PGVIM Continuo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1c2560; --navy-deep:#141a45; --gold:#e8a53d; --sage:#5c8a72; --sage-light:#e6f0ea;
+    --clay:#c9634a; --bg:#f2f1ec; --card:#ffffff; --ink:#242540; --muted:#6c6c85; --line:#e4e2d8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0;}
+  a{color:inherit;}
+  .sitelinks{background:#fbfaf6; border-bottom:1px solid var(--line); padding:9px 32px; display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px;}
+  .sitelinks a{color:var(--muted); text-decoration:none; font-weight:600;}
+  .sitelinks a.current{color:var(--navy);}
+  .sitelinks a:hover{color:#b8792c;}
+  .back{display:block; padding:14px 32px; font-size:13px; color:var(--muted); text-decoration:none; background:#fbfaf6; border-bottom:1px solid var(--line);}
+  .back:hover{color:var(--navy);}
+
+  .hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%); color:#fff; padding:40px 24px; text-align:center;}
+  .hero .eyebrow{color:var(--gold); font-size:12px; letter-spacing:.08em; font-weight:700; text-transform:uppercase; margin-bottom:10px;}
+  .hero h1{font-size:clamp(20px,3vw,26px); font-weight:600; max-width:760px; margin:0 auto 8px; line-height:1.4;}
+  .hero .sub{color:#c9cbe8; font-size:14px;}
+
+  .wrap{max-width:900px; margin:0 auto; padding:40px 24px 80px;}
+
+  .stepbar{background:var(--navy); color:#fff; border-radius:12px 12px 0 0; padding:12px 22px; font-size:15px; font-weight:700; display:flex; align-items:center; gap:10px;}
+  .stepbar .num{background:rgba(255,255,255,.15); width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-family:'Fraunces',serif;}
+  .stepblock{background:var(--card); border:1px solid var(--line); border-top:none; border-radius:0 0 12px 12px; padding:24px 26px; margin-bottom:28px;}
+  .stepblock.nb{border-radius:0 0 12px 12px;}
+  .stepblock p{font-size:13.5px; color:var(--ink); line-height:1.8; margin:0 0 12px;}
+  .stepblock p:last-child{margin-bottom:0;}
+
+  .findings-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:6px;}
+  @media(max-width:700px){.findings-grid{grid-template-columns:1fr;}}
+  .finding{background:#fbfaf6; border:1px solid var(--line); border-left:4px solid var(--clay); border-radius:10px; padding:14px 16px;}
+  .finding b{display:block; font-size:13px; color:var(--navy); margin-bottom:4px;}
+  .finding span{font-size:12px; color:var(--muted); line-height:1.6;}
+
+  .pillars{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:6px;}
+  @media(max-width:700px){.pillars{grid-template-columns:1fr;}}
+  .pillar{background:var(--sage-light); border-radius:10px; padding:16px 18px; text-align:center;}
+  .pillar .ic{font-size:24px; margin-bottom:8px;}
+  .pillar b{display:block; font-size:13px; color:var(--sage); margin-bottom:4px;}
+  .pillar span{font-size:11.5px; color:var(--ink); line-height:1.6;}
+
+  ol.devsteps{margin:0; padding-left:22px;}
+  ol.devsteps li{font-size:13.5px; color:var(--ink); line-height:1.85; margin-bottom:8px;}
+  ol.devsteps b{color:var(--navy);}
+
+  .activity{background:#fbfaf6; border-radius:10px; padding:16px 18px; margin-bottom:10px;}
+  .activity:last-child{margin-bottom:0;}
+  .activity b{display:block; font-size:13px; color:var(--navy); margin-bottom:4px;}
+  .activity span{font-size:13px; color:var(--muted); line-height:1.7;}
+
+  .result-slot{background:#fbfaf6; border:2px dashed #c9c6b4; border-radius:16px; padding:30px 26px; text-align:center; margin-top:6px; transition:.3s;}
+  .result-slot .lbl{font-size:13px; color:var(--navy); font-weight:600; margin-bottom:10px;}
+  .result-slot .pct{font-family:'Fraunces',serif; font-size:40px; font-weight:700; color:var(--muted); transition:.3s;}
+  .result-slot .note{font-size:12px; color:var(--muted); margin-top:10px;}
+  .result-slot.filled{background:linear-gradient(120deg,#fbeedd,#f4e3c4); border:1px solid #e8c98a; border-style:solid;}
+  .result-slot.filled .pct{color:#8a5a1f;}
+
+  footer{padding:30px 24px 60px; text-align:center; font-size:12.5px; color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="sitelinks">
+  <a href="../">🏠 หน้าแรก</a>
+  <a href="../performance-resilience/">Performance Resilience</a>
+  <a href="../folk-music/">Folk Music</a>
+  <a href="./" class="current">📖 ถอดบทเรียน</a>
+  <a href="../manual/">📘 คู่มือ</a>
+</div>
+<a class="back" href="./">← กลับไปหน้ารวมถอดบทเรียน</a>
+
+<div class="hero">
+  <div class="eyebrow">ถอดบทเรียนการดำเนินโครงการเรียนรู้ตลอดชีวิตและพัฒนาทักษะเพื่ออนาคต (Upskill/Reskill)</div>
+  <h1>หลักสูตร "ความยืดหยุ่นทางการแสดงและสุขภาวะของศิลปิน"<br>(Performance Resilience &amp; Artistic Wellbeing)</h1>
+  <div class="sub">สถาบันดนตรีกัลยาณิวัฒนา</div>
+</div>
+
+<div class="wrap">
+
+  <div class="stepbar"><span class="num">1</span> คณะกรรมการดำเนินงาน</div>
+  <div class="stepblock nb">
+    <p>แต่งตั้งและประชุมคณะกรรมการดำเนินงานตามแนวทางโครงการเรียนรู้ตลอดชีวิตและพัฒนาทักษะเพื่ออนาคต (Upskill/Reskill) — แต่งตั้งตามคำสั่งสถาบันที่ 154/2569 และ 155/2569 (14 พ.ค. 2569) พร้อมประชุมและหารือรายกลุ่ม/รายบุคคลต่อเนื่องตั้งแต่เดือนพฤศจิกายน 2568</p>
+  </div>
+
+  <div class="stepbar"><span class="num">2</span> ความต้องการจากภาคอุตสาหกรรม</div>
+  <div class="stepblock nb">
+    <p>สำรวจความต้องการพัฒนาทักษะ (Upskill/Reskill) จากกลุ่มเป้าหมาย ผ่านการสัมภาษณ์เชิงลึกนักดนตรีอาชีพจากวง Royal Bangkok Symphony Orchestra (RBSO), Bangkok Metropolitan Orchestra (BMO) และวงออร์เคสตราในสังกัดราชการ พบ 6 ประเด็นหลัก:</p>
+    <div class="findings-grid">
+      <div class="finding"><b>😰 ความวิตกกังวลก่อนแสดง</b><span>เน้นซ้อมอย่างเดียวไม่ตอบโจทย์ที่สาเหตุ ความคาดหวังสูงสะสมแรงกดดัน</span></div>
+      <div class="finding"><b>🦴 อาการบาดเจ็บสะสม</b><span>ปวดคอ/ไหล่ ข้อมืออ่อนล้า จากการใช้ร่างกายผิดวิธีซ้ำ ๆ</span></div>
+      <div class="finding"><b>🔥 วัฒนธรรม "ฝืนซ้อม"</b><span>Push-through culture พักผ่อนไม่พอ ขาดสมาธิระหว่างซ้อม</span></div>
+      <div class="finding"><b>🧘 ขาดการรับรู้กาย-ใจ</b><span>ไม่รู้วิธีสังเกตอาการบาดเจ็บหรือลดแรงกดดันก่อนเกิดปัญหา</span></div>
+      <div class="finding"><b>📋 ขาดแผนการซ้อม</b><span>เชื่อว่า "ซ้อมมากคือซ้อมดี" ขาดการวางแผนซ้อม-พักฟื้น</span></div>
+      <div class="finding"><b>🎭 ไม่พร้อมสำหรับงานใหญ่</b><span>อดนอนซ้อมก่อนงานสำคัญ ไม่มีขั้นตอนเตรียมตัวเป็นระบบ</span></div>
+    </div>
+  </div>
+
+  <div class="stepbar"><span class="num">3</span> กรอบแนวคิด/ทฤษฎีการเรียนรู้เพื่อพัฒนาทักษะ</div>
+  <div class="stepblock nb">
+    <p>บูรณาการประสาทวิทยา จิตวิทยา สรีรวิทยา และศาสตร์การเคลื่อนไหว เป็น 3 เสาหลักที่ตอบโจทย์ข้อค้นพบข้างต้นโดยตรง:</p>
+    <div class="pillars">
+      <div class="pillar"><div class="ic">🧠</div><b>Neuro-Cognitive Performance</b><span>สมาธิ ลมหายใจ และภาวะไหลลื่น (Flow)</span></div>
+      <div class="pillar"><div class="ic">💪</div><b>Physical Sustainability</b><span>Body Mapping ป้องกันบาดเจ็บ นอน-โภชนาการ</span></div>
+      <div class="pillar"><div class="ic">🎭</div><b>Psychological Resilience</b><span>จำลองสถานการณ์กดดัน วางแผนพัฒนาตนเอง</span></div>
+    </div>
+  </div>
+
+  <div class="stepbar"><span class="num">4</span> ขั้นตอนการพัฒนาหลักสูตร</div>
+  <div class="stepblock nb">
+    <ol class="devsteps">
+      <li><b>แต่งตั้งคณะทำงานและจัดทำแผนดำเนินโครงการ</b> ตามคำสั่งสถาบัน กำหนดวัตถุประสงค์และกรอบเวลา</li>
+      <li><b>สำรวจความต้องการจากภาคอุตสาหกรรม</b> ผ่านการสัมภาษณ์เชิงลึกนักดนตรีอาชีพ RBSO และ BMO</li>
+      <li><b>ออกแบบหลักสูตรให้ตรงกับความต้องการ</b> บูรณาการ 3 เสาหลัก ครอบคลุม 11 คาบ / 38 ชั่วโมง</li>
+      <li><b>สรรหาวิทยากรที่มีคุณวุฒิและประสบการณ์ตรง</b> ครบทุกคาบ ครอบคลุมประสาทวิทยา จิตวิทยาการให้คำปรึกษา กายภาพบำบัด วิทยาศาสตร์การกีฬา และศิลปะการแสดง</li>
+      <li><b>ติดตามและประเมินผลหลักสูตร</b> ทั้งรายคาบและภาพรวมเมื่อจบหลักสูตร</li>
+    </ol>
+  </div>
+
+  <div class="stepbar"><span class="num">5</span> ขั้นตอนดำเนินการกิจกรรม</div>
+  <div class="stepblock nb">
+    <div class="activity"><b>กิจกรรมที่ 1</b><span>จัดอบรมเชิงปฏิบัติการ 11 คาบ (20 พ.ค. – 29 ก.ค. 2569) ครอบคลุมเนื้อหาทั้ง 3 เสาหลัก โดยวิทยากรผู้เชี่ยวชาญข้ามสาขา</span></div>
+      <div class="activity"><b>กิจกรรมที่ 2</b><span>กิจกรรมพิเศษ "วัดคลื่นสมอง" (EEG Workshop) สำหรับกลุ่มตัวอย่างที่คัดเลือก เพื่อเก็บข้อมูลเชิงสรีรวิทยาประกอบการประเมินผล</span></div>
+  </div>
+
+  <div class="stepbar"><span class="num">6</span> ขั้นตอนการติดตามและประเมินผล</div>
+  <div class="stepblock nb">
+    <p>จัดทำแบบสำรวจเพื่อประเมินความพึงพอใจของผู้เข้าร่วมอบรม 2 ระดับ: แบบประเมินท้ายคาบ (หลังจบแต่ละคาบ ทั้ง 11 คาบ) เพื่อติดตามความก้าวหน้าระหว่างทาง และแบบประเมินภาพรวมหลักสูตร (หลังจบคาบสุดท้าย) เพื่อวัดผลลัพธ์การเรียนรู้และความพึงพอใจต่อหลักสูตรโดยรวม</p>
+  </div>
+
+  <div class="stepbar"><span class="num">7</span> ผลการประเมินภาพรวม</div>
+  <div class="stepblock nb">
+    <div class="result-slot" id="resultSlot">
+      <div class="lbl">ความพึงพอใจของผู้เข้าร่วมโครงการ (ภาพรวมฉบับสมบูรณ์)</div>
+      <div class="pct" id="resultPct">— .—<span style="font-size:20px;">%</span></div>
+      <div class="note" id="resultNote">กำลังโหลดข้อมูลจาก Google Sheet…</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>ที่มา: รายงานความก้าวหน้าโครงการ Performance Resilience &amp; Artistic Wellbeing ฉบับส่ง สป.อว. และ dashboard ข้อมูลสด · PGVIM Continuo</footer>
+
+<script>
+function toNum(v){ if(v===undefined||v===null) return null; const s=String(v).trim(); if(!s) return null;
+  const map={"1 น้อยที่สุด":1,"2 น้อย":2,"3 ปานกลาง":3,"4 มาก":4,"5 มากที่สุด":5};
+  if(map[s]!==undefined) return map[s];
+  const n=parseFloat(s); if(isNaN(n)||n<0||n>5) return null; return n; }
+function avg(a){ return a.length ? a.reduce((x,y)=>x+y,0)/a.length : null; }
+
+(async()=>{
+  const slot = document.getElementById('resultSlot');
+  const pctEl = document.getElementById('resultPct');
+  const noteEl = document.getElementById('resultNote');
+  try{
+    const res = await fetch('../data/performance-resilience.json', {cache:'no-store'});
+    if(!res.ok) throw new Error('load failed');
+    const data = await res.json();
+    const rows = data.sheets["ภาพรวม"];
+    if(!rows){ noteEl.textContent = 'ยังไม่มีข้อมูลแท็บ "ภาพรวม" ในไฟล์ที่ sync มา'; return; }
+    const dataRows = rows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
+    const vals = dataRows.map(r=>toNum(r[6])).filter(v=>v!==null);
+    if(vals.length){
+      const pct = (avg(vals)/5*100).toFixed(2);
+      pctEl.innerHTML = `${pct}<span style="font-size:20px;">%</span>`;
+      noteEl.textContent = `ระดับความพึงพอใจโดยรวม (2.1) จากผู้ตอบแบบประเมิน ${vals.length} คน`;
+      slot.classList.add('filled');
+    } else {
+      noteEl.textContent = 'ยังไม่มีผู้ตอบแบบประเมินภาพรวม — ตัวเลขจะแสดงอัตโนมัติทันทีที่มีคำตอบ';
+    }
+  }catch(e){
+    noteEl.textContent = 'โหลดข้อมูลไม่สำเร็จ ลองรีเฟรชหน้านี้อีกครั้ง';
+  }
+})();
+</script>
+</body>
+</html>
