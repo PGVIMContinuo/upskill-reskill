@@ -26,7 +26,7 @@ const PR_NAMED_TABS = [
   '20.05.69', '27.05.69', '3.06.69', '10.06.69', '17.06.69',
   '24.06.69', '1.07.69', '8.07.69', '15.07.69', '22.07.69', '29.07.69',
 ];
-const FOLK_NAMED_TABS = ['สมัคร', 'ภาพรวม', 'สรุปรายคาบ'];
+const FOLK_NAMED_TABS = ['สมัคร', 'ลงชื่อแต่ละวัน', 'ภาพรวม', 'สรุปรายคาบ'];
 
 async function getSheetMeta(sheetId) {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets.properties&key=${API_KEY}`;
