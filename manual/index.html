@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คู่มือการเข้าสู่ระบบสารสนเทศ — PGVIM Continuo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1c2560; --navy-deep:#141a45; --gold:#e8a53d; --sage:#5c8a72; --sage-light:#e6f0ea;
+    --bg:#f2f1ec; --card:#ffffff; --ink:#242540; --muted:#6c6c85; --line:#e4e2d8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--ink);}
+  h1,h2{font-family:'Fraunces',serif; margin:0;}
+  a{color:inherit;}
+  .nav{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%); color:#fff; padding:18px 32px;
+    display:flex; align-items:center; gap:12px;}
+  .nav .mark{width:34px;height:34px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .nav .t1{font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:var(--gold);}
+  .nav .t2{font-size:12px; color:#c9cbe8;}
+  .nav .t2 a{text-decoration:none; color:#c9cbe8;}
+  .wrap{max-width:800px; margin:0 auto; padding:60px 24px;}
+  .pending{text-align:center; background:var(--card); border-radius:18px; border:1px dashed #c9c6b4; padding:56px 36px;}
+  .pending .icon{font-size:44px; margin-bottom:16px;}
+  .pending h1{font-size:24px; color:var(--navy); margin-bottom:12px;}
+  .pending p{color:var(--muted); font-size:14.5px; line-height:1.8; max-width:480px; margin:0 auto 8px;}
+  .checklist{text-align:left; max-width:420px; margin:24px auto 0; background:#fbfaf6; border-radius:12px; padding:20px 24px; border:1px solid var(--line);}
+  .checklist li{font-size:13.5px; color:var(--ink); margin-bottom:8px; line-height:1.6;}
+  .sitelinks{background:#fbfaf6; border-bottom:1px solid var(--line); padding:9px 32px; display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px;}
+  .sitelinks a{color:var(--muted); text-decoration:none; font-weight:600;}
+  .sitelinks a.current{color:var(--navy);}
+  .sitelinks a:hover{color:#b8792c;}
+</style>
+</head>
+<body>
+<div class="sitelinks">
+  <a href="../">🏠 หน้าแรก</a>
+  <a href="../performance-resilience/">Performance Resilience</a>
+  <a href="../folk-music/">Folk Music</a>
+  <a href="../lessons-learned/">📖 ถอดบทเรียน</a>
+  <a href="./" class="current">📘 คู่มือ</a>
+</div>
+<div class="nav">
+  <div class="mark">📘</div>
+  <div>
+    <div class="t1">คู่มือการเข้าสู่ระบบสารสนเทศ</div>
+    <div class="t2">PGVIM Continuo</div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="pending">
+    <div class="icon">🚧</div>
+    <h1>หน้านี้กำลังจัดทำ</h1>
+    <p>หน้า "คู่มือการเข้าสู่ระบบสารสนเทศ" จะอธิบายขั้นตอนการเข้าถึงและใช้งานระบบรายงานสารสนเทศ (dashboard ชุดนี้) สำหรับทีมงานและผู้ที่เกี่ยวข้อง เช่น สป.อว.</p>
+    <div class="checklist">
+      <b style="font-size:13px; color:var(--navy);">สิ่งที่ต้องเตรียมก่อนทำหน้านี้ได้:</b>
+      <ul style="margin:10px 0 0; padding-left:18px;">
+        <li>ขั้นตอนการเข้าถึงลิงก์ dashboard แต่ละหลักสูตร</li>
+        <li>วิธีอ่านตัวเลขและกราฟในแต่ละแท็บ (ภาพรวม / รายวัน / ประเมิน)</li>
+        <li>ใครเป็นผู้รับผิดชอบอัปเดตข้อมูลใน Google Sheet และอัปเดตบ่อยแค่ไหน</li>
+        <li>ช่องทางติดต่อหากพบปัญหาการเข้าถึงหรือข้อมูลผิดพลาด</li>
+      </ul>
+    </div>
+    <p style="margin-top:20px; font-size:13px;">ส่งเนื้อหามาได้ทุกเมื่อ แล้วจะช่วยออกแบบหน้านี้ให้ครับ</p>
+  </div>
+</div>
+</body>
+</html>
