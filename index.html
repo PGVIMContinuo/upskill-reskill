@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGVIM Continuo — Upskill/Reskill 2569</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1c2560; --navy-deep:#141a45; --gold:#e8a53d; --sage:#5c8a72; --sage-light:#e6f0ea;
+    --clay:#c9634a; --bg:#f2f1ec; --card:#ffffff; --ink:#242540; --muted:#6c6c85; --line:#e4e2d8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0;}
+  a{color:inherit; text-decoration:none;}
+  .nav{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%); color:#fff; padding:18px 32px;
+    display:flex; align-items:center; gap:12px; box-shadow:0 2px 12px rgba(20,26,69,.25);}
+  .nav .mark{width:34px;height:34px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .nav .titles .t1{font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:var(--gold);}
+  .nav .titles .t2{font-size:12px; color:#c9cbe8;}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:40px 24px 70px;}
+  .hero{
+    background:linear-gradient(120deg,var(--navy) 0%,#2a3380 60%,var(--navy-deep) 100%); color:#fff;
+    border-radius:20px; padding:48px 44px; margin-bottom:34px; position:relative; overflow:hidden;
+  }
+  .hero::after{content:""; position:absolute; right:-80px; top:-80px; width:280px; height:280px; border-radius:50%;
+    background:radial-gradient(circle,rgba(232,165,61,.25),transparent 70%);}
+  .hero .eyebrow{color:var(--gold); font-size:13px; letter-spacing:.1em; font-weight:700; text-transform:uppercase;}
+  .hero h1{font-size:36px; font-weight:600; margin:10px 0 12px; max-width:640px; line-height:1.25;}
+  .hero p{color:#d3d5ef; font-size:15px; max-width:600px; line-height:1.7; margin:0;}
+  .hero .count{
+    display:inline-flex; align-items:baseline; gap:8px; margin-top:22px; background:rgba(255,255,255,.08);
+    padding:10px 18px; border-radius:999px; font-size:13.5px; color:#e8e9fb;
+  }
+  .hero .count b{font-family:'Fraunces',serif; font-size:22px; color:var(--gold);}
+
+  .section-label{font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--muted); margin-bottom:16px;}
+
+  .course-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:40px;}
+  @media(max-width:800px){.course-grid{grid-template-columns:1fr;}}
+
+  .course-card{
+    background:var(--card); border-radius:18px; border:1px solid var(--line); overflow:hidden;
+    box-shadow:0 1px 3px rgba(20,26,69,.05); display:flex; flex-direction:column; transition:.2s;
+  }
+  .course-card:hover{transform:translateY(-3px); box-shadow:0 12px 28px rgba(20,26,69,.12);}
+  .course-card .poster{width:100%; aspect-ratio:4/3; overflow:hidden; background:var(--navy); position:relative;}
+  .course-card .poster img{width:100%; height:100%; object-fit:cover; object-position:top center; display:block;}
+  .course-card .status{
+    position:absolute; top:14px; left:14px; font-size:11px; font-weight:700; padding:4px 11px; border-radius:999px;
+    backdrop-filter:blur(4px);
+  }
+  .status.ongoing{background:rgba(251,238,221,.92); color:#b8792c;}
+  .status.done{background:rgba(230,240,234,.92); color:var(--sage);}
+  .course-card .top{padding:22px 26px 18px; flex:1;}
+  .course-card h2{font-size:20px; font-weight:600; color:var(--navy); line-height:1.35; margin-bottom:6px;}
+  .course-card .sub{font-size:13px; color:var(--muted); margin-bottom:18px;}
+  .course-card .mini-stats{display:flex; gap:22px; row-gap:14px; margin-top:6px; flex-wrap:wrap;}
+  .course-card .mini-stat .n{font-family:'Fraunces',serif; font-size:24px; font-weight:600; color:var(--navy);}
+  .course-card .mini-stat .l{font-size:11.5px; color:var(--muted); margin-top:2px;}
+  .course-card .bottom{
+    padding:16px 26px; background:#fbfaf6; border-top:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; font-size:13.5px; font-weight:600; color:var(--navy);
+  }
+  .course-card .bottom .arrow{color:var(--gold); font-size:16px;}
+  .course-card.loading .mini-stats{opacity:.35;}
+
+  .footnote{font-size:12px; color:var(--muted); line-height:1.7; padding:16px 20px; background:#fbfaf6; border-radius:10px; border:1px solid var(--line);}
+  .resource-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px;}
+  @media(max-width:700px){.resource-row{grid-template-columns:1fr;}}
+  .resource-card{display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; transition:.2s;}
+  .resource-card:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(20,26,69,.08);}
+  .resource-card .ic{font-size:26px; flex-shrink:0;}
+  .resource-card .tx b{font-size:14.5px; color:var(--navy);}
+  .resource-card .tx .sm{font-size:12px; color:var(--muted); display:block; margin-top:2px;}
+  .sitelinks{background:#fbfaf6; border-bottom:1px solid var(--line); padding:9px 32px; display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px;}
+  .sitelinks a{color:var(--muted); text-decoration:none; font-weight:600;}
+  .sitelinks a.current{color:var(--navy);}
+  .sitelinks a:hover{color:#b8792c;}
+</style>
+</head>
+<body>
+
+<div class="sitelinks">
+  <a href="./" class="current">🏠 หน้าแรก</a>
+  <a href="performance-resilience/">Performance Resilience</a>
+  <a href="folk-music/">Folk Music</a>
+  <a href="lessons-learned/">📖 ถอดบทเรียน</a>
+  <a href="manual/">📘 คู่มือ</a>
+</div>
+<div class="nav">
+  <div class="mark">🎓</div>
+  <div class="titles">
+    <div class="t1">PGVIM Continuo</div>
+    <div class="t2">Lifelong Learning Platform · สถาบันดนตรีกัลยาณิวัฒนา</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">โครงการเรียนรู้ตลอดชีวิตและพัฒนาทักษะเพื่ออนาคต</div>
+    <h1>Upskill / Reskill ประจำปีงบประมาณ 2569</h1>
+    <p>รวมรายงานความก้าวหน้าของหลักสูตรระยะสั้นทั้งหมดภายใต้สถาบันดนตรีกัลยาณิวัฒนา ที่ได้รับการสนับสนุนจากสำนักงานปลัดกระทรวงการอุดมศึกษา วิทยาศาสตร์ วิจัยและนวัตกรรม (สป.อว.)</p>
+    <div class="count">เปิดสอนแล้ว <b id="courseCount">2</b> หลักสูตร</div>
+  </div>
+
+  <div class="section-label">หลักสูตรทั้งหมด</div>
+  <div class="course-grid">
+
+    <a class="course-card loading" id="card-pr" href="performance-resilience/">
+      <div class="poster">
+        <img src="assets/poster-performance-resilience.jpg" alt="โปสเตอร์ Performance Resilience & Artistic Wellbeing">
+        <div class="status ongoing">กำลังดำเนินการ</div>
+      </div>
+      <div class="top">
+        <h2>Performance Resilience & Artistic Wellbeing</h2>
+        <div class="sub">ความยืดหยุ่นทางการแสดงและสุขภาวะของศิลปิน · 20 พ.ค. – 29 ก.ค. 2569</div>
+        <div class="mini-stats">
+          <div class="mini-stat"><div class="n" id="pr-applicants">–</div><div class="l">ผู้สมัคร</div></div>
+          <div class="mini-stat"><div class="n" id="pr-sessions">–</div><div class="l">คาบที่จัดแล้ว</div></div>
+          <div class="mini-stat"><div class="n" id="pr-score">–</div><div class="l">พึงพอใจรายคาบ /5</div></div>
+          <div class="mini-stat"><div class="n" id="pr-course-score">–</div><div class="l">พึงพอใจโดยรวม /5</div></div>
+        </div>
+      </div>
+      <div class="bottom"><span>ดูรายงานฉบับเต็ม</span><span class="arrow">→</span></div>
+    </a>
+
+    <a class="course-card loading" id="card-folk" href="folk-music/">
+      <div class="poster">
+        <img src="assets/poster-folk-music.jpg" alt="โปสเตอร์ Global Pathways for Folk Music">
+        <div class="status done">จัดจบแล้ว</div>
+      </div>
+      <div class="top">
+        <h2>Global Pathways for Folk Music</h2>
+        <div class="sub">เส้นทางดนตรีพื้นบ้านสู่เวทีโลก · 25–29 พ.ค. 2569</div>
+        <div class="mini-stats">
+          <div class="mini-stat"><div class="n" id="folk-applicants">–</div><div class="l">ผู้สมัคร</div></div>
+          <div class="mini-stat"><div class="n" id="folk-sessions">16</div><div class="l">คาบทั้งหมด</div></div>
+          <div class="mini-stat"><div class="n" id="folk-persession-score">–</div><div class="l">พึงพอใจรายคาบ /5</div></div>
+          <div class="mini-stat"><div class="n" id="folk-score">–</div><div class="l">พึงพอใจโดยรวม /5</div></div>
+        </div>
+      </div>
+      <div class="bottom"><span>ดูรายงานฉบับเต็ม</span><span class="arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <div class="section-label">หน่วยกิตสะสม (Credit Bank)</div>
+  <div class="card" style="background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 26px; margin-bottom:40px; display:flex; gap:32px; flex-wrap:wrap; align-items:center;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="font-size:22px;">📚</span>
+      <div><b style="color:var(--navy);">Performance Resilience & Artistic Wellbeing</b><br><span style="color:var(--sage); font-weight:700;">2 หน่วยกิต</span></div>
+    </div>
+    <div style="width:1px; height:36px; background:var(--line);"></div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="font-size:22px;">📚</span>
+      <div><b style="color:var(--navy);">Global Pathways for Folk Music</b><br><span style="color:var(--sage); font-weight:700;">1.5 หน่วยกิต</span></div>
+    </div>
+    <div style="color:var(--muted); font-size:13px; margin-left:auto;">ภายใต้ระบบ Credit Bank ของสถาบันดนตรีกัลยาณิวัฒนา</div>
+  </div>
+
+  <div class="section-label">แหล่งข้อมูลเพิ่มเติม</div>
+  <div class="resource-row">
+    <a class="resource-card" href="lessons-learned/">
+      <span class="ic">📖</span>
+      <span class="tx"><b>ถอดบทเรียน</b><br><span class="sm">สรุปข้อค้นพบจากทุกหลักสูตรแบบ Infographic</span></span>
+    </a>
+    <a class="resource-card" href="manual/">
+      <span class="ic">📘</span>
+      <span class="tx"><b>คู่มือการเข้าสู่ระบบสารสนเทศ</b><br><span class="sm">วิธีใช้งานและอ่านรายงาน dashboard</span></span>
+    </a>
+  </div>
+
+</div>
+
+<script>
+function toNum(v){ if(v===undefined||v===null) return null; const s=String(v).trim(); if(!s) return null;
+  const map={"1 น้อยที่สุด":1,"2 น้อย":2,"3 ปานกลาง":3,"4 มาก":4,"5 มากที่สุด":5};
+  if(map[s]!==undefined) return map[s];
+  const n=parseFloat(s); if(isNaN(n)||n<0||n>5) return null; return n; }
+function avg(a){ return a.length ? a.reduce((x,y)=>x+y,0)/a.length : null; }
+
+// Data now comes from data/*.json, refreshed every 15 min by
+// .github/workflows/sync-sheets.yml via the real Sheets API — not fetched from Google
+// directly in the browser anymore.
+let PR_DATA = null, FOLK_DATA = null;
+async function loadPrData(){
+  if(PR_DATA) return PR_DATA;
+  const res = await fetch('data/performance-resilience.json', {cache:'no-store'});
+  if(!res.ok) throw new Error('load failed');
+  PR_DATA = await res.json();
+  return PR_DATA;
+}
+async function loadFolkData(){
+  if(FOLK_DATA) return FOLK_DATA;
+  const res = await fetch('data/folk-music.json', {cache:'no-store'});
+  if(!res.ok) throw new Error('load failed');
+  FOLK_DATA = await res.json();
+  return FOLK_DATA;
+}
+
+// ---- Performance Resilience & Artistic Wellbeing ----
+(async()=>{
+  try{
+    const data = await loadPrData();
+    const apply = data.sheets["สมัคร"] || [];
+    document.getElementById('pr-applicants').textContent = apply.filter((r,i)=>i>0 && r[0]).length;
+
+    const PR_SESSIONS = ["20.05.69","27.05.69","3.06.69","10.06.69","17.06.69","24.06.69","1.07.69","8.07.69","15.07.69","22.07.69","29.07.69"];
+    const today = new Date();
+    const PR_DATES = ["2026-05-20","2026-05-27","2026-06-03","2026-06-10","2026-06-17","2026-06-24","2026-07-01","2026-07-08","2026-07-15","2026-07-22","2026-07-29"];
+    let done=0, allScores=[], allWeights=[];
+    for(let i=0;i<PR_SESSIONS.length;i++){
+      if(new Date(PR_DATES[i])>today) continue;
+      const rows = data.sheets[PR_SESSIONS[i]];
+      if(!rows) continue;
+      const dataRows = rows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
+      if(dataRows.length){
+        done++;
+        const scores=[];
+        dataRows.forEach(r=>{
+          const vals=[4,5,6,7,8,9,10,11,12,13].map(c=>toNum(r[c])).filter(v=>v!==null);
+          if(vals.length) scores.push(avg(vals));
+        });
+        const s = avg(scores);
+        if(s!==null){ allScores.push(s*dataRows.length); allWeights.push(dataRows.length); }
+      }
+    }
+    document.getElementById('pr-sessions').textContent = done + '/11';
+    const wsum = allWeights.reduce((a,b)=>a+b,0);
+    document.getElementById('pr-score').textContent = wsum ? (allScores.reduce((a,b)=>a+b,0)/wsum).toFixed(2) : '–';
+
+    const evalRows = data.sheets["ภาพรวม"];
+    if(evalRows){
+      const evalDataRows = evalRows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
+      const courseVals = evalDataRows.map(r=>toNum(r[6])).filter(v=>v!==null);
+      document.getElementById('pr-course-score').textContent = courseVals.length ? avg(courseVals).toFixed(2) : '–';
+    } else {
+      document.getElementById('pr-course-score').textContent = '–';
+    }
+  }catch(e){
+    document.getElementById('pr-applicants').textContent = '–';
+  }finally{
+    document.getElementById('card-pr').classList.remove('loading');
+  }
+})();
+
+// ---- Global Pathways for Folk Music ----
+// Session metadata mirrors folk-music/index.html exactly (same gids, same ratingStart offsets)
+// so this hub card computes the identical per-session weighted average as the full dashboard.
+const FOLK_SESSION_META = [
+  {gid:"289889407", ratingStart:3}, {gid:"289889407", ratingStart:7}, {gid:"289889407", ratingStart:11},
+  {gid:"1467656626", ratingStart:3},
+  {gid:"193777029", ratingStart:3}, {gid:"193777029", ratingStart:7}, {gid:"193777029", ratingStart:11}, {gid:"193777029", ratingStart:15},
+  {gid:"821180123", ratingStart:3}, {gid:"821180123", ratingStart:7},
+  {gid:"1071256717", ratingStart:3},
+];
+(async()=>{
+  try{
+    const data = await loadFolkData();
+    const apply = data.sheets["สมัคร"] || [];
+    document.getElementById('folk-applicants').textContent = apply.filter((r,i)=>i>0 && r[0]).length;
+
+    let sumWeighted=0, sumN=0;
+    FOLK_SESSION_META.forEach(meta=>{
+      const rows = data.sheets[meta.gid];
+      if(!rows || rows.length<2) return;
+      const dataRows = rows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
+      const vals = dataRows.map(r=>toNum(r[meta.ratingStart+2])).filter(v=>v!==null);
+      if(vals.length){ sumWeighted += avg(vals)*vals.length; sumN += vals.length; }
+    });
+    document.getElementById('folk-persession-score').textContent = sumN ? (sumWeighted/sumN).toFixed(2) : '–';
+
+    const evalRows = data.sheets["ภาพรวม"];
+    if(evalRows){
+      const dataRows = evalRows.slice(1).filter(r=>r[0]);
+      const vals = dataRows.map(r=>toNum(r[6])).filter(v=>v!==null);
+      document.getElementById('folk-score').textContent = vals.length ? avg(vals).toFixed(2) : '–';
+    } else {
+      document.getElementById('folk-score').textContent = '–';
+    }
+  }catch(e){
+    document.getElementById('folk-applicants').textContent = '–';
+    document.getElementById('folk-persession-score').textContent = '–';
+    document.getElementById('folk-score').textContent = '–';
+  }
+  document.getElementById('card-folk').classList.remove('loading');
+})();
+</script>
+</body>
+</html>
