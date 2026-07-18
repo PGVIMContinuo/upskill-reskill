@@ -1,0 +1,37 @@
+name: Sync Google Sheets Data
+
+# Runs independently of the site's deploy workflow — this only updates data/*.json.
+# Committing those files will trigger the existing Pages deploy automatically.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'   # every 15 minutes
+  workflow_dispatch: {}       # adds a "Run workflow" button for an instant manual refresh
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch latest Sheets data
+        env:
+          SHEETS_API_KEY: ${{ secrets.SHEETS_API_KEY }}
+        run: node scripts/fetch-sheets.js
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "Update sheet data [automated]"
+          git push
