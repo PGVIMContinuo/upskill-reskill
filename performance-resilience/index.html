@@ -153,7 +153,7 @@
       <div class="hero">
         <div class="eyebrow" id="reportDateLabel"></div>
         <h1>ความยืดหยุ่นทางการแสดงและสุขภาวะของศิลปิน</h1>
-        <p>หลักสูตรระยะสั้น 11 คาบ (20 พ.ค. – 29 ก.ค. 2569) บูรณาการประสาทวิทยา จิตวิทยา และสรีรวิทยา เพื่อพัฒนาความยืดหยุ่นในการแสดงของนักดนตรีอาชีพและผู้เรียนดนตรี</p>
+        <p>หลักสูตรระยะสั้น 10 คาบ (20 พ.ค. – 22 ก.ค. 2569) บูรณาการประสาทวิทยา จิตวิทยา และสรีรวิทยา เพื่อพัฒนาความยืดหยุ่นในการแสดงของนักดนตรีอาชีพและผู้เรียนดนตรี พร้อมส่งแผนซ้อมส่วนบุคคลปิดท้าย 29 ก.ค. 2569</p>
         <div class="datebar" id="progressBar">📅 กำลังคำนวณ…</div>
       </div>
 
@@ -483,9 +483,12 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
 
 
   // ---- report date + progress ----
+  // 11 SESSION_META entries exist, but the 11th (29 ก.ค.) is an online homework-submission
+  // deadline, not a live session — "10 คาบ" is the real total for display purposes.
+  const REAL_SESSION_COUNT = 10;
   document.getElementById('reportDateLabel').textContent = 'รายงานสรุปหลักสูตร';
   document.getElementById('progressBar').textContent =
-    `📅 จัดไปแล้ว ${doneSessions.length} จาก ${sessions.length} คาบ · เหลืออีก ${sessions.length-doneSessions.length} คาบจนถึง ${sessions[sessions.length-1].label}`;
+    `📅 จัดไปแล้ว ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} จาก ${REAL_SESSION_COUNT} คาบ · เหลืออีก ${Math.max(REAL_SESSION_COUNT-doneSessions.length,0)} คาบจนถึง ${sessions[sessions.length-1].label}`;
 
   // ---- stat cards ----
   const attendedNames = new Set();
@@ -507,9 +510,9 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
 
   document.getElementById('statRow').innerHTML = `
     <div class="stat-card"><div class="num">${totalApplicants}</div><div class="label">ผู้สมัครทั้งหมด</div><div class="sub">คาดว่าจะถึงเป้า 50 คน</div></div>
-    <div class="stat-card sage"><div class="num">${doneSessions.length}/${sessions.length}</div><div class="label">คาบที่จัดไปแล้ว</div></div>
-    <div class="stat-card"><div class="num">${wOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div><div class="sub">จากผู้ตอบ ${totalResp} ครั้ง</div></div>
-    <div class="stat-card gold"><div class="num">${courseOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div><div class="sub">${courseRespN ? `จากผู้ตอบแบบประเมิน ${courseRespN} คน` : 'รอผู้ตอบแบบประเมิน'}</div></div>
+    <div class="stat-card sage"><div class="num">${Math.min(doneSessions.length, REAL_SESSION_COUNT)}/${REAL_SESSION_COUNT}</div><div class="label">คาบที่จัดไปแล้ว</div></div>
+    <div class="stat-card"><div class="num">${wOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div></div>
+    <div class="stat-card gold"><div class="num">${courseOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div><div class="sub">${courseRespN ? '' : 'รอผู้ตอบแบบประเมิน'}</div></div>
   `;
 
   // ---- applicant breakdown ----
@@ -581,7 +584,7 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
 
 
   document.getElementById('evalFootnote').innerHTML =
-    totalResp ? `ระหว่างนี้ ความพึงพอใจรายคาบ (ดูที่แท็บ "รายวัน") ใช้เป็นข้อมูลความก้าวหน้าเบื้องต้นได้ — เฉลี่ยรวม ${doneSessions.length} คาบอยู่ที่ ${wOverall}/5 จากผู้ตอบ ${totalResp} ครั้ง` : '';
+    totalResp ? `ระหว่างนี้ ความพึงพอใจรายคาบ (ดูที่แท็บ "รายวัน") ใช้เป็นข้อมูลความก้าวหน้าเบื้องต้นได้ — เฉลี่ยรวม ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} คาบอยู่ที่ ${wOverall}/5` : '';
 
   // recap section from "สรุปรายคาบ" tab — columns: วันที่, หัวข้อ, วิทยากร, [ความเชี่ยวชาญ], เนื้อหาถอดความ, เสียงจากผู้เรียน
   if(recapRows && recapRows.length>1){
@@ -680,11 +683,11 @@ function renderEval(evalRows){
   renderRatingBars('evalSatBars', satAvgs);
   renderRatingBars('evalImpactBars', impactAvgs);
 
-  renderHBars('evalCounterfactual', countBy(rows, 18));
-  renderHBars('evalDuration', countBy(rows, 19));
-  renderHBars('evalOccBars', countBy(rows, 4));
-  renderHBars('evalChannelBars', countBy(rows, 5));
-  renderDonut2('evalGenderDonut','evalGenderLegend', countBy(rows, 1));
+  renderHBarsPct('evalCounterfactual', countBy(rows, 18));
+  renderHBarsPct('evalDuration', countBy(rows, 19));
+  renderHBarsPct('evalOccBars', countBy(rows, 4));
+  renderHBarsPct('evalChannelBars', countBy(rows, 5));
+  renderDonut2('evalGenderDonut','evalGenderLegend', countBy(rows, 1), true);
 
   // open-ended quotes: what they learned (12), how they'll apply it (14), extra comments (20).
   // Grouped into separate labeled subsections rather than one flat tagged list — mirrors the
@@ -716,8 +719,17 @@ function renderHBars(elId, entries){
     `<div class="hbar-row"><div class="name">${name}</div><div class="track"><div class="fill" style="width:${n/max*100}%;"></div></div><div class="n">${n}</div></div>`
   ).join('');
 }
+// Percentage-only variant for ประเมินภาพรวม's breakdowns — bar width and label both show
+// share of respondents rather than raw count.
+function renderHBarsPct(elId, entries){
+  const el = document.getElementById(elId);
+  const total = entries.reduce((a,e)=>a+e[1],0) || 1;
+  el.innerHTML = entries.map(([name,n])=>
+    `<div class="hbar-row"><div class="name">${name}</div><div class="track"><div class="fill" style="width:${n/total*100}%;"></div></div><div class="n">${(n/total*100).toFixed(0)}%</div></div>`
+  ).join('');
+}
 
-function renderDonut2(donutId, legendId, entries){
+function renderDonut2(donutId, legendId, entries, showPct){
   const total = entries.reduce((a,e)=>a+e[1],0) || 1;
   const colors = ['var(--navy)','var(--gold)','#8b8fc4','#d8d6c8','#c9634a'];
   let acc = 0;
@@ -727,7 +739,7 @@ function renderDonut2(donutId, legendId, entries){
   }).join(', ');
   document.getElementById(donutId).style.background = `conic-gradient(${stops})`;
   document.getElementById(legendId).innerHTML = entries.map(([name,n],i)=>
-    `<div><span class="dot" style="background:${colors[i%colors.length]};"></span> ${name} — ${n} คน</div>`
+    `<div><span class="dot" style="background:${colors[i%colors.length]};"></span> ${name} — ${showPct ? (n/total*100).toFixed(0)+'%' : n+' คน'}</div>`
   ).join('');
 }
 function renderDonut(entries){ renderDonut2('priorDonut','priorLegend', entries); }
