@@ -150,7 +150,7 @@
     <button class="tab-btn active" data-tab="overview">ภาพรวม</button>
     <button class="tab-btn" data-tab="daily">รายวัน</button>
     <button class="tab-btn" data-tab="showcase">ผลงานการแสดง</button>
-    <button class="tab-btn" data-tab="eval">ประเมิน</button>
+    <button class="tab-btn" data-tab="eval">ประเมินภาพรวม</button>
   </div>
 </div>
 
@@ -656,10 +656,23 @@ async function fetchEval(){
       `<div class="hbar-row"><div class="name">${label}</div><div class="track"><div class="fill" style="width:${(val/maxDim*100)||0}%;"></div></div><div class="n">${val ?? '-'}</div></div>`
     ).join('');
 
-    const quotes = dataRows.map(r=>r[20]).filter(q=>q && String(q).trim() && String(q).trim()!=='-');
-    document.getElementById('evalQuotes').innerHTML = quotes.length
-      ? quotes.map(q=>`<div class="quote">"${q}"</div>`).join('')
-      : `<div style="color:var(--muted); font-size:13.5px;">ไม่มีข้อเสนอแนะเพิ่มเติม</div>`;
+    // Grouped into 3 labeled subsections, matching Performance Resilience's structure exactly
+    // (the ภาพรวม tab has the same column layout on both courses).
+    const quoteGroups = [
+      {idx:12, label:"สิ่งที่ได้เรียนรู้"},
+      {idx:14, label:"แผนการนำไปใช้"},
+      {idx:20, label:"ข้อเสนอแนะเพิ่มเติม"},
+    ];
+    const groupsHtml = quoteGroups.map(g=>{
+      const vals = dataRows.map(r=>r[g.idx] && String(r[g.idx]).trim()).filter(v=>v && v!=='-');
+      if(!vals.length) return '';
+      return `<div style="margin-bottom:18px;">
+        <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:8px;">${g.label}</div>
+        <div class="quotes">${vals.map(v=>`<div class="quote">"${v}"</div>`).join('')}</div>
+      </div>`;
+    }).join('');
+    document.getElementById('evalQuotes').innerHTML = groupsHtml
+      || `<div style="color:var(--muted); font-size:13.5px;">ยังไม่มีคำตอบปลายเปิด</div>`;
   }catch(err){
     document.getElementById('evalBars').innerHTML = `<div class="errbox">โหลดข้อมูลประเมินไม่สำเร็จ: ${err.message}</div>`;
   }
