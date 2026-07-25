@@ -241,35 +241,9 @@
           <div id="evalImpactBars"></div>
         </div>
 
-        <div class="grid2">
-          <div>
-            <div class="card">
-              <h3><span>🔁</span> หากไม่มีโครงการนี้ จะได้ประสบการณ์แบบนี้จากที่อื่นหรือไม่</h3>
-              <div id="evalCounterfactual"></div>
-            </div>
-            <div class="card">
-              <h3><span>🚻</span> เพศของผู้ตอบแบบประเมิน</h3>
-              <div class="donut-wrap">
-                <div class="donut" id="evalGenderDonut"></div>
-                <div class="legend" id="evalGenderLegend"></div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="card">
-              <h3><span>⏱️</span> ระยะเวลาที่คาดว่าประโยชน์จะอยู่กับผู้เรียน</h3>
-              <div id="evalDuration"></div>
-            </div>
-            <div class="card">
-              <h3><span>💼</span> อาชีพของผู้ตอบแบบประเมิน</h3>
-              <div id="evalOccBars"></div>
-            </div>
-          </div>
-        </div>
-
         <div class="card">
-          <h3><span>📣</span> ช่องทางที่ทราบข่าวการจัดกิจกรรม</h3>
-          <div id="evalChannelBars"></div>
+          <h3><span>🔁</span> หากไม่มีโครงการนี้ จะได้ประสบการณ์แบบนี้จากที่อื่นหรือไม่</h3>
+          <div id="evalCounterfactual"></div>
         </div>
 
         <div class="card">
@@ -684,10 +658,6 @@ function renderEval(evalRows){
   renderRatingBars('evalImpactBars', impactAvgs);
 
   renderHBarsPct('evalCounterfactual', countBy(rows, 18));
-  renderHBarsPct('evalDuration', countBy(rows, 19));
-  renderHBarsPct('evalOccBars', countBy(rows, 4));
-  renderHBarsPct('evalChannelBars', countBy(rows, 5));
-  renderDonut2('evalGenderDonut','evalGenderLegend', countBy(rows, 1), true);
 
   // open-ended quotes: what they learned (12), how they'll apply it (14), extra comments (20).
   // Grouped into separate labeled subsections rather than one flat tagged list — mirrors the
