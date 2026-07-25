@@ -153,7 +153,7 @@
       <div class="hero">
         <div class="eyebrow" id="reportDateLabel"></div>
         <h1>ความยืดหยุ่นทางการแสดงและสุขภาวะของศิลปิน</h1>
-        <p>หลักสูตรระยะสั้น 10 คาบ (20 พ.ค. – 22 ก.ค. 2569) บูรณาการประสาทวิทยา จิตวิทยา และสรีรวิทยา เพื่อพัฒนาความยืดหยุ่นในการแสดงของนักดนตรีอาชีพและผู้เรียนดนตรี พร้อมส่งแผนซ้อมส่วนบุคคลปิดท้าย 29 ก.ค. 2569</p>
+        <p>หลักสูตรระยะสั้น 11 คาบ (20 พ.ค. – 29 ก.ค. 2569) บูรณาการประสาทวิทยา จิตวิทยา และสรีรวิทยา เพื่อพัฒนาความยืดหยุ่นในการแสดงของนักดนตรีอาชีพและผู้เรียนดนตรี</p>
         <div class="datebar" id="progressBar">📅 กำลังคำนวณ…</div>
       </div>
 
@@ -457,9 +457,10 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
 
 
   // ---- report date + progress ----
-  // 11 SESSION_META entries exist, but the 11th (29 ก.ค.) is an online homework-submission
-  // deadline, not a live session — "10 คาบ" is the real total for display purposes.
-  const REAL_SESSION_COUNT = 10;
+  // Reverted to counting all 11 SESSION_META entries — credit-unit documentation cites
+  // "11 คาบ / 38 ชั่วโมง", so keeping the dashboard consistent with that rather than
+  // splitting out the homework slot (29 ก.ค.) as a separate non-session item.
+  const REAL_SESSION_COUNT = sessions.length;
   document.getElementById('reportDateLabel').textContent = 'รายงานสรุปหลักสูตร';
   document.getElementById('progressBar').textContent =
     `📅 จัดไปแล้ว ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} จาก ${REAL_SESSION_COUNT} คาบ · เหลืออีก ${Math.max(REAL_SESSION_COUNT-doneSessions.length,0)} คาบจนถึง ${sessions[sessions.length-1].label}`;
@@ -677,9 +678,6 @@ function renderEval(evalRows){
   }).join('');
   document.getElementById('evalQuotes').innerHTML = groupsHtml
     || `<div style="color:var(--muted); font-size:13.5px; font-style:normal;">ยังไม่มีคำตอบปลายเปิด</div>`;
-
-  const consented = rows.filter(r=>r[21] && String(r[21]).trim()).length;
-  footEl.textContent = `ข้อมูลจากแท็บ "${EVAL_SHEET}" · ผู้ตอบ ${rows.length} คน · ยินยอมให้ใช้ข้อมูลเพื่อประเมินผล/วิจัย ${consented} คน`;
 }
 
 function renderHBars(elId, entries){
