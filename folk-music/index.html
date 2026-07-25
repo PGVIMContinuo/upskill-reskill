@@ -642,7 +642,6 @@ async function fetchEval(){
     const overall = avg(overallVals) ? avg(overallVals).toFixed(2) : '-';
 
     document.getElementById('evalOverallNum').textContent = `★ ${overall} / 5`;
-    document.getElementById('evalRespondents').textContent = `จากผู้ตอบแบบประเมิน ${n} คน`;
     document.getElementById('folkCourseScore').textContent = overall;
 
     const maxDim=5;
