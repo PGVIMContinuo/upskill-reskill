@@ -135,8 +135,8 @@
   <div class="tabs">
     <button class="tab-btn active" data-tab="overview">ภาพรวม</button>
     <button class="tab-btn" data-tab="daily">รายวัน</button>
-    <button class="tab-btn" data-tab="eval">ประเมิน</button>
     <button class="tab-btn" data-tab="eeg">วัดคลื่นสมอง</button>
+    <button class="tab-btn" data-tab="eval">ประเมินภาพรวม</button>
   </div>
 </div>
 
@@ -689,23 +689,24 @@ function renderEval(evalRows){
   renderHBars('evalChannelBars', countBy(rows, 5));
   renderDonut2('evalGenderDonut','evalGenderLegend', countBy(rows, 1));
 
-  // open-ended quotes: what they learned (12), how they'll apply it (14), estimated value (17), extra comments (20)
-  const quoteSrcs = [
-    {idx:12, tag:"สิ่งที่ได้เรียนรู้"},
-    {idx:14, tag:"แผนการนำไปใช้"},
-    {idx:17, tag:"มูลค่าที่ประเมิน"},
-    {idx:20, tag:"ข้อเสนอแนะเพิ่มเติม"},
+  // open-ended quotes: what they learned (12), how they'll apply it (14), extra comments (20).
+  // Grouped into separate labeled subsections rather than one flat tagged list — mirrors the
+  // structure used on the Folk Music page for consistency across both courses.
+  const quoteGroups = [
+    {idx:12, label:"สิ่งที่ได้เรียนรู้"},
+    {idx:14, label:"แผนการนำไปใช้"},
+    {idx:20, label:"ข้อเสนอแนะเพิ่มเติม"},
   ];
-  const quoteHtml = [];
-  rows.forEach(r=>{
-    quoteSrcs.forEach(q=>{
-      const v = r[q.idx] && String(r[q.idx]).trim();
-      if(v) quoteHtml.push(`<div class="quote"><b style="color:var(--sage); font-style:normal;">${q.tag}:</b> "${v}"</div>`);
-    });
-  });
-  document.getElementById('evalQuotes').innerHTML = quoteHtml.length
-    ? quoteHtml.join('')
-    : `<div style="color:var(--muted); font-size:13.5px; font-style:normal;">ยังไม่มีคำตอบปลายเปิด</div>`;
+  const groupsHtml = quoteGroups.map(g=>{
+    const vals = rows.map(r=>r[g.idx] && String(r[g.idx]).trim()).filter(Boolean);
+    if(!vals.length) return '';
+    return `<div style="margin-bottom:18px;">
+      <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:8px;">${g.label}</div>
+      <div class="quotes">${vals.map(v=>`<div class="quote">"${v}"</div>`).join('')}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('evalQuotes').innerHTML = groupsHtml
+    || `<div style="color:var(--muted); font-size:13.5px; font-style:normal;">ยังไม่มีคำตอบปลายเปิด</div>`;
 
   const consented = rows.filter(r=>r[21] && String(r[21]).trim()).length;
   footEl.textContent = `ข้อมูลจากแท็บ "${EVAL_SHEET}" · ผู้ตอบ ${rows.length} คน · ยินยอมให้ใช้ข้อมูลเพื่อประเมินผล/วิจัย ${consented} คน`;
