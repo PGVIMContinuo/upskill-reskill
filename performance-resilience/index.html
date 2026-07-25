@@ -391,6 +391,20 @@ function countBy(rows, colIndex){
   });
   return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
 }
+// Same as countBy, but keeps a fixed display order (e.g. matching the form's own dropdown
+// order) instead of sorting by frequency — for fields where the order itself is meaningful,
+// like education level low-to-high. Any answer not in orderList is appended at the end.
+function countByOrdered(rows, colIndex, orderList){
+  const counts = {};
+  rows.forEach(r=>{
+    let v = (r[colIndex] || "").trim();
+    if(!v) v = "ไม่ระบุ";
+    counts[v] = (counts[v]||0) + 1;
+  });
+  const ordered = orderList.filter(label=>counts[label]!==undefined).map(label=>[label, counts[label]]);
+  const extras = Object.entries(counts).filter(([label])=>!orderList.includes(label));
+  return [...ordered, ...extras];
+}
 
 // "สมัคร" tab name — fetched directly by name now that data goes through the real Sheets
 // API (fetch-sheets.js) rather than the gviz export, so the earlier name-lookup
@@ -503,7 +517,7 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   // Column layout as of the form update adding อายุ/ระดับการศึกษา/ประเภทผู้เข้าอบรม:
   // 0 ชื่อจริง · 1 นามสกุล · 2 อายุ · 3 เพศ · 4 ระดับการศึกษา · 5 ประเภทผู้เข้าอบรม · 6 เบอร์โทร · 7 อีเมล ·
   // 8 ประเภทผู้สมัคร · 9 ประสบการณ์ · 10 ระดับ/Skill Level · 11 ความพร้อม · 12-14 ยินยอม x3 · 15 เคยเข้าร่วม PGVIM
-  renderHBars('skillBars', countBy(dataApply, 10));
+  renderHBars('skillBars', countByOrdered(dataApply, 10, ['เบื้องต้น / Beginner','ปานกลาง / Intermediate','ระดับสูง / Advanced']));
   renderHBars('affBars', countBy(dataApply, 8));
   // Gender: still validated at runtime rather than assumed, in case the form structure shifts again —
   // only rendered as a gender chart if the actual values look like gender labels.
@@ -532,8 +546,8 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   const ageSubEl = document.getElementById('avgAgeSub');
   if(ageSubEl) ageSubEl.textContent = `จากผู้ตอบ ${ageVals.length} จาก ${dataApply.length} คน`;
 
-  renderHBars('eduBars', countBy(dataApply, 4));
-  renderHBars('statusBars', countBy(dataApply, 5));
+  renderHBars('eduBars', countByOrdered(dataApply, 4, ['ต่ำกว่าปริญญาตรี','ปริญญาตรี','ปริญญาโท','ปริญญาเอก']));
+  renderHBars('statusBars', countByOrdered(dataApply, 5, ['ผู้กำลังศึกษา (นิสิต นักศึกษา)','ผู้มีงานทำ (บุคคลวัยทำงาน อายุ 15-60 ปี))','ผู้ว่างงาน']));
 
   // ---- daily table + session cards ----
   const tbody = document.getElementById('dayTableBody');
