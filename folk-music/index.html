@@ -177,6 +177,11 @@
             <h3><span>🏫</span> สถาบันของผู้สมัคร</h3>
             <div id="instBars"></div>
           </div>
+          <div class="card">
+            <h3><span>🎂</span> อายุเฉลี่ย</h3>
+            <div class="num" id="avgAgeNum" style="font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--navy);">–</div>
+            <div class="sub" id="avgAgeSub" style="font-size:12px; color:var(--sage); font-weight:600; margin-top:4px;"></div>
+          </div>
         </div>
         <div>
           <div class="card">
@@ -186,7 +191,16 @@
               <div class="legend" id="genderLegend"></div>
             </div>
           </div>
+          <div class="card">
+            <h3><span>🎓</span> ระดับการศึกษา</h3>
+            <div id="eduBars"></div>
+          </div>
         </div>
+      </div>
+
+      <div class="card">
+        <h3><span>💼</span> สถานะผู้เข้าอบรม (กำลังศึกษา / มีงานทำ / ว่างงาน)</h3>
+        <div id="statusBars"></div>
       </div>
 
       <div class="card">
@@ -342,6 +356,20 @@ function countBy(rows, colIndex){
   });
   return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
 }
+// Same as countBy, but keeps a fixed display order (e.g. matching the form's own dropdown
+// order) instead of sorting by frequency. Any answer not in orderList is appended at the end,
+// so an imprecise/mismatched orderList degrades gracefully rather than losing data.
+function countByOrdered(rows, colIndex, orderList){
+  const counts = {};
+  rows.forEach(r=>{
+    let v = (r[colIndex]||"").trim();
+    if(!v || v==='-' || v==='_') v = "ไม่ระบุ";
+    counts[v] = (counts[v]||0)+1;
+  });
+  const ordered = orderList.filter(label=>counts[label]!==undefined).map(label=>[label, counts[label]]);
+  const extras = Object.entries(counts).filter(([label])=>!orderList.includes(label));
+  return [...ordered, ...extras];
+}
 // keep the top N entries and bucket the long tail into "อื่นๆ" so lists with many one-off values stay readable
 function topNWithOthers(entries, n){
   const withoutUnspec = entries.filter(([name])=>name!=='ไม่ระบุ');
@@ -462,19 +490,41 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows){
   `;
   document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<div class="credit-badge">📚 หลักสูตรนี้ให้หน่วยกิตสะสม 1.5 หน่วยกิต ภายใต้ระบบ Credit Bank ของสถาบัน</div>`);
 
-  // institution breakdown
+  // Column layout confirmed against the real form (2026-07-25):
+  // 0 ชื่อ-นามสกุล · 1 English name · 2 Email · 3 เพศ · 4 อายุ · 5 ระดับการศึกษา · 6 ประเภทผู้เข้าอบรม ·
+  // 7 เบอร์โทรศัพท์ · 8 Confirm · 9 สถาบันการศึกษา
   const dataApply = applyRows.slice(1).filter(r=>r[0]);
-  const institutions = countBy(dataApply, 7);
+  const institutions = countBy(dataApply, 9);
   renderHBars('instBars', topNWithOthers(institutions, 6));
 
   // gender donut
-  const genders = countBy(dataApply, 1);
+  const genders = countBy(dataApply, 3);
   const totalG = genders.reduce((a,e)=>a+e[1],0)||1;
   const colors=['var(--navy)','var(--gold)','#8b8fc4'];
   let acc=0;
   const stops = genders.map(([n,c],i)=>{const s=acc/totalG*360; acc+=c; const e=acc/totalG*360; return `${colors[i%colors.length]} ${s}deg ${e}deg`;}).join(', ');
   document.getElementById('genderDonut').style.background = `conic-gradient(${stops})`;
   document.getElementById('genderLegend').innerHTML = genders.map(([n,c],i)=>`<div><span class="dot" style="background:${colors[i%colors.length]};"></span> ${n} — ${c} คน</div>`).join('');
+
+  // ---- new fields: อายุ, ระดับการศึกษา, ประเภทผู้เข้าอบรม ----
+  // Age is a birthdate here (dd/mm/yyyy), not a plain number — compute age from it rather than
+  // trying to parse it as a direct age value.
+  const ageVals = dataApply.map(r=>{
+    const m = String(r[4]||'').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if(!m) return null;
+    const born = new Date(parseInt(m[3],10), parseInt(m[2],10)-1, parseInt(m[1],10));
+    if(isNaN(born.getTime())) return null;
+    const age = (new Date() - born) / (365.25*24*3600*1000);
+    return age>0 && age<120 ? Math.floor(age) : null;
+  }).filter(v=>v!==null);
+  const avgAge = ageVals.length ? (ageVals.reduce((a,b)=>a+b,0)/ageVals.length).toFixed(1) : null;
+  const ageEl = document.getElementById('avgAgeNum');
+  if(ageEl) ageEl.textContent = avgAge!==null ? `${avgAge} ปี` : '–';
+  const ageSubEl = document.getElementById('avgAgeSub');
+  if(ageSubEl) ageSubEl.textContent = `จากผู้ตอบ ${ageVals.length} จาก ${dataApply.length} คน`;
+
+  renderHBars('eduBars', countByOrdered(dataApply, 5, ['ต่ำกว่าปริญญาตรี','ปริญญาตรี','ปริญญาโท','ปริญญาเอก']));
+  renderHBars('statusBars', countByOrdered(dataApply, 6, ['ผู้กำลังศึกษา (นิสิต นักศึกษา)','ผู้มีงานทำ (บุคคลวัย ทำงาน (อายุ 15-60 ปี))','ผู้ว่างงาน']));
 
   // daily table + cards
   const tbody = document.getElementById('dayTableBody');
