@@ -175,7 +175,6 @@
           <div class="card">
             <h3><span>🎂</span> อายุเฉลี่ย</h3>
             <div class="num" id="avgAgeNum" style="font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--navy);">–</div>
-            <div class="sub" id="avgAgeSub" style="font-size:12px; color:var(--sage); font-weight:600; margin-top:4px;"></div>
           </div>
         </div>
         <div>
@@ -261,7 +260,18 @@
               <h3><span>⏱️</span> ระยะเวลาที่คาดว่าประโยชน์จะอยู่กับผู้เรียน</h3>
               <div id="evalDuration"></div>
             </div>
-            
+            <div class="card">
+              <h3><span>💼</span> อาชีพของผู้ตอบแบบประเมิน</h3>
+              <div id="evalOccBars"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span>📣</span> ช่องทางที่ทราบข่าวการจัดกิจกรรม</h3>
+          <div id="evalChannelBars"></div>
+        </div>
+
         <div class="card">
           <h3><span>💬</span> เสียงจากผู้ตอบแบบประเมิน</h3>
           <div id="evalQuotes" class="quotes scrollbox"></div>
@@ -532,8 +542,6 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   const avgAge = ageVals.length ? (ageVals.reduce((a,b)=>a+b,0)/ageVals.length).toFixed(1) : null;
   const ageEl = document.getElementById('avgAgeNum');
   if(ageEl) ageEl.textContent = avgAge!==null ? `${avgAge} ปี` : '–';
-  const ageSubEl = document.getElementById('avgAgeSub');
-  if(ageSubEl) ageSubEl.textContent = `จากผู้ตอบ ${ageVals.length} จาก ${dataApply.length} คน`;
 
   renderHBars('eduBars', countByOrdered(dataApply, 4, ['ต่ำกว่าปริญญาตรี','ปริญญาตรี','ปริญญาโท','ปริญญาเอก']));
   renderHBars('statusBars', countByOrdered(dataApply, 5, ['ผู้กำลังศึกษา (นิสิต นักศึกษา)','ผู้มีงานทำ (บุคคลวัยทำงาน อายุ 15-60 ปี))','ผู้ว่างงาน']));
