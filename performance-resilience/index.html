@@ -229,7 +229,7 @@
       </div>
 
       <div id="evalContent" style="display:none;">
-        <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(3,1fr);"></div>
+        <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(2,1fr);"></div>
 
         <div class="card">
           <h3><span>⭐</span> ความพึงพอใจรายด้าน</h3>
@@ -239,11 +239,6 @@
         <div class="card">
           <h3><span>🌱</span> ผลลัพธ์และผลกระทบด้านการเรียนรู้</h3>
           <div id="evalImpactBars"></div>
-        </div>
-
-        <div class="card">
-          <h3><span>🔁</span> หากไม่มีโครงการนี้ จะได้ประสบการณ์แบบนี้จากที่อื่นหรือไม่</h3>
-          <div id="evalCounterfactual"></div>
         </div>
 
         <div class="card">
@@ -644,7 +639,6 @@ function renderEval(evalRows){
   const grandAvg = allVals.length ? allVals.reduce((a,b)=>a+b,0)/allVals.length : null;
 
   document.getElementById('evalStatRow').innerHTML = `
-    <div class="stat-card"><div class="num">${rows.length}</div><div class="label">ผู้ตอบแบบประเมิน</div></div>
     <div class="stat-card sage"><div class="num">${overall!==null?overall.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
     <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
   `;
@@ -658,7 +652,6 @@ function renderEval(evalRows){
   renderRatingBars('evalSatBars', satAvgs);
   renderRatingBars('evalImpactBars', impactAvgs);
 
-  renderHBarsPct('evalCounterfactual', countBy(rows, 18));
 
   // open-ended quotes: what they learned (12), how they'll apply it (14), extra comments (20).
   // Grouped into separate labeled subsections rather than one flat tagged list — mirrors the
