@@ -232,18 +232,20 @@
 
     <!-- ================= EVALUATION (live from "ภาพรวม" sheet) ================= -->
     <div class="panel" id="eval">
+      <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(2,1fr);"></div>
+
       <div class="card">
-        <h3><span>⭐</span> ผลการประเมินโครงการ</h3>
-        <div id="evalOverallNum" style="font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--gold);"></div>
-        <div id="evalRespondents" style="font-size:13px; color:var(--muted); margin-bottom:16px;"></div>
+        <h3><span>⭐</span> ความพึงพอใจรายด้าน</h3>
         <div id="evalBars"></div>
       </div>
+
       <div class="card">
-        <h3><span>🎯</span> ผลการเรียนรู้</h3>
+        <h3><span>🌱</span> ผลลัพธ์และผลกระทบด้านการเรียนรู้</h3>
         <div id="outcomeBars"></div>
       </div>
+
       <div class="card">
-        <h3><span>💬</span> ข้อเสนอแนะจากผู้เรียน</h3>
+        <h3><span>💬</span> เสียงจากผู้ตอบแบบประเมิน</h3>
         <div class="quotes scrollbox" id="evalQuotes"></div>
       </div>
     </div>
@@ -641,7 +643,16 @@ async function fetchEval(){
     const overallVals = dataRows.map(r=>toNum(r[6])).filter(v=>v!==null);
     const overall = avg(overallVals) ? avg(overallVals).toFixed(2) : '-';
 
-    document.getElementById('evalOverallNum').textContent = `★ ${overall} / 5`;
+    // Grand average across all 9 rating questions (5 satisfaction + 4 outcome dims), matching
+    // Performance Resilience's "เฉลี่ยรวมทุกด้าน" calculation exactly.
+    const allCols = [...dims, ...outcomeDims].map(([col])=>col);
+    const allVals = dataRows.flatMap(r=>allCols.map(c=>toNum(r[c])).filter(v=>v!==null));
+    const grandAvg = allVals.length ? (allVals.reduce((a,b)=>a+b,0)/allVals.length) : null;
+
+    document.getElementById('evalStatRow').innerHTML = `
+      <div class="stat-card sage"><div class="num">${overall!=='-'?overall:'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
+      <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
+    `;
     document.getElementById('folkCourseScore').textContent = overall;
 
     const maxDim=5;
