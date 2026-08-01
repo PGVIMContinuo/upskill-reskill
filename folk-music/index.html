@@ -396,10 +396,11 @@ function avg(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : nul
 
 async function main(){
   try{
-    const [signRows, applyRows, recapRows] = await Promise.all([
+    const [signRows, applyRows, recapRows, applyRows2] = await Promise.all([
       fetchSheetRows("ลงชื่อแต่ละวัน"),
       fetchSheetRows("สมัคร"),
       fetchSheetRows("สรุปรายคาบ").catch(()=>null),
+      fetchSheetRows("สมัคร_รอบ2").catch(()=>null), // round 2 (1-2, 8-9 Aug) — same course, second batch
     ]);
     const totalsRow = signRows.find(r => (r[0]||"").trim() === "รวมผู้เข้าร่วม");
     const signHeader = signRows[0];
@@ -448,7 +449,7 @@ async function main(){
         attend: attendByLabel[meta.label] ?? 0};
     });
 
-    render(sessions, applyRows, attendByLabel, sheetErrors, recapRows);
+    render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2);
   }catch(err){
     document.getElementById('loadingMsg').style.display='none';
     const box=document.getElementById('errMsg'); box.style.display='block';
@@ -457,7 +458,7 @@ async function main(){
   }
 }
 
-function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows){
+function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2){
   document.getElementById('loadingMsg').style.display='none';
   document.getElementById('appContent').style.display='block';
 
@@ -470,7 +471,9 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows){
     document.getElementById('appContent').prepend(box);
   }
 
-  const totalApplicants = applyRows.filter((r,i)=>i>0 && r[0]).length;
+  const totalApplicantsR1 = applyRows.filter((r,i)=>i>0 && r[0]).length;
+  const totalApplicantsR2 = applyRows2 ? applyRows2.filter((r,i)=>i>0 && r[0]).length : 0;
+  const totalApplicants = totalApplicantsR1 + totalApplicantsR2;
   const totalResp = sessions.reduce((a,s)=>a+s.resp,0);
   const totalContentN = sessions.reduce((a,s)=>a+(s.contentN||0),0);
   const totalSpeakerN = sessions.reduce((a,s)=>a+(s.speakerN||0),0);
@@ -484,8 +487,8 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows){
   const avgAttend = DAY_ORDER.length ? DAY_ORDER.reduce((a,d)=>a+(attendByLabel[d]||0),0)/DAY_ORDER.length : 0;
 
   document.getElementById('statRow').innerHTML = `
-    <div class="stat-card"><div class="num">${totalApplicants}</div><div class="label">ผู้สมัครทั้งหมด</div></div>
-    <div class="stat-card sage"><div class="num">16</div><div class="label">คาบทั้งหมด (5 วัน)</div></div>
+    <div class="stat-card"><div class="num">${totalApplicants}</div><div class="label">ผู้สมัครทั้งหมด (2 รอบรวมกัน)</div><div class="sub">รอบ 1: ${totalApplicantsR1} คน · รอบ 2: ${totalApplicantsR2} คน</div></div>
+    <div class="stat-card sage"><div class="num">16</div><div class="label">คาบทั้งหมด (รอบ 1)</div></div>
     <div class="stat-card"><div class="num">${wOverall.toFixed(2)}</div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div></div>
     <div class="stat-card gold"><div class="num" id="folkCourseScore">–</div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div></div>
   `;
@@ -494,7 +497,10 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows){
   // Column layout confirmed against the real form (2026-07-25):
   // 0 ชื่อ-นามสกุล · 1 English name · 2 Email · 3 เพศ · 4 อายุ · 5 ระดับการศึกษา · 6 ประเภทผู้เข้าอบรม ·
   // 7 เบอร์โทรศัพท์ · 8 Confirm · 9 สถาบันการศึกษา
-  const dataApply = applyRows.slice(1).filter(r=>r[0]);
+  const dataApply = [
+    ...applyRows.slice(1).filter(r=>r[0]),
+    ...(applyRows2 ? applyRows2.slice(1).filter(r=>r[0]) : []),
+  ];
   const institutions = countBy(dataApply, 9);
   renderHBars('instBars', topNWithOthers(institutions, 6));
 
@@ -624,8 +630,14 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows){
 
 async function fetchEval(){
   try{
-    const rows = await fetchSheetRows("ภาพรวม");
-    const dataRows = rows.slice(1).filter(r=>r[0]);
+    const [rows, rows2] = await Promise.all([
+      fetchSheetRows("ภาพรวม"),
+      fetchSheetRows("ภาพรวม_รอบสอง").catch(()=>null),
+    ]);
+    const dataRows = [
+      ...rows.slice(1).filter(r=>r[0]),
+      ...(rows2 ? rows2.slice(1).filter(r=>r[0]) : []),
+    ];
     const n = dataRows.length;
     const dims = [
       [6,"2.1 ความพึงพอใจโดยรวมต่อกิจกรรม"],[7,"2.2 การจัดงาน สถานที่/บรรยากาศ/สิ่งอำนวยความสะดวก"],[8,"2.3 คุณภาพเนื้อหาและรูปแบบกิจกรรม"],[9,"2.4 ความรู้ความเข้าใจที่ได้รับจากกิจกรรม"],[10,"2.5 วิทยากรและการถ่ายทอด"]
