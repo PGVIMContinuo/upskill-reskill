@@ -26,7 +26,12 @@ const PR_NAMED_TABS = [
   '20.05.69', '27.05.69', '3.06.69', '10.06.69', '17.06.69',
   '24.06.69', '1.07.69', '8.07.69', '15.07.69', '22.07.69', '29.07.69',
 ];
-const FOLK_NAMED_TABS = ['สมัคร', 'ลงชื่อแต่ละวัน', 'ภาพรวม', 'สรุปรายคาบ'];
+const FOLK_NAMED_TABS = [
+  'สมัคร', 'ลงชื่อแต่ละวัน', 'ภาพรวม', 'สรุปรายคาบ',
+  // Round 2 (1-2, 8-9 Aug 2569, at วิทยาลัยนาฏศิลปนครราชสีมา) — same course, second delivery batch.
+  'สมัคร_รอบ2', 'ลงชื่อแต่ละวัน_รอบสอง', 'ภาพรวม_รอบสอง', 'สรุปรายคาบ_รอบสอง',
+  '01.08.69', '02.08.69', '08.08.69', '09.08.69',
+];
 
 async function getSheetMeta(sheetId) {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets.properties&key=${API_KEY}`;
