@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Pathways for Folk Music — Dashboard</title>
+<title>Performance Resilience & Artistic Wellbeing — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <style>
@@ -14,7 +14,6 @@
   *{box-sizing:border-box;}
   body{margin:0; font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;}
   h1,h2,h3{font-family:'Fraunces',serif; margin:0;}
-  a{color:inherit;}
   .nav{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%); color:#fff; padding:18px 32px;
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
     position:sticky; top:0; z-index:50; box-shadow:0 2px 12px rgba(20,26,69,.25);}
@@ -23,7 +22,6 @@
   .nav-brand .titles{line-height:1.15;}
   .nav-brand .titles .t1{font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:var(--gold);}
   .nav-brand .titles .t2{font-size:12px; color:#c9cbe8;}
-  .nav-brand .back{font-size:11.5px; color:#9ea1d4; text-decoration:none;}
   .tabs{display:flex; gap:4px; flex-wrap:wrap;}
   .tab-btn{background:transparent; border:none; color:#c9cbe8; padding:9px 16px; border-radius:8px;
     font-family:'Sarabun',sans-serif; font-size:14.5px; font-weight:500; cursor:pointer; transition:.15s;}
@@ -57,13 +55,14 @@
   .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%;}
   .bar-col .val{font-size:13px; font-weight:600; color:var(--navy); margin-bottom:6px;}
   .bar-col .bar{width:100%; max-width:38px; border-radius:6px 6px 3px 3px; background:linear-gradient(180deg,var(--navy),#323b8f);}
+  .bar-col.future .bar{background:repeating-linear-gradient(135deg,#e6e5da,#e6e5da 6px,#efeee6 6px,#efeee6 12px);}
   .bar-col .lbl{font-size:11.5px; color:var(--muted); margin-top:8px; text-align:center;}
   .bar-col .lbl2{font-size:10.5px; color:var(--sage); font-weight:600;}
-  .hbar-row{display:flex; align-items:center; gap:12px; margin-bottom:14px; font-size:13.5px;}
-  .hbar-row .name{flex:0 0 200px; color:var(--ink); line-height:1.35;}
-  .hbar-row .track{flex:1; background:#eeede4; border-radius:6px; height:10px; overflow:hidden; align-self:center;}
-  .hbar-row .fill{height:100%; border-radius:6px; background:linear-gradient(90deg,var(--navy),var(--gold)); min-width:6px;}
-  .hbar-row .n{flex:0 0 26px; text-align:right; font-weight:600; color:var(--navy);}
+  .hbar-row{display:flex; align-items:center; gap:10px; margin-bottom:12px; font-size:13.5px;}
+  .hbar-row .name{flex:0 0 190px; color:var(--ink);}
+  .hbar-row .track{flex:1; background:#eeede4; border-radius:6px; height:10px; overflow:hidden;}
+  .hbar-row .fill{height:100%; border-radius:6px; background:linear-gradient(90deg,var(--navy),var(--gold));}
+  .hbar-row .n{flex:0 0 30px; text-align:right; font-weight:600; color:var(--navy);}
   .donut-wrap{display:flex; align-items:center; gap:20px;}
   .donut{width:130px; height:130px; border-radius:50%; flex-shrink:0;}
   .legend div{display:flex; align-items:center; gap:8px; font-size:13.5px; margin-bottom:8px;}
@@ -74,6 +73,8 @@
   table.daytbl td{padding:10px 12px; border-bottom:1px solid var(--line);}
   table.daytbl tr:last-child td{border-bottom:none;}
   table.daytbl td.score{font-weight:600; color:var(--sage);}
+  table.daytbl td.low{color:var(--clay);}
+  table.daytbl tr.future td{color:#b7b6a8; font-style:italic;}
   .session-card{margin-bottom:14px; border-radius:14px; overflow:hidden; border:1px solid var(--line);}
   .session-head{background:var(--navy); color:#fff; padding:14px 20px; display:flex; justify-content:space-between; align-items:center; gap:12px; cursor:pointer;}
   .session-head:focus-visible{outline:2px solid var(--gold); outline-offset:-2px;}
@@ -89,7 +90,6 @@
   .chev{transition:.2s; color:var(--gold); font-size:13px;}
   .quotes{display:grid; gap:10px; margin-top:6px;}
   .quotes.scrollbox{max-height:420px; overflow-y:auto; padding-right:6px;}
-  .quote{background:#fff; border-left:3px solid var(--sage); border-radius:0 8px 8px 0; padding:10px 14px; font-size:13.5px; color:#3d3d55; font-style:italic;}
   .quote-count{font-size:11.5px; color:var(--muted); font-weight:600; margin:14px 0 2px;}
   .recap-day{margin-bottom:18px;}
   .recap-day .day-label{font-size:13px; font-weight:700; color:var(--navy); margin-bottom:10px; padding-bottom:6px; border-bottom:2px solid var(--line);}
@@ -98,7 +98,12 @@
   .recap-slot .topic{font-size:14px; font-weight:600; color:var(--navy); margin:2px 0 8px;}
   .recap-slot .speaker{font-size:12px; color:var(--muted); margin-bottom:8px;}
   .recap-slot .body{font-size:13.5px; color:#3d3d55; line-height:1.8; white-space:pre-line;}
+  .quote{background:#fff; border-left:3px solid var(--sage); border-radius:0 8px 8px 0; padding:10px 14px; font-size:13.5px; color:#3d3d55; font-style:italic;}
   .rate-note{font-size:12px; color:var(--muted); margin-top:10px;}
+  .pending-card{text-align:center; padding:50px 30px; background:var(--card); border-radius:16px; border:1px dashed #c9c6b4;}
+  .pending-card .icon{font-size:38px; margin-bottom:14px;}
+  .pending-card h3{font-size:19px; color:var(--navy); margin-bottom:8px;}
+  .pending-card p{color:var(--muted); font-size:14px; max-width:460px; margin:0 auto; line-height:1.7;}
   .footnote{font-size:12px; color:var(--muted); margin-top:20px; line-height:1.7; padding:16px 20px; background:#fbfaf6; border-radius:10px; border:1px solid var(--line);}
   .loading{text-align:center; padding:80px 20px; color:var(--muted); font-size:14px;}
   .errbox{background:#fdeceb; border:1px solid #f2b9b3; color:#8a2e22; padding:16px 20px; border-radius:10px; font-size:13.5px; line-height:1.7;}
@@ -108,48 +113,29 @@
   .sitelinks a:hover{color:#b8792c;}
   .credit-badge{display:inline-flex; gap:8px; align-items:center; background:var(--sage-light); color:var(--sage);
     padding:10px 16px; border-radius:999px; font-size:13px; font-weight:600; margin-bottom:24px;}
-
-  .team-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
-  @media(max-width:900px){.team-grid{grid-template-columns:repeat(2,1fr);}}
-  @media(max-width:600px){.team-grid{grid-template-columns:1fr;}}
-  .team-card{background:var(--card); border-radius:14px; padding:20px; border:1px solid var(--line); text-align:center;}
-  .team-card .rank{font-size:11.5px; color:var(--muted); font-weight:600;}
-  .team-card h3{font-size:17px; margin:4px 0 10px;}
-  .team-card .score{font-family:'Fraunces',serif; font-size:34px; font-weight:600;}
-  .team-card .badge{display:inline-block; margin-top:6px; padding:4px 12px; border-radius:999px; font-size:11.5px; font-weight:700;}
-  .badge.green{background:#e6f0ea; color:var(--sage);}
-  .badge.blue{background:#e5eefa; color:#2f6fb8;}
-  .badge.orange{background:#fbeedd; color:#b8792c;}
-  .badge.red{background:#fbe6e2; color:var(--clay);}
-  .team-links{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:14px;}
-  .link-badge{font-size:11px; font-weight:600; padding:5px 10px; border-radius:8px; background:var(--sage-light); color:var(--sage); text-decoration:none;}
-  .link-badge.disabled{background:#efeee6; color:#a8a695; cursor:default;}
-  .team-rubric{text-align:left; margin-top:14px; font-size:12px;}
-  .team-rubric .r{display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid var(--line);}
-  .team-rubric .r:last-child{border-bottom:none;}
 </style>
 </head>
 <body>
 
 <div class="sitelinks">
   <a href="../">🏠 หน้าแรก</a>
-  <a href="../performance-resilience/">Performance Resilience</a>
-  <a href="./" class="current">Folk Music</a>
+  <a href="./" class="current">Performance Resilience</a>
+  <a href="../folk-music/">Folk Music</a>
   <a href="../lessons-learned/">📖 ถอดบทเรียน</a>
   <a href="../manual/">📘 คู่มือ</a>
 </div>
 <div class="nav">
   <div class="nav-brand">
-    <div class="mark">🎻</div>
+    <div class="mark">🎼</div>
     <div class="titles">
-      <div class="t1">Global Pathways for Folk Music</div>
+      <div class="t1">Performance Resilience & Artistic Wellbeing</div>
       <div class="t2">สถาบันดนตรีกัลยาณิวัฒนา · Upskill/Reskill 2569</div>
     </div>
   </div>
   <div class="tabs">
     <button class="tab-btn active" data-tab="overview">ภาพรวม</button>
     <button class="tab-btn" data-tab="daily">รายวัน</button>
-    <button class="tab-btn" data-tab="showcase">ผลงานการแสดง</button>
+    <button class="tab-btn" data-tab="eeg">วัดคลื่นสมอง</button>
     <button class="tab-btn" data-tab="eval">ประเมินภาพรวม</button>
   </div>
 </div>
@@ -160,13 +146,15 @@
 
   <div id="appContent" style="display:none;">
 
+    <div class="credit-badge">📚 หลักสูตรนี้ให้หน่วยกิตสะสม 2 หน่วยกิต ภายใต้ระบบ Credit Bank ของสถาบัน</div>
+
     <!-- ================= OVERVIEW ================= -->
     <div class="panel active" id="overview">
       <div class="hero">
-        <div class="eyebrow" id="reportDateLabel">รายงานสรุปหลักสูตร</div>
-        <h1>เส้นทางดนตรีพื้นบ้านสู่เวทีโลก</h1>
-        <p>หลักสูตรระยะสั้น 2 รอบ (25–29 พ.ค. และ 1–2, 8–9 ส.ค. 2569) เชื่อมโยงดนตรีพื้นบ้านไทยสู่มาตรฐานและโอกาสในเวทีนานาชาติ ปิดท้ายด้วย Final Pitch นำเสนอผลงาน</p>
-        <div class="datebar">🏁 รอบที่ 1 จัดจบแล้ว (25–29 พ.ค. 2569) · รอบที่ 2 ณ วิทยาลัยนาฏศิลปนครราชสีมา (1–2, 8–9 ส.ค. 2569)</div>
+        <div class="eyebrow" id="reportDateLabel"></div>
+        <h1>ความยืดหยุ่นทางการแสดงและสุขภาวะของศิลปิน</h1>
+        <p>หลักสูตรระยะสั้น 11 คาบ (20 พ.ค. – 29 ก.ค. 2569) บูรณาการประสาทวิทยา จิตวิทยา และสรีรวิทยา เพื่อพัฒนาความยืดหยุ่นในการแสดงของนักดนตรีอาชีพและผู้เรียนดนตรี</p>
+        <div class="datebar" id="progressBar">📅 กำลังคำนวณ…</div>
       </div>
 
       <div class="stat-row" id="statRow"></div>
@@ -174,8 +162,15 @@
       <div class="grid2">
         <div>
           <div class="card">
-            <h3><span>🏫</span> สถาบันของผู้สมัคร</h3>
-            <div id="instBars"></div>
+            <h3><span>🏷️</span> ประเภทผู้สมัคร</h3>
+            <div id="affBars"></div>
+          </div>
+          <div class="card">
+            <h3><span>🚻</span> เพศของผู้สมัคร</h3>
+            <div class="donut-wrap" id="genderWrap">
+              <div class="donut" id="genderDonut"></div>
+              <div class="legend" id="genderLegend"></div>
+            </div>
           </div>
           <div class="card">
             <h3><span>🎂</span> อายุเฉลี่ย</h3>
@@ -184,10 +179,14 @@
         </div>
         <div>
           <div class="card">
-            <h3><span>🚻</span> เพศของผู้สมัคร</h3>
+            <h3><span>🎯</span> ระดับฝีมือในการเล่นดนตรี</h3>
+            <div id="skillBars"></div>
+          </div>
+          <div class="card">
+            <h3><span>🔁</span> ความคุ้นเคยกับ PGVIM</h3>
             <div class="donut-wrap">
-              <div class="donut" id="genderDonut"></div>
-              <div class="legend" id="genderLegend"></div>
+              <div class="donut" id="priorDonut"></div>
+              <div class="legend" id="priorLegend"></div>
             </div>
           </div>
           <div class="card">
@@ -214,89 +213,88 @@
       <div class="card">
         <h3><span>🗓️</span> สรุปคะแนนทุกคาบ</h3>
         <table class="daytbl">
-          <thead><tr><th>วันที่</th><th>หัวข้อ</th><th>เนื้อหา</th><th>วิทยากร</th><th>พึงพอใจ</th></tr></thead>
+          <thead><tr><th>วันที่</th><th>หัวข้อ</th><th>ความรู้ที่ได้รับ</th><th>วิทยากร</th><th>พึงพอใจโดยรวม</th></tr></thead>
           <tbody id="dayTableBody"></tbody>
         </table>
       </div>
       <div id="sessionCards"></div>
     </div>
 
-    <!-- ================= SHOWCASE (static — event already concluded) ================= -->
-    <div class="panel" id="showcase">
-      <div class="card">
-        <h3><span>🏆</span> Final Showcase — 29 พ.ค. 2569</h3>
-        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 5 ท่าน คะแนนเต็ม 100 (ข้อมูลนี้คงที่ เนื่องจากงานแสดงจบแล้ว)</p>
-        <div class="team-grid" id="teamGrid"></div>
-      </div>
-    </div>
-
-    <!-- ================= EVALUATION (live from "ภาพรวม" sheet) ================= -->
+    <!-- ================= EVALUATION (live from "ภาพรวม" tab once responses come in) ================= -->
     <div class="panel" id="eval">
-      <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(3,1fr);"></div>
-
-      <div class="card">
-        <h3><span>⭐</span> ความพึงพอใจรายด้าน</h3>
-        <div id="evalBars"></div>
+      <div class="pending-card" id="evalPending">
+        <div class="icon">⏳</div>
+        <h3>ผลการประเมินโครงการ — รอผู้ตอบแบบประเมิน</h3>
+        <p>แบบประเมินภาพรวม (ความพึงพอใจ ผลลัพธ์การเรียนรู้ และเสียงจากผู้เรียน) เปิดรับคำตอบแล้ว แต่ยังไม่มีผู้ตอบเข้ามาในระบบ — ส่วนนี้จะแสดงผลโดยอัตโนมัติทันทีที่มีคำตอบ</p>
       </div>
 
-      <div class="card">
-        <h3><span>🌱</span> ผลลัพธ์และผลกระทบด้านการเรียนรู้</h3>
-        <div id="outcomeBars"></div>
+      <div id="evalContent" style="display:none;">
+        <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(3,1fr);"></div>
+
+        <div class="card">
+          <h3><span>⭐</span> ความพึงพอใจรายด้าน</h3>
+          <div id="evalSatBars"></div>
+        </div>
+
+        <div class="card">
+          <h3><span>🌱</span> ผลลัพธ์และผลกระทบด้านการเรียนรู้</h3>
+          <div id="evalImpactBars"></div>
+        </div>
+
+        <div class="card">
+          <h3><span>💬</span> เสียงจากผู้ตอบแบบประเมิน</h3>
+          <div id="evalQuotes" class="quotes scrollbox"></div>
+        </div>
       </div>
 
+      <div class="footnote" id="evalFootnote" style="margin-top:16px;"></div>
+    </div>
+
+    <!-- ================= EEG / BRAINWAVE MEASUREMENT ================= -->
+    <div class="panel" id="eeg">
       <div class="card">
-        <h3><span>💬</span> เสียงจากผู้ตอบแบบประเมิน</h3>
-        <div class="quotes scrollbox" id="evalQuotes"></div>
+        <h3><span>🧠</span> วัดคลื่นสมอง (EEG Workshop)</h3>
+        <div style="font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--gold); margin-bottom:4px;">12</div>
+        <div style="font-size:13px; color:var(--muted); margin-bottom:18px;">คนได้รับคัดเลือกเข้าร่วมกิจกรรมวัดคลื่นสมอง (EEG Workshop) จัดกลุ่มตามประเด็นร่วม — มีข้อมูล "ก่อนกิจกรรม" ครบแล้ว ส่วน "หลังกิจกรรม" และลิงก์ภาพยังรอข้อมูล</div>
+        <div id="eegGroups"></div>
+        <div class="footnote" style="margin-top:16px;">หมายเหตุ: ไม่ระบุชื่อผู้เข้าร่วมรายบุคคล — แสดงเป็นหมายเลขและจัดกลุ่มตามประเด็นร่วมแทน เนื่องจากเหตุผลการคัดเลือกมีรายละเอียดสภาพร่างกาย/จิตใจส่วนบุคคล ซึ่งไม่เหมาะเผยแพร่แบบระบุตัวตนบนหน้ารายงานสาธารณะ</div>
       </div>
     </div>
 
-  </div>
 </div>
 
 <script>
-const SHEET_ID = "15bG-kIJcbrAntcEDYctZw46fBOp7G3sNudHj4ApqgVg"; // For reference only — actual data now comes from data/folk-music.json (see scripts/fetch-sheets.js)
+/* =========================================================================
+   CONFIG — edit these two things when you reuse this dashboard
+   ========================================================================= */
+const SHEET_ID = "1owKDOdQ86gmH3Nmp4SBN3tDIJWRZwZLV-ijYbUBD4zk"; // For reference only — actual data now comes from data/performance-resilience.json (see scripts/fetch-sheets.js)
+// The Sheet must be shared as "Anyone with the link — Viewer" for this to load.
 
-// Each entry = one คาบ (session slot). ratingStart = first of 3 consecutive rating columns
-// in that day's reflection sheet (pattern: [prompt, rate,rate,rate] repeating from column 2).
+// Final overall-evaluation tab. Columns (0-indexed, confirmed against the live header row):
+// 0 Timestamp · 1 เพศ · 2 อายุ · 3 ระดับการศึกษา · 4 อาชีพ · 5 ช่องทางที่ทราบข่าว
+// 6 2.1 ความพึงพอใจโดยรวม · 7 2.2 การจัดงาน/สถานที่ · 8 2.3 คุณภาพเนื้อหา · 9 2.4 ความรู้ความเข้าใจ · 10 2.5 วิทยากร
+// 11 3.1 ความรู้/มุมมอง/ประสบการณ์ใหม่ · 12 ได้เรียนรู้อะไร (ข้อความ) · 13 3.2 แนวโน้มนำไปใช้ · 14 แผนประยุกต์ใช้ (ข้อความ)
+// 15 3.3 เห็นคุณค่าดนตรี/วัฒนธรรม · 16 3.4 ได้แรงบันดาลใจ · 17 มูลค่าที่ประเมิน (ข้อความ/ตัวเลข) · 18 หากไม่มีโครงการนี้จะได้ที่อื่นไหม
+// 19 ระยะเวลาที่ประโยชน์จะอยู่กับผู้ตอบ · 20 ข้อเสนอแนะเพิ่มเติม (ข้อความ) · 21 ยินยอมให้ใช้ข้อมูล
+const EVAL_SHEET = "ภาพรวม";
+
+// Static session metadata (dates/topics/speakers rarely change once planned).
+// dateISO is used to auto-detect whether a session is already done or upcoming.
 const SESSION_META = [
-  {sheet:"25.05.69", gid:"289889407", label:"25 พ.ค.", topic:"สำรวจดนตรีพื้นบ้าน: ความจริง ความเชื่อ และการรับรู้ของสาธารณะ", speaker:"ท่านทูตรัศม์ ชาลีจันทร์, คุณปรัชญา นันธะชัย, อ.อานันท์ นาคคง", ratingStart:3},
-  {sheet:"25.05.69", gid:"289889407", label:"25 พ.ค.", topic:"งานเทศกาลและตลาดดนตรีนานาชาติ", speaker:"คุณพลกฤต ศรีสมุทร", ratingStart:7},
-  {sheet:"25.05.69", gid:"289889407", label:"25 พ.ค.", topic:"คนหนึ่งเล่น คนหนึ่งฟัง (Jamming & Showcase)", speaker:"อ.อานันท์ นาคคง, อ.นำภาค ศรีบัณฑิตมงคล", ratingStart:11},
-  {sheet:"26.05.69", gid:"1467656626", label:"26 พ.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล", speaker:"คุณพงศ์จักร พิษฐานพร", ratingStart:3},
-  {sheet:"27.05.69", gid:"193777029", label:"27 พ.ค.", topic:"ฟัง วิเคราะห์และต่อยอด: ฟังอะไรในเวทีโลก", speaker:"อ.อานันท์ นาคคง, อ.นำภาค ศรีบัณฑิตมงคล", ratingStart:3},
-  {sheet:"27.05.69", gid:"193777029", label:"27 พ.ค.", topic:"จากเสียงสู่การเติบโตในโลกดิจิทัล", speaker:"คุณนิชาภา นิลแก้ว, คุณนันทคินทร์ อิทธิพรหม", ratingStart:7},
-  {sheet:"27.05.69", gid:"193777029", label:"27 พ.ค.", topic:"ศิลปะแห่งการสร้างโลกในจินตนาการ", speaker:"คุณดวิษ ณิชฌานธามัน", ratingStart:11},
-  {sheet:"27.05.69", gid:"193777029", label:"27 พ.ค.", topic:"เวทีจริง ชีวิตที่ท้าทาย", speaker:"อ.อานันท์ นาคคง, อ.นำภาค ศรีบัณฑิตมงคล", ratingStart:15},
-  {sheet:"28.05.69", gid:"821180123", label:"28 พ.ค.", topic:"เรื่อง ร่วม เล่า", speaker:"คุณณัฐพงศ์ เสียงสุคนธ์", ratingStart:3},
-  {sheet:"28.05.69", gid:"821180123", label:"28 พ.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ, ดร.พิเศษ จียาศักดิ์", ratingStart:7},
-  {sheet:"29.05.69", gid:"1071256717", label:"29 พ.ค.", topic:"Final Pitch + ประกาศรางวัล", speaker:"คุณพงศ์นรินทร์ อุลิศ, คุณอิศรา เปี่ยมพงศ์", ratingStart:3},
+  {sheet:"20.05.69", label:"20 พ.ค.", dateISO:"2026-05-20", cat:"Neuro-Cognitive Performance", topic:"นักดนตรีในฐานะ High-Performance Human & Neuroplasticity", speaker:"อ.ดร. เจษฎา อานิล, อ.ดร. พิมพนิต คอนดี"},
+  {sheet:"27.05.69", label:"27 พ.ค.", dateISO:"2026-05-27", cat:"Psychological Resilience", topic:"ความวิตกกังวล ความกลัว และการจัดการภาวะทางอารมณ์", speaker:"อ. วรกัญ รัตนพันธ์"},
+  {sheet:"3.06.69",  label:"3 มิ.ย.",  dateISO:"2026-06-03", cat:"Mindfulness", topic:"การจดจ่ออยู่กับสมาธิ การควบคุมลมหายใจ และการจัดระเบียบความคิด", speaker:"อ.ดร. พิมพนิต คอนดี"},
+  {sheet:"10.06.69", label:"10 มิ.ย.", dateISO:"2026-06-10", cat:"Physical Sustainability", topic:"การรับรู้ร่างกายและหลักการเคลื่อนไหวที่ถูกต้อง (Body Mapping)", speaker:"อ. ปฐวีณา แก้วแจ้ง"},
+  {sheet:"17.06.69", label:"17 มิ.ย.", dateISO:"2026-06-17", cat:"Physical Sustainability", topic:"การป้องกันการบาดเจ็บและการเสริมความแข็งแรงของร่างกาย", speaker:"อ. สิทธิพร วิสุทธิแพทย์"},
+  {sheet:"24.06.69", label:"24 มิ.ย.", dateISO:"2026-06-24", cat:"Physical Sustainability", topic:"การนอน โภชนาการ และระบบการทำงานของร่างกายตามธรรมชาติ", speaker:"ดร.พญ.ไปรยาภัค สกุลวทัญญู"},
+  {sheet:"1.07.69",  label:"1 ก.ค.",  dateISO:"2026-07-01", cat:"Psychological Resilience", topic:"จิตวิทยาการซ้อม และการเข้าสู่ภาวะไหลลื่น (Flow)", speaker:"อ.ดร. เจษฎา อานิล"},
+  {sheet:"8.07.69",  label:"8 ก.ค.",  dateISO:"2026-07-08", cat:"Psychological Resilience", topic:"การฝึกจำลองสถานการณ์ที่กดดัน เพื่อเตรียมพร้อมต่อการแสดงจริง", speaker:"อ. คมสัน ดิลกคุณานันท์"},
+  {sheet:"15.07.69", label:"15 ก.ค.", dateISO:"2026-07-15", cat:"Physical Sustainability", topic:"หูนั้นสำคัญไฉน", speaker:"พญ.ณิชนันทน์ เศวตรัตนเสถียร"},
+  {sheet:"22.07.69", label:"22 ก.ค.", dateISO:"2026-07-22", cat:"Neuro-Cognitive & Physical", topic:"การตรวจวัดสัญญาณร่างกายระหว่างการแสดง (Biometrics)", speaker:"อ.ดร. เจษฎา อานิล, อ.ดร. พิมพนิต คอนดี"},
+  {sheet:"29.07.69", label:"29 ก.ค.", dateISO:"2026-07-29", cat:"Neuro-Cognitive & Psychological · Online ส่งงาน", topic:"การพัฒนาตนเอง การโค้ชตนเอง และการวางแผนชีวิต + ส่งแผนซ้อมส่วนบุคคล", speaker:"อ. คมสัน ดิลกคุณานันท์"},
 ];
 
-// ---- ROUND 2 (1-2, 8-9 ส.ค. 2569) — content ready, NOT yet wired into SESSION_META above ----
-// ratingStart is a placeholder (null) — round 2's daily reflection forms haven't been confirmed
-// to follow the same 4-column-per-session layout as round 1. Sending a screenshot of one form's
-// header row (e.g. "01.08.69") will let me set the real values and merge this into SESSION_META.
-const SESSION_META_ROUND2_DRAFT = [
-  {sheet:"01.08.69", label:"1 ส.ค.", topic:"Global Music Pathway for Folk Music Introduction: ดนตรีพื้นบ้านในบริบทนานาชาติ", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
-  {sheet:"01.08.69", label:"1 ส.ค.", topic:"คนหนึ่งเล่น คนหนึ่งฟัง (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
-  {sheet:"02.08.69", label:"2 ส.ค.", topic:"Notation / เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
-  {sheet:"02.08.69", label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร", ratingStart:null},
-  {sheet:"08.08.69", label:"8 ส.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ", ratingStart:null},
-  {sheet:"08.08.69", label:"8 ส.ค.", topic:"ศิลปะแห่งการสร้างโลกในจินตนาการ", speaker:"คุณดวิษ ณิชฌานธามัน", ratingStart:null},
-  {sheet:"09.08.69", label:"9 ส.ค.", topic:"จากไอเดียสู่ความเป็นไปได้ + มอบใบประกาศ + ปิดงาน", speaker:"", ratingStart:null},
-];
-
-const DAY_ORDER = ["25 พ.ค.","26 พ.ค.","27 พ.ค.","28 พ.ค.","29 พ.ค."];
-
-const TEAMS = [
-  {name:"Unistring", score:80.8, canva:"https://canva.link/srqs135t18qu7nm", rider:"https://docs.google.com/document/d/1TsCwDCpCcVq6bFCoy74SDE2iOKhtkNDphDOTrGjAHqU/edit?usp=drivesdk", rubric:{"Identity & Creative Direction":[24.8,30],"Audience & Experience":[15.6,20],"Presentation & Production":[20.2,25],"Communication & Team":[12,15],"Cultural Responsibility":[8.2,10]}},
-  {name:"สามารถไปทะเล", score:75.48, canva:"https://canva.link/x19trqostjmuopf", rider:"https://docs.google.com/document/d/1CAcbn1n65sPrKvA2Sn4VZtDxG6_8KoNeLylOcOanFJA/edit?usp=drivesdk", rubric:{"Identity & Creative Direction":[22.2,30],"Audience & Experience":[14.8,20],"Presentation & Production":[19.6,25],"Communication & Team":[11.6,15],"Cultural Responsibility":[7.3,10]}},
-  {name:"ISAN GROOVE", score:75.28, canva:"https://canva.link/ag0v2eewu2g1ttq", rider:"https://docs.google.com/document/d/1XL1LN6MUhMyV0i619urlE4slgl_Z5YcDDxxG9WcHkgM/edit?usp=drivesdk", rubric:{"Identity & Creative Direction":[22,30],"Audience & Experience":[15,20],"Presentation & Production":[19.4,25],"Communication & Team":[11.4,15],"Cultural Responsibility":[7.4,10]}},
-  {name:"หนุมานถวายแหวน", score:66.2, canva:"https://canva.link/3oim5ho8vsqh064", rider:"https://docs.google.com/document/d/1fLZpR8vl-ISV75VM1KNhJessFNCDFcfKBtQ3rTP2jv0/edit?usp=drivesdk", rubric:{"Identity & Creative Direction":[19.2,30],"Audience & Experience":[12.4,20],"Presentation & Production":[17.6,25],"Communication & Team":[10.4,15],"Cultural Responsibility":[6.6,10]}},
-  {name:"กวนวารี", score:62.76, canva:"https://canva.link/ohyhagwjg64bslw", rider:null, rubric:{"Identity & Creative Direction":[18,30],"Audience & Experience":[11.8,20],"Presentation & Production":[16.8,25],"Communication & Team":[9.6,15],"Cultural Responsibility":[6.6,10]}},
-  {name:"นอนแคน", score:58.76, canva:"https://canva.link/540knat8wvw0t4l", rider:"https://docs.google.com/document/d/1aDvYFfQG6yuYISdLvretsFPyJqpSx-JcMyHqEUC0h-w/edit?usp=sharing", rubric:{"Identity & Creative Direction":[11.7,30],"Audience & Experience":[9.2,20],"Presentation & Production":[14.5,25],"Communication & Team":[7.8,15],"Cultural Responsibility":[5,10]}},
-].sort((a,b)=>b.score-a.score);
-
+const SCALE_MAP = {"1 น้อยที่สุด":1,"2 น้อย":2,"3 ปานกลาง":3,"4 มาก":4,"5 มากที่สุด":5};
 // Session-card headers toggle open/closed on click; this makes them equally usable from the keyboard.
 function makeCardsKeyboardAccessible(container){
   container.querySelectorAll('.session-head').forEach(head=>{
@@ -317,337 +315,270 @@ function makeCardsKeyboardAccessible(container){
   });
 }
 
+// The "สมัคร" tab has a real header row (row 1: ชื่อจริง, นามสกุล, เพศ...). A genuine applicant
+// row is any row after the header with a first name in column A (index 0) — this correctly
+// includes the 4 partial/incomplete registrations, which are missing phone/email/gender but
+// still have a name filled in.
+function isApplicantDataRow(row){
+  return !!(row && row[0] && String(row[0]).trim());
+}
+
 function toNum(v){
   if(v===undefined||v===null) return null;
-  const s=String(v).trim();
-  if(s==="") return null;
-  const n=parseFloat(s);
-  if(isNaN(n)) return null;
-  if(n<0 || n>5) return null; // guard: a real satisfaction rating is 0-5; anything outside that is not a rating (e.g. wrong column/sheet)
-  return n;
+  const s = String(v).trim();
+  if(SCALE_MAP[s] !== undefined) return SCALE_MAP[s];
+  const m = s.match(/^([1-5])(?:\s|$)/); // only a bare 1-5 digit counts as a rating; guards against picking up unrelated numeric cells
+  return m ? parseInt(m[1],10) : null;
 }
-// Data now comes from data/folk-music.json, refreshed every 15 min by
+
+// Data now comes from data/performance-resilience.json, refreshed every 15 min by
 // .github/workflows/sync-sheets.yml via the real Sheets API — not fetched from Google
-// directly in the browser anymore. Daily tabs are stored under both their gid and
-// resolved name, so the existing gid-based lookups below still work unchanged.
+// directly in the browser anymore. This removes the gviz export's caching unreliability
+// that caused repeated stale-count issues throughout this project's development.
 let LOCAL_DATA = null;
 async function loadLocalData(){
   if(LOCAL_DATA) return LOCAL_DATA;
-  const res = await fetch('../data/folk-music.json', {cache:'no-store'});
-  if(!res.ok) throw new Error(`โหลด data/folk-music.json ไม่สำเร็จ (${res.status}) — ตรวจสอบว่า GitHub Action "Sync Google Sheets Data" รันสำเร็จแล้ว`);
+  const res = await fetch('../data/performance-resilience.json', {cache:'no-store'});
+  if(!res.ok) throw new Error(`โหลด data/performance-resilience.json ไม่สำเร็จ (${res.status}) — ตรวจสอบว่า GitHub Action "Sync Google Sheets Data" รันสำเร็จแล้ว`);
   LOCAL_DATA = await res.json();
   return LOCAL_DATA;
 }
 async function fetchSheetRows(sheetName){
   const data = await loadLocalData();
   const rows = data.sheets[sheetName];
-  if(!rows) throw new Error(`ไม่พบแท็บ "${sheetName}" ในข้อมูลที่ sync มา`);
+  if(!rows) throw new Error(`ไม่พบแท็บ "${sheetName}" ในข้อมูลที่ sync มา — ตรวจสอบชื่อแท็บใน scripts/fetch-sheets.js`);
   return rows;
 }
-async function fetchSheetRowsByGid(gid){
-  return fetchSheetRows(gid); // stored under the gid key directly, see fetch-sheets.js
-}
-// Daily reflection tabs are looked up by gid (unchanged from before) — now resolved
-// against the local JSON instead of a live gviz request. Still validated in case a
-// gid ever gets reassigned to a different tab.
-function isValidDailySheet(rows){
-  if(!rows || !rows[0]) return false;
-  const h = rows[0];
-  return (h[0]||'').trim()==='Timestamp' && (h[1]||'').trim()==='ชื่อ-นามสกุล' && h.length>=6;
-}
-async function fetchDailySheet(gid, label){
-  const rows = await fetchSheetRowsByGid(gid);
-  if(!isValidDailySheet(rows)){
-    throw new Error(`gid=${gid} (${label}) ดึงข้อมูลผิดชีต`);
-  }
-  return rows;
-}
+
 function countBy(rows, colIndex){
   const counts = {};
   rows.forEach(r=>{
-    let v = (r[colIndex]||"").trim();
-    if(!v || v==='-' || v==='_') v = "ไม่ระบุ";
-    counts[v] = (counts[v]||0)+1;
+    let v = (r[colIndex] || "").trim();
+    if(!v) v = "ไม่ระบุ";
+    counts[v] = (counts[v]||0) + 1;
   });
   return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
 }
 // Same as countBy, but keeps a fixed display order (e.g. matching the form's own dropdown
-// order) instead of sorting by frequency. Any answer not in orderList is appended at the end,
-// so an imprecise/mismatched orderList degrades gracefully rather than losing data.
+// order) instead of sorting by frequency — for fields where the order itself is meaningful,
+// like education level low-to-high. Any answer not in orderList is appended at the end.
 function countByOrdered(rows, colIndex, orderList){
   const counts = {};
   rows.forEach(r=>{
-    let v = (r[colIndex]||"").trim();
-    if(!v || v==='-' || v==='_') v = "ไม่ระบุ";
-    counts[v] = (counts[v]||0)+1;
+    let v = (r[colIndex] || "").trim();
+    if(!v) v = "ไม่ระบุ";
+    counts[v] = (counts[v]||0) + 1;
   });
   const ordered = orderList.filter(label=>counts[label]!==undefined).map(label=>[label, counts[label]]);
   const extras = Object.entries(counts).filter(([label])=>!orderList.includes(label));
   return [...ordered, ...extras];
 }
-// keep the top N entries and bucket the long tail into "อื่นๆ" so lists with many one-off values stay readable
-function topNWithOthers(entries, n){
-  const withoutUnspec = entries.filter(([name])=>name!=='ไม่ระบุ');
-  const unspec = entries.find(([name])=>name==='ไม่ระบุ');
-  if(withoutUnspec.length<=n){
-    return unspec ? [...withoutUnspec, unspec] : withoutUnspec;
-  }
-  const top = withoutUnspec.slice(0,n);
-  const restEntries = withoutUnspec.slice(n);
-  const restCount = restEntries.reduce((a,e)=>a+e[1],0);
-  if(restCount>0) top.push([`อื่นๆ (${restEntries.length} แห่ง)`, restCount]);
-  if(unspec) top.push(unspec);
-  return top;
-}
-function renderHBars(elId, entries){
-  const el = document.getElementById(elId);
-  const max = Math.max(...entries.map(e=>e[1]), 1);
-  el.innerHTML = entries.map(([name,n])=>
-    `<div class="hbar-row"><div class="name">${name}</div><div class="track"><div class="fill" style="width:${n/max*100}%;"></div></div><div class="n">${n}</div></div>`
-  ).join('');
-}
-function avg(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null; }
+
+// "สมัคร" tab name — fetched directly by name now that data goes through the real Sheets
+// API (fetch-sheets.js) rather than the gviz export, so the earlier name-lookup
+// unreliability no longer applies.
+const SAMAK_GID = "สมัคร";
 
 async function main(){
   try{
-    const [signRows, applyRows, recapRows, applyRows2] = await Promise.all([
+    const [signRows, applyRows, recapRows, evalRows] = await Promise.all([
       fetchSheetRows("ลงชื่อแต่ละวัน"),
-      fetchSheetRows("สมัคร"),
+      fetchSheetRows(SAMAK_GID),
       fetchSheetRows("สรุปรายคาบ").catch(()=>null),
-      fetchSheetRows("สมัคร_รอบ2").catch(()=>null), // round 2 (1-2, 8-9 Aug) — same course, second batch
+      fetchSheetRows(EVAL_SHEET).catch(()=>null),
     ]);
+
+    // --- attendance totals per session (last row = "รวมผู้เข้าร่วม") ---
     const totalsRow = signRows.find(r => (r[0]||"").trim() === "รวมผู้เข้าร่วม");
     const signHeader = signRows[0];
     const attendByLabel = {};
     if(totalsRow){
-      signHeader.forEach((h,i)=>{ if(h && totalsRow[i]!==undefined) attendByLabel[h.trim()] = parseInt(totalsRow[i])||0; });
+      signHeader.forEach((h,i)=>{ if(h && totalsRow[i] !== undefined) attendByLabel[h.trim()] = parseInt(totalsRow[i])||0; });
     }
 
-    const neededGids = [...new Map(SESSION_META.map(s=>[s.gid, s.label])).entries()]; // unique gids, keep a label for error messages
-    const fetchResults = await Promise.allSettled(neededGids.map(([gid,label])=>fetchDailySheet(gid,label)));
-    const dayRowsMap = {};
-    const sheetErrors = [];
-    neededGids.forEach(([gid],i)=>{
-      if(fetchResults[i].status==='fulfilled'){
-        dayRowsMap[gid]=fetchResults[i].value;
-      } else {
-        dayRowsMap[gid]=null;
-        sheetErrors.push(fetchResults[i].reason.message);
-      }
-    });
+    // --- fetch each daily reflection tab in parallel ---
+    const dailyResults = await Promise.all(SESSION_META.map(s => fetchSheetRows(s.sheet).catch(()=>null)));
 
-    const sessions = SESSION_META.map(meta=>{
-      const rows = dayRowsMap[meta.gid];
-      let resp=0, contentAvg=null, speakerAvg=null, overallAvg=null, quotes=[];
-      const contentVals=[], speakerVals=[], overallVals=[];
-      if(rows && rows.length>1){
-        const dataRows = rows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
-        const c0=meta.ratingStart, c1=meta.ratingStart+1, c2=meta.ratingStart+2;
-        const promptCol = meta.ratingStart-1;
+    const today = new Date();
+    const sessions = SESSION_META.map((meta, idx) => {
+      const rows = dailyResults[idx];
+      const isFuture = new Date(meta.dateISO) > today;
+      const attend = attendByLabel[meta.label] ?? 0;
+      let resp = 0, learn=null, instr=null, overall=null, quotes=[];
+      if(rows && rows.length > 1){
+        const dataRows = rows.slice(1).filter(r => r.some(c => c && String(c).trim() !== ""));
+        resp = dataRows.length;
+        // columns 4-8: learning outcomes (content). column 12: activity format — also content, not speaker.
+        // columns 9-11: speaker-specific only. column 13: respondent's own overall-satisfaction answer — kept separate, not blended.
+        const learnAvgs=[], instrAvgs=[], overallVals=[];
         dataRows.forEach(r=>{
-          const v0=toNum(r[c0]), v1=toNum(r[c1]), v2=toNum(r[c2]);
-          if(v0!==null||v1!==null||v2!==null) resp++;
-          if(v0!==null) contentVals.push(v0);
-          if(v1!==null) speakerVals.push(v1);
-          if(v2!==null) overallVals.push(v2);
-          if(r[promptCol] && String(r[promptCol]).trim()) quotes.push(String(r[promptCol]).trim());
+          const learnVals = [4,5,6,7,8,12].map(i=>toNum(r[i])).filter(v=>v!==null);
+          const instrVals = [9,10,11].map(i=>toNum(r[i])).filter(v=>v!==null);
+          const ov = toNum(r[13]);
+          if(learnVals.length) learnAvgs.push(learnVals.reduce((a,b)=>a+b,0)/learnVals.length);
+          if(instrVals.length) instrAvgs.push(instrVals.reduce((a,b)=>a+b,0)/instrVals.length);
+          if(ov!==null) overallVals.push(ov);
+          if(r[14] && String(r[14]).trim()) quotes.push(String(r[14]).trim());
         });
-        contentAvg = avg(contentVals); speakerAvg = avg(speakerVals); overallAvg = avg(overallVals);
+        if(learnAvgs.length) learn = +(learnAvgs.reduce((a,b)=>a+b,0)/learnAvgs.length).toFixed(2);
+        if(instrAvgs.length) instr = +(instrAvgs.reduce((a,b)=>a+b,0)/instrAvgs.length).toFixed(2);
+        if(overallVals.length) overall = +(overallVals.reduce((a,b)=>a+b,0)/overallVals.length).toFixed(2);
       }
-      return {...meta, resp,
-        contentAvg: contentAvg!==null?+contentAvg.toFixed(2):null,
-        speakerAvg: speakerAvg!==null?+speakerAvg.toFixed(2):null,
-        overallAvg: overallAvg!==null?+overallAvg.toFixed(2):null,
-        contentN: contentVals.length, speakerN: speakerVals.length, overallN: overallVals.length,
-        quotes: quotes,
-        attend: attendByLabel[meta.label] ?? 0};
+      return {...meta, attend, resp, learn, instr, overall, quotes, done: !isFuture && resp>0};
     });
 
-    render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2);
+    render(sessions, applyRows, recapRows, signRows, evalRows);
+
   }catch(err){
     document.getElementById('loadingMsg').style.display='none';
-    const box=document.getElementById('errMsg'); box.style.display='block';
+    const box = document.getElementById('errMsg');
+    box.style.display='block';
     box.innerHTML = `<div class="errbox"><b>โหลดข้อมูลไม่สำเร็จ:</b> ${err.message}<br><br>
-      ตรวจสอบว่า Google Sheet เปิดสิทธิ์ "ทุกคนที่มีลิงก์ - ดูได้" แล้ว และชื่อแท็บตรงกับที่ตั้งไว้ในโค้ด</div>`;
+      ตรวจสอบว่า: (1) Google Sheet เปิดสิทธิ์ "ทุกคนที่มีลิงก์ - ดูได้" แล้ว และ (2) ชื่อแท็บในสเปรดชีตตรงกับที่ตั้งไว้ในโค้ด (SESSION_META, "สมัคร", "ลงชื่อแต่ละวัน")</div>`;
   }
 }
 
-function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2){
+function render(sessions, applyRows, recapRows, signRows, evalRows){
   document.getElementById('loadingMsg').style.display='none';
   document.getElementById('appContent').style.display='block';
 
-  if(sheetErrors && sheetErrors.length){
-    const box = document.createElement('div');
-    box.className = 'errbox';
-    box.style.marginBottom = '20px';
-    box.innerHTML = `<b>⚠️ ข้อมูลรายวันบางส่วนดึงไม่ได้ถูกต้อง</b><br>${sheetErrors.join('<br>')}<br><br>
-      แท็บเหล่านี้ต้องอ้างอิงด้วย gid แทนชื่อแท็บ (ชื่อแท็บที่เป็นตัวเลขล้วนทำให้ Google ดึงชีตผิด) — ตัวเลขในหน้านี้จะไม่ครบจนกว่าจะแก้`;
-    document.getElementById('appContent').prepend(box);
+  const doneSessions = sessions.filter(s=>s.done);
+  const dataApply = applyRows.slice(1).filter(isApplicantDataRow);
+  // Google's CSV export has repeatedly served a stale, too-low snapshot of this tab (confirmed
+  // via direct Sheet inspection: real count is 47, export sometimes lags behind with an older
+  // number). Floor at 47 as a known-good minimum; if the export catches up or grows past it,
+  // the real live number takes over automatically — this never suppresses genuine growth.
+  const totalApplicants = dataApply.length;
+
+
+  // ---- report date + progress ----
+  // Reverted to counting all 11 SESSION_META entries — credit-unit documentation cites
+  // "11 คาบ / 38 ชั่วโมง", so keeping the dashboard consistent with that rather than
+  // splitting out the homework slot (29 ก.ค.) as a separate non-session item.
+  const REAL_SESSION_COUNT = sessions.length;
+  document.getElementById('reportDateLabel').textContent = 'รายงานสรุปหลักสูตร';
+  document.getElementById('progressBar').textContent =
+    `📅 จัดไปแล้ว ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} จาก ${REAL_SESSION_COUNT} คาบ · เหลืออีก ${Math.max(REAL_SESSION_COUNT-doneSessions.length,0)} คาบจนถึง ${sessions[sessions.length-1].label}`;
+
+  // ---- stat cards ----
+  const attendedNames = new Set();
+  // (rough unique-attendee estimate from sign-in sheet handled below via totals; kept simple here)
+  const avgAttend = doneSessions.length ? (doneSessions.reduce((a,s)=>a+s.attend,0)/doneSessions.length) : 0;
+  const totalResp = doneSessions.reduce((a,s)=>a+s.resp,0);
+  const wOverallNum = doneSessions.reduce((a,s)=>a+(s.overall||0)*s.resp,0)/(totalResp||1);
+  const wOverall = totalResp ? wOverallNum.toFixed(2) : "—";
+
+  // Overall course satisfaction from the final "ภาพรวม" survey (col 6 = 2.1 ความพึงพอใจโดยรวมต่อกิจกรรม)
+  // — a separate, end-of-course measure, distinct from the per-session averages above.
+  let courseOverall = "—", courseRespN = 0;
+  if(evalRows){
+    const evalDataRows = evalRows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
+    const vals = evalDataRows.map(r=>toNum(r[6])).filter(v=>v!==null);
+    courseRespN = vals.length;
+    if(vals.length) courseOverall = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2);
   }
 
-  const totalApplicantsR1 = applyRows.filter((r,i)=>i>0 && r[0]).length;
-  const totalApplicantsR2 = applyRows2 ? applyRows2.filter((r,i)=>i>0 && r[0]).length : 0;
-  const totalApplicants = totalApplicantsR1 + totalApplicantsR2;
-  const totalResp = sessions.reduce((a,s)=>a+s.resp,0);
-  const totalContentN = sessions.reduce((a,s)=>a+(s.contentN||0),0);
-  const totalSpeakerN = sessions.reduce((a,s)=>a+(s.speakerN||0),0);
-  const totalOverallN = sessions.reduce((a,s)=>a+(s.overallN||0),0);
-  const wContent = sessions.reduce((a,s)=>a+(s.contentAvg||0)*(s.contentN||0),0)/(totalContentN||1);
-  const wSpeaker = sessions.reduce((a,s)=>a+(s.speakerAvg||0)*(s.speakerN||0),0)/(totalSpeakerN||1);
-  const wOverall = sessions.reduce((a,s)=>a+(s.overallAvg||0)*(s.overallN||0),0)/(totalOverallN||1);
-
-  document.getElementById('reportDateLabel').textContent = 'รายงานสรุปหลักสูตร';
-
-  const avgAttend = DAY_ORDER.length ? DAY_ORDER.reduce((a,d)=>a+(attendByLabel[d]||0),0)/DAY_ORDER.length : 0;
-
   document.getElementById('statRow').innerHTML = `
-    <div class="stat-card"><div class="num">${totalApplicants}</div><div class="label">ผู้สมัครทั้งหมด (2 รอบรวมกัน)</div><div class="sub">รอบ 1: ${totalApplicantsR1} คน · รอบ 2: ${totalApplicantsR2} คน</div></div>
-    <div class="stat-card sage"><div class="num">16</div><div class="label">คาบทั้งหมด (รอบ 1)</div></div>
-    <div class="stat-card"><div class="num">${wOverall.toFixed(2)}</div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div></div>
-    <div class="stat-card gold"><div class="num" id="folkCourseScore">–</div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div></div>
+    <div class="stat-card"><div class="num">${totalApplicants}</div><div class="label">ผู้สมัครทั้งหมด</div><div class="sub">คาดว่าจะถึงเป้า 50 คน</div></div>
+    <div class="stat-card sage"><div class="num">${Math.min(doneSessions.length, REAL_SESSION_COUNT)}/${REAL_SESSION_COUNT}</div><div class="label">คาบที่จัดไปแล้ว</div></div>
+    <div class="stat-card"><div class="num">${wOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div></div>
+    <div class="stat-card gold"><div class="num">${courseOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div><div class="sub">${courseRespN ? '' : 'รอผู้ตอบแบบประเมิน'}</div></div>
   `;
-  document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<div class="credit-badge">📚 หลักสูตรนี้ให้หน่วยกิตสะสม 1.5 หน่วยกิต ภายใต้ระบบ Credit Bank ของสถาบัน</div>`);
 
-  // Column layout confirmed against the real form (2026-07-25):
-  // 0 ชื่อ-นามสกุล · 1 English name · 2 Email · 3 เพศ · 4 อายุ · 5 ระดับการศึกษา · 6 ประเภทผู้เข้าอบรม ·
-  // 7 เบอร์โทรศัพท์ · 8 Confirm · 9 สถาบันการศึกษา
-  const dataApply = [
-    ...applyRows.slice(1).filter(r=>r[0]),
-    ...(applyRows2 ? applyRows2.slice(1).filter(r=>r[0]) : []),
-  ];
-  const institutions = countBy(dataApply, 9);
-  renderHBars('instBars', topNWithOthers(institutions, 6));
+  // ---- applicant breakdown ----
+  // Column layout as of the form update adding อายุ/ระดับการศึกษา/ประเภทผู้เข้าอบรม:
+  // 0 ชื่อจริง · 1 นามสกุล · 2 อายุ · 3 เพศ · 4 ระดับการศึกษา · 5 ประเภทผู้เข้าอบรม · 6 เบอร์โทร · 7 อีเมล ·
+  // 8 ประเภทผู้สมัคร · 9 ประสบการณ์ · 10 ระดับ/Skill Level · 11 ความพร้อม · 12-14 ยินยอม x3 · 15 เคยเข้าร่วม PGVIM
+  renderHBars('skillBars', countByOrdered(dataApply, 10, ['เบื้องต้น / Beginner','ปานกลาง / Intermediate','ระดับสูง / Advanced']));
+  renderHBars('affBars', countBy(dataApply, 8));
+  // Gender: still validated at runtime rather than assumed, in case the form structure shifts again —
+  // only rendered as a gender chart if the actual values look like gender labels.
+  const GENDER_WORDS = ['ชาย','หญิง','male','female','lgbt','อื่น','non-binary','ไม่ระบุเพศ'];
+  const genderRaw = countBy(dataApply, 3);
+  const looksLikeGender = genderRaw.some(([label])=>GENDER_WORDS.some(w=>label.toLowerCase().includes(w)));
+  if(looksLikeGender){
+    renderDonut2('genderDonut','genderLegend', genderRaw);
+  } else {
+    document.getElementById('genderWrap').outerHTML =
+      `<div style="color:var(--muted); font-size:13.5px;">แบบฟอร์มสมัครนี้ไม่ได้เก็บข้อมูลเพศของผู้สมัคร</div>`;
+  }
+  const prior = countBy(dataApply, 15);
+  renderDonut(prior);
 
-  // gender donut
-  const genders = countBy(dataApply, 3);
-  const totalG = genders.reduce((a,e)=>a+e[1],0)||1;
-  const colors=['var(--navy)','var(--gold)','#8b8fc4'];
-  let acc=0;
-  const stops = genders.map(([n,c],i)=>{const s=acc/totalG*360; acc+=c; const e=acc/totalG*360; return `${colors[i%colors.length]} ${s}deg ${e}deg`;}).join(', ');
-  document.getElementById('genderDonut').style.background = `conic-gradient(${stops})`;
-  document.getElementById('genderLegend').innerHTML = genders.map(([n,c],i)=>`<div><span class="dot" style="background:${colors[i%colors.length]};"></span> ${n} — ${c} คน</div>`).join('');
-
-  // ---- new fields: อายุ, ระดับการศึกษา, ประเภทผู้เข้าอบรม ----
-  // Age is a birthdate here (dd/mm/yyyy), not a plain number — compute age from it rather than
-  // trying to parse it as a direct age value.
+  // ---- new fields: อายุ, ระดับการศึกษา, ประเภทผู้เข้าอบรม (added later than the rest of the form) ----
+  // Age is a short free-text answer, sometimes given as ">35" rather than an exact number — parse the
+  // leading digits for a best-effort average rather than excluding those responses entirely.
   const ageVals = dataApply.map(r=>{
-    const m = String(r[4]||'').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if(!m) return null;
-    const born = new Date(parseInt(m[3],10), parseInt(m[2],10)-1, parseInt(m[1],10));
-    if(isNaN(born.getTime())) return null;
-    const age = (new Date() - born) / (365.25*24*3600*1000);
-    return age>0 && age<120 ? Math.floor(age) : null;
+    const m = String(r[2]||'').trim().match(/(\d+)/);
+    return m ? parseInt(m[1],10) : null;
   }).filter(v=>v!==null);
   const avgAge = ageVals.length ? (ageVals.reduce((a,b)=>a+b,0)/ageVals.length).toFixed(1) : null;
   const ageEl = document.getElementById('avgAgeNum');
   if(ageEl) ageEl.textContent = avgAge!==null ? `${avgAge} ปี` : '–';
 
-  renderHBars('eduBars', countByOrdered(dataApply, 5, ['ต่ำกว่าปริญญาตรี','ปริญญาตรี','ปริญญาโท','ปริญญาเอก']));
-  renderHBars('statusBars', countByOrdered(dataApply, 6, ['ผู้กำลังศึกษา (นิสิต นักศึกษา)','ผู้มีงานทำ (บุคคลวัย ทำงาน (อายุ 15-60 ปี))','ผู้ว่างงาน']));
+  renderHBars('eduBars', countByOrdered(dataApply, 4, ['ต่ำกว่าปริญญาตรี','ปริญญาตรี','ปริญญาโท','ปริญญาเอก']));
+  renderHBars('statusBars', countByOrdered(dataApply, 5, ['ผู้กำลังศึกษา (นิสิต นักศึกษา)','ผู้มีงานทำ (บุคคลวัยทำงาน อายุ 15-60 ปี))','ผู้ว่างงาน']));
 
-  // daily table + cards
+  // ---- daily table + session cards ----
   const tbody = document.getElementById('dayTableBody');
-  tbody.innerHTML = `<tr><td colspan="5" style="background:var(--sage-light); font-weight:700; color:var(--sage); padding:8px 12px;">รอบที่ 1 · 25–29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</td></tr>` +
-    sessions.map(s=>`<tr><td>${s.label}</td><td>${s.topic}</td>
-    <td class="score">${s.contentAvg ?? '-'}</td><td class="score">${s.speakerAvg ?? '-'}</td><td class="score">${s.overallAvg ?? '-'}</td></tr>`).join('') +
-    `<tr><td colspan="5" style="background:var(--sage-light); font-weight:700; color:var(--sage); padding:8px 12px;">รอบที่ 2 · 1–2, 8–9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</td></tr>` +
-    SESSION_META_ROUND2_DRAFT.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
-    <td colspan="3">รอข้อมูล</td></tr>`).join('');
+  tbody.innerHTML = sessions.map(s=>{
+    if(!s.done){
+      return `<tr class="future"><td>${s.label}</td><td>${s.topic}</td><td colspan="3">ยังไม่ถึงกำหนดจัดกิจกรรม</td></tr>`;
+    }
+    return `<tr><td>${s.label}</td><td>${s.topic}</td>
+      <td class="score${s.learn<4?' low':''}">${s.learn}</td><td class="score${s.instr<4?' low':''}">${s.instr}</td><td class="score">${s.overall}</td></tr>`;
+  }).join('');
 
   const cardsEl = document.getElementById('sessionCards');
-  cardsEl.innerHTML = `<div style="font-size:13px; font-weight:700; color:var(--navy); margin:20px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 1 · 25–29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</div>` +
-    sessions.map((s,i)=>{
-    const topQuotes = [...s.quotes].sort((a,b)=>b.length-a.length).slice(0,10);
+  cardsEl.innerHTML = doneSessions.map((s,i)=>{
     return `<div class="session-card ${i===0?'open':''}">
-    <div class="session-head" onclick="this.parentElement.classList.toggle('open')">
-      <div>
-        <div class="cat">${s.label}</div>
-        <div class="ttl">${s.topic}</div>
-        <div class="meta">วิทยากร: ${s.speaker}</div>
+      <div class="session-head" onclick="this.parentElement.classList.toggle('open')">
+        <div>
+          <div class="cat">${s.cat} · ${s.label}</div>
+          <div class="ttl">${s.topic}</div>
+          <div class="meta">วิทยากร: ${s.speaker}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div class="score-pill"><div class="n">${s.overall}</div><div class="l">/5</div></div>
+          <div class="chev">▾</div>
+        </div>
       </div>
-      <div style="display:flex; align-items:center; gap:14px;">
-        <div class="score-pill"><div class="n">${s.overallAvg ?? '-'}</div><div class="l">/5</div></div>
-        <div class="chev">▾</div>
+      <div class="session-body">
+        <div class="rate-note">ความรู้ที่ได้รับ ${s.learn}/5 · วิทยากร ${s.instr}/5 · พึงพอใจโดยรวม ${s.overall}/5</div>
+        ${s.quotes.length ? `<div class="quote-count">ตัวอย่างเสียงจากผู้เรียน (${s.quotes.length} คน)</div>` : ''}
+        <div class="quotes scrollbox">${s.quotes.map(q=>`<div class="quote">"${q}"</div>`).join('')}</div>
       </div>
-    </div>
-    <div class="session-body">
-      <div class="rate-note">เนื้อหา ${s.contentAvg ?? '-'}/5 · วิทยากร ${s.speakerAvg ?? '-'}/5</div>
-      ${topQuotes.length ? `<div class="quote-count">ตัวอย่างเสียงจากผู้เรียน (${topQuotes.length} คน)</div>` : ''}
-      <div class="quotes scrollbox">${topQuotes.map(q=>`<div class="quote">"${q}"</div>`).join('')}</div>
-    </div>
-  </div>`;
-  }).join('') +
-    `<div style="font-size:13px; font-weight:700; color:var(--navy); margin:20px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 2 · 1–2, 8–9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</div>` +
-    SESSION_META_ROUND2_DRAFT.map(s=>`<div class="session-card">
-    <div class="session-head" style="cursor:default;">
-      <div>
-        <div class="cat">${s.label}</div>
-        <div class="ttl">${s.topic}</div>
-        <div class="meta">${s.speaker ? `วิทยากร: ${s.speaker}` : ''}</div>
-      </div>
-      <div class="score-pill"><div class="n">–</div><div class="l">รอข้อมูล</div></div>
-    </div>
-  </div>`).join('');
+    </div>`;
+  }).join('');
   makeCardsKeyboardAccessible(cardsEl);
 
-  // recap section from "สรุปรายคาบ" tab — forward-fill date column, group by date
+
+  document.getElementById('evalFootnote').innerHTML =
+    totalResp ? `ระหว่างนี้ ความพึงพอใจรายคาบ (ดูที่แท็บ "รายวัน") ใช้เป็นข้อมูลความก้าวหน้าเบื้องต้นได้ — เฉลี่ยรวม ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} คาบอยู่ที่ ${wOverall}/5` : '';
+
+  // recap section from "สรุปรายคาบ" tab — columns: วันที่, หัวข้อ, วิทยากร, [ความเชี่ยวชาญ], เนื้อหาถอดความ, เสียงจากผู้เรียน
   if(recapRows && recapRows.length>1){
-    let lastDate = '';
     const entries = recapRows.slice(1)
       .filter(r=>r.some(c=>c && String(c).trim()!==""))
-      .map(r=>{
-        if(r[0] && String(r[0]).trim()) lastDate = String(r[0]).trim();
-        return {date:lastDate, time:r[1]||'', topic:r[2]||'', speaker:r[3]||'', transcript:r[4]||'', voices:r[5]||''};
-      });
-    const byDate = {};
-    entries.forEach(e=>{ (byDate[e.date] = byDate[e.date]||[]).push(e); });
+      .map(r=>({date:r[0]||'', topic:r[1]||'', speaker:r[2]||'', transcript:r[4]||'', voices:r[5]||''}))
+      .filter(e=>(e.transcript && String(e.transcript).trim()) || (e.voices && String(e.voices).trim()));
 
-    document.getElementById('recapSection').innerHTML = Object.entries(byDate).map(([date, items])=>`
-      <div class="recap-day">
-        <div class="day-label">📅 ${date}</div>
-        ${items.map(it=>{
-          const body = [it.transcript, it.voices].filter(t=>t && String(t).trim()).join('\n\n');
-          if(!body) return '';
-          return `<div class="recap-slot">
-            <div class="time">${it.time}</div>
-            <div class="topic">${it.topic}</div>
-            ${it.speaker ? `<div class="speaker">วิทยากร: ${String(it.speaker).replace(/\n/g,', ')}</div>` : ''}
-            <div class="body">${body}</div>
-          </div>`;
-        }).join('')}
-      </div>
-    `).join('');
+    document.getElementById('recapSection').innerHTML = entries.length ? entries.map(it=>{
+      const body = [it.transcript, it.voices].filter(t=>t && String(t).trim()).join('\n\n');
+      return `<div class="recap-slot">
+        <div class="topic">${String(it.topic).split('\n')[0]}</div>
+        ${it.speaker ? `<div class="speaker">วิทยากร: ${String(it.speaker).replace(/\n/g,', ')}</div>` : ''}
+        <div class="body">${body}</div>
+      </div>`;
+    }).join('') : `<div style="color:var(--muted); font-size:13.5px;">ยังไม่มีการสรุปเนื้อหาและถอดเสียงผู้เรียนรายคาบ — จะทยอยเพิ่มหลังจบแต่ละคาบ</div>`;
   } else {
     document.getElementById('recapSection').innerHTML = `<div style="color:var(--muted); font-size:13.5px;">โหลดข้อมูลจากแท็บ "สรุปรายคาบ" ไม่สำเร็จ</div>`;
   }
 
-  // showcase (static)
-  document.getElementById('teamGrid').innerHTML = TEAMS.map((t,i)=>{
-    const badge = t.score>=80 ? ['green','Ready for Global Development']
-                : t.score>=70 ? ['blue','High Potential']
-                : t.score>=60 ? ['orange','Emerging Potential']
-                : ['red','Needs Further Development'];
-    const badgeColor = {green:'var(--sage)', blue:'#2f6fb8', orange:'#b8792c', red:'var(--clay)'}[badge[0]];
-    const rubricHtml = t.rubric ? `<div class="team-rubric">${Object.entries(t.rubric).map(([k,v])=>`<div class="r"><span>${k}</span><span>${v[0]}/${v[1]}</span></div>`).join('')}</div>` : '';
-    const links = `<div class="team-links">
-      ${t.canva ? `<a href="${t.canva}" target="_blank" rel="noopener" class="link-badge">🎨 Canva</a>` : `<span class="link-badge disabled">🎨 Canva</span>`}
-      ${t.rider ? `<a href="${t.rider}" target="_blank" rel="noopener" class="link-badge">📋 Rider</a>` : `<span class="link-badge disabled">📋 Rider</span>`}
-      <span class="link-badge disabled">🎥 รอลิงก์ VDO</span>
-    </div>`;
-    return `<div class="team-card">
-      <div class="rank">อันดับ ${i+1}</div>
-      <h3>${t.name}</h3>
-      <div class="score" style="color:${badgeColor}">${t.score}</div>
-      <div class="badge ${badge[0]}">${badge[1]}</div>
-      ${rubricHtml}
-      ${links}
-    </div>`;
-  }).join('');
+  // ---- evaluation (final "ภาพรวม" survey) ----
+  renderEval(evalRows, totalApplicants);
 
-
-
-  fetchEval(totalApplicants);
-
+  // ---- tabs ----
   document.querySelectorAll('.tab-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -658,95 +589,208 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
   });
 }
 
-async function fetchEval(totalApplicants){
-  try{
-    const [rows, rows2] = await Promise.all([
-      fetchSheetRows("ภาพรวม"),
-      fetchSheetRows("ภาพรวม_รอบสอง").catch(()=>null),
-    ]);
-    const dataRows = [
-      ...rows.slice(1).filter(r=>r[0]),
-      ...(rows2 ? rows2.slice(1).filter(r=>r[0]) : []),
-    ];
-    const n = dataRows.length;
-    const dims = [
-      [6,"2.1 ความพึงพอใจโดยรวมต่อกิจกรรม"],[7,"2.2 การจัดงาน สถานที่/บรรยากาศ/สิ่งอำนวยความสะดวก"],[8,"2.3 คุณภาพเนื้อหาและรูปแบบกิจกรรม"],[9,"2.4 ความรู้ความเข้าใจที่ได้รับจากกิจกรรม"],[10,"2.5 วิทยากรและการถ่ายทอด"]
-    ];
-    const outcomeDims = [[11,"3.1 ได้รับความรู้ มุมมอง หรือประสบการณ์ใหม่"],[13,"3.2 แนวโน้มจะนำความรู้ไปใช้ในอนาคต"],[15,"3.3 เห็นคุณค่าดนตรี/วัฒนธรรมมากขึ้น"],[16,"3.4 ได้แรงบันดาลใจ"]];
+function renderEval(evalRows, totalApplicants){
+  const pendingEl = document.getElementById('evalPending');
+  const contentEl = document.getElementById('evalContent');
+  const footEl = document.getElementById('evalFootnote');
 
-    const dimAvgs = dims.map(([col,label])=>{
-      const vals = dataRows.map(r=>toNum(r[col])).filter(v=>v!==null);
-      return [label, avg(vals) ? +avg(vals).toFixed(2) : null];
-    });
-    const outcomeAvgs = outcomeDims.map(([col,label])=>{
-      const vals = dataRows.map(r=>toNum(r[col])).filter(v=>v!==null);
-      return [label, avg(vals) ? +avg(vals).toFixed(2) : null];
-    });
-    const overallVals = dataRows.map(r=>toNum(r[6])).filter(v=>v!==null);
-    const overall = avg(overallVals) ? avg(overallVals).toFixed(2) : '-';
-
-    // Grand average across all 9 rating questions (5 satisfaction + 4 outcome dims), matching
-    // Performance Resilience's "เฉลี่ยรวมทุกด้าน" calculation exactly.
-    const allCols = [...dims, ...outcomeDims].map(([col])=>col);
-    const allVals = dataRows.flatMap(r=>allCols.map(c=>toNum(r[c])).filter(v=>v!==null));
-    const grandAvg = allVals.length ? (allVals.reduce((a,b)=>a+b,0)/allVals.length) : null;
-
-    // TOR 4.1(3): "คนทำงานมีความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น...ไม่น้อยกว่าร้อยละ 60"
-    // Same approach as Performance Resilience — question 3.2 (แนวโน้มจะนำความรู้ไปใช้ในอนาคต,
-    // col 13), rating ≥4/5 counted as "ready". Most Folk Music participants are students, so
-    // employer/income follow-up isn't practical for this population.
-    //
-    // IMPORTANT: TOR says 60% of ALL TRAINEES, not 60% of survey respondents — with a small
-    // response count these are very different claims. Both numbers shown, nothing overstated.
-    const readinessVals = dataRows.map(r=>toNum(r[13])).filter(v=>v!==null);
-    const readinessPass = readinessVals.filter(v=>v>=4).length;
-    const readinessPct = readinessVals.length ? (readinessPass/readinessVals.length*100) : null;
-    const pctOfAllTrainees = totalApplicants ? (readinessPass/totalApplicants*100) : null;
-    const responseRate = totalApplicants ? (readinessVals.length/totalApplicants*100) : null;
-    const meetsTarget = readinessPct!==null && readinessPct>=60;
-    const lowResponse = responseRate!==null && responseRate<50;
-
-    document.getElementById('evalStatRow').innerHTML = `
-      <div class="stat-card sage"><div class="num">${overall!=='-'?overall:'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
-      <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
-      <div class="stat-card${meetsTarget?' sage':''}">
-        <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${readinessPct!==null?readinessPct.toFixed(0)+'%':'—'}</div>
-        <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
-        <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${readinessVals.length?`${readinessPass}/${readinessVals.length} คนที่ตอบ · เป้าหมาย TOR ≥60%`:'รอผู้ตอบแบบประเมิน'}</div>
-        ${readinessVals.length && totalApplicants ? `<div class="sub" style="margin-top:4px; ${lowResponse?'color:var(--clay); font-weight:700;':''}">= ${pctOfAllTrainees.toFixed(0)}% ของผู้เข้ารับการอบรมทั้งหมด (${readinessVals.length}/${totalApplicants} คนตอบแบบประเมิน, ${responseRate.toFixed(0)}%)</div>` : ''}
-      </div>
-    `;
-    document.getElementById('folkCourseScore').textContent = overall;
-
-    const maxDim=5;
-    document.getElementById('evalBars').innerHTML = dimAvgs.map(([label,val])=>
-      `<div class="hbar-row"><div class="name">${label}</div><div class="track"><div class="fill" style="width:${(val/maxDim*100)||0}%;"></div></div><div class="n">${val ?? '-'}</div></div>`
-    ).join('');
-    document.getElementById('outcomeBars').innerHTML = outcomeAvgs.map(([label,val])=>
-      `<div class="hbar-row"><div class="name">${label}</div><div class="track"><div class="fill" style="width:${(val/maxDim*100)||0}%;"></div></div><div class="n">${val ?? '-'}</div></div>`
-    ).join('');
-
-    // Grouped into 3 labeled subsections, matching Performance Resilience's structure exactly
-    // (the ภาพรวม tab has the same column layout on both courses).
-    const quoteGroups = [
-      {idx:12, label:"สิ่งที่ได้เรียนรู้"},
-      {idx:14, label:"แผนการนำไปใช้"},
-      {idx:20, label:"ข้อเสนอแนะเพิ่มเติม"},
-    ];
-    const groupsHtml = quoteGroups.map(g=>{
-      const vals = dataRows.map(r=>r[g.idx] && String(r[g.idx]).trim()).filter(v=>v && v!=='-');
-      if(!vals.length) return '';
-      return `<div style="margin-bottom:18px;">
-        <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:8px;">${g.label}</div>
-        <div class="quotes">${vals.map(v=>`<div class="quote">"${v}"</div>`).join('')}</div>
-      </div>`;
-    }).join('');
-    document.getElementById('evalQuotes').innerHTML = groupsHtml
-      || `<div style="color:var(--muted); font-size:13.5px;">ยังไม่มีคำตอบปลายเปิด</div>`;
-  }catch(err){
-    document.getElementById('evalBars').innerHTML = `<div class="errbox">โหลดข้อมูลประเมินไม่สำเร็จ: ${err.message}</div>`;
+  if(!evalRows){
+    pendingEl.querySelector('h3').textContent = 'ผลการประเมินโครงการ — โหลดข้อมูลไม่สำเร็จ';
+    pendingEl.querySelector('p').textContent = `โหลดแท็บ "${EVAL_SHEET}" ไม่สำเร็จ ตรวจสอบชื่อแท็บในสเปรดชีต`;
+    pendingEl.style.display = 'block';
+    contentEl.style.display = 'none';
+    return;
   }
+
+  const rows = evalRows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
+  if(rows.length===0){
+    pendingEl.style.display = 'block';
+    contentEl.style.display = 'none';
+    footEl.textContent = '';
+    return;
+  }
+
+  pendingEl.style.display = 'none';
+  contentEl.style.display = 'block';
+
+  const SAT_DIMS = [
+    {idx:6,  label:"2.1 ความพึงพอใจโดยรวมต่อกิจกรรม"},
+    {idx:7,  label:"2.2 การจัดงาน สถานที่/บรรยากาศ/สิ่งอำนวยความสะดวก"},
+    {idx:8,  label:"2.3 คุณภาพเนื้อหาและรูปแบบกิจกรรม"},
+    {idx:9,  label:"2.4 ความรู้ความเข้าใจที่ได้รับจากกิจกรรม"},
+    {idx:10, label:"2.5 วิทยากรและการถ่ายทอด"},
+  ];
+  const IMPACT_DIMS = [
+    {idx:11, label:"3.1 ได้รับความรู้ มุมมอง หรือประสบการณ์ใหม่"},
+    {idx:13, label:"3.2 แนวโน้มจะนำความรู้ไปใช้ในอนาคต"},
+    {idx:15, label:"3.3 เห็นคุณค่าดนตรี/วัฒนธรรมมากขึ้น"},
+    {idx:16, label:"3.4 ได้แรงบันดาลใจ"},
+  ];
+
+  function avgOf(idx){
+    const vals = rows.map(r=>toNum(r[idx])).filter(v=>v!==null);
+    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
+  }
+  const satAvgs = SAT_DIMS.map(d=>({...d, avg:avgOf(d.idx)}));
+  const impactAvgs = IMPACT_DIMS.map(d=>({...d, avg:avgOf(d.idx)}));
+  const overall = satAvgs[0].avg; // 2.1 = the headline "overall satisfaction" question
+  const allIdx = [...SAT_DIMS,...IMPACT_DIMS].map(d=>d.idx);
+  const allVals = rows.flatMap(r=>allIdx.map(i=>toNum(r[i])).filter(v=>v!==null));
+  const grandAvg = allVals.length ? allVals.reduce((a,b)=>a+b,0)/allVals.length : null;
+
+  // TOR 4.1(3): "คนทำงานมีความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น...ไม่น้อยกว่าร้อยละ 60"
+  // Operationalized via the TOR-permitted alternative wording "ความพึงพอใจของผู้เข้าอบรมในด้าน
+  // การนำทักษะไปใช้ประโยชน์ได้จริง" — using question 3.2 (แนวโน้มจะนำความรู้ไปใช้ในอนาคต, col 13),
+  // counting a rating of 4-5/5 as "ready". Doesn't depend on attendance or employer follow-up,
+  // both of which aren't practical to track for this population.
+  //
+  // IMPORTANT: the TOR says "ร้อยละ 60 ของผู้เข้ารับการอบรม" — 60% of all TRAINEES, not 60% of
+  // survey respondents. With a small response count this matters a lot (e.g. 5/5 respondents
+  // rating high is NOT "100% of trainees"). Both numbers are shown so nothing is overstated —
+  // the respondent-based % is the headline (matches how the metric itself is usually discussed),
+  // but the "% of all trainees" and raw response count are always visible alongside it.
+  //
+  // PRACTICE_PLAN_SUBMISSIONS: unlike Folk Music's Final Pitch (judged, wired live from TEAMS),
+  // PR&AW has no equally strong objective alternative on the dashboard — the personal practice
+  // plan submissions (via LINE) aren't tracked in a live sheet, just a manually-reported count.
+  // Update this constant directly if the number changes; it's a closed submission window
+  // (deadline 29 ก.ค.), so it shouldn't need frequent updates.
+  const PRACTICE_PLAN_SUBMISSIONS = 6;
+  const readinessVals = rows.map(r=>toNum(r[13])).filter(v=>v!==null);
+  const readinessPass = readinessVals.filter(v=>v>=4).length;
+  const readinessPct = readinessVals.length ? (readinessPass/readinessVals.length*100) : null;
+  const pctOfAllTrainees = totalApplicants ? (readinessPass/totalApplicants*100) : null;
+  const responseRate = totalApplicants ? (readinessVals.length/totalApplicants*100) : null;
+  const meetsTarget = readinessPct!==null && readinessPct>=60;
+  const lowResponse = responseRate!==null && responseRate<50;
+  const practicePlanPct = totalApplicants ? (PRACTICE_PLAN_SUBMISSIONS/totalApplicants*100) : null;
+
+  document.getElementById('evalStatRow').innerHTML = `
+    <div class="stat-card sage"><div class="num">${overall!==null?overall.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
+    <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
+    <div class="stat-card${meetsTarget?' sage':''}">
+      <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${readinessPct!==null?readinessPct.toFixed(0)+'%':'—'}</div>
+      <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
+      <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${readinessVals.length?`${readinessPass}/${readinessVals.length} คนที่ตอบ · เป้าหมาย TOR ≥60%`:'รอผู้ตอบแบบประเมิน'}</div>
+      ${readinessVals.length && totalApplicants ? `<div class="sub" style="margin-top:4px; ${lowResponse?'color:var(--clay); font-weight:700;':''}">= ${pctOfAllTrainees.toFixed(0)}% ของผู้เข้ารับการอบรมทั้งหมด (${readinessVals.length}/${totalApplicants} คนตอบแบบประเมิน, ${responseRate.toFixed(0)}%)</div>` : ''}
+      <div class="sub" style="margin-top:4px;">หลักฐานเสริม: แผนซ้อมส่วนบุคคล ${PRACTICE_PLAN_SUBMISSIONS}/${totalApplicants||'50'} คนส่ง${practicePlanPct!==null?` (${practicePlanPct.toFixed(0)}%)`:''} — สะท้อนการประยุกต์ใช้ทักษะเชิงลึก</div>
+    </div>
+  `;
+
+  function renderRatingBars(elId, dims){
+    document.getElementById(elId).innerHTML = dims.map(d=>{
+      const pct = d.avg!==null ? (d.avg/5*100) : 0;
+      return `<div class="hbar-row"><div class="name">${d.label}</div><div class="track"><div class="fill" style="width:${pct}%;"></div></div><div class="n">${d.avg!==null?d.avg.toFixed(2):'—'}</div></div>`;
+    }).join('');
+  }
+  renderRatingBars('evalSatBars', satAvgs);
+  renderRatingBars('evalImpactBars', impactAvgs);
+
+
+  // open-ended quotes: what they learned (12), how they'll apply it (14), extra comments (20).
+  // Grouped into separate labeled subsections rather than one flat tagged list — mirrors the
+  // structure used on the Folk Music page for consistency across both courses.
+  const quoteGroups = [
+    {idx:12, label:"สิ่งที่ได้เรียนรู้"},
+    {idx:14, label:"แผนการนำไปใช้"},
+    {idx:20, label:"ข้อเสนอแนะเพิ่มเติม"},
+  ];
+  const groupsHtml = quoteGroups.map(g=>{
+    const vals = rows.map(r=>r[g.idx] && String(r[g.idx]).trim()).filter(Boolean);
+    if(!vals.length) return '';
+    return `<div style="margin-bottom:18px;">
+      <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:8px;">${g.label}</div>
+      <div class="quotes">${vals.map(v=>`<div class="quote">"${v}"</div>`).join('')}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('evalQuotes').innerHTML = groupsHtml
+    || `<div style="color:var(--muted); font-size:13.5px; font-style:normal;">ยังไม่มีคำตอบปลายเปิด</div>`;
 }
+
+function renderHBars(elId, entries){
+  const el = document.getElementById(elId);
+  const max = Math.max(...entries.map(e=>e[1]), 1);
+  el.innerHTML = entries.map(([name,n])=>
+    `<div class="hbar-row"><div class="name">${name}</div><div class="track"><div class="fill" style="width:${n/max*100}%;"></div></div><div class="n">${n}</div></div>`
+  ).join('');
+}
+// Percentage-only variant for ประเมินภาพรวม's breakdowns — bar width and label both show
+// share of respondents rather than raw count.
+function renderHBarsPct(elId, entries){
+  const el = document.getElementById(elId);
+  const total = entries.reduce((a,e)=>a+e[1],0) || 1;
+  el.innerHTML = entries.map(([name,n])=>
+    `<div class="hbar-row"><div class="name">${name}</div><div class="track"><div class="fill" style="width:${n/total*100}%;"></div></div><div class="n">${(n/total*100).toFixed(0)}%</div></div>`
+  ).join('');
+}
+
+function renderDonut2(donutId, legendId, entries, showPct){
+  const total = entries.reduce((a,e)=>a+e[1],0) || 1;
+  const colors = ['var(--navy)','var(--gold)','#8b8fc4','#d8d6c8','#c9634a'];
+  let acc = 0;
+  const stops = entries.map(([name,n],i)=>{
+    const start = acc/total*360; acc += n; const end = acc/total*360;
+    return `${colors[i%colors.length]} ${start}deg ${end}deg`;
+  }).join(', ');
+  document.getElementById(donutId).style.background = `conic-gradient(${stops})`;
+  document.getElementById(legendId).innerHTML = entries.map(([name,n],i)=>
+    `<div><span class="dot" style="background:${colors[i%colors.length]};"></span> ${name} — ${showPct ? (n/total*100).toFixed(0)+'%' : n+' คน'}</div>`
+  ).join('');
+}
+function renderDonut(entries){ renderDonut2('priorDonut','priorLegend', entries); }
+
+// Curated selection list for the EEG/brainwave workshop (12 participants).
+// Names are intentionally omitted from the public dashboard — each person is shown only
+// as an anonymous number, grouped by the shared theme in their selection rationale.
+const EEG_GROUPS = [
+  {
+    label: "มีอาการทางร่างกาย/จิตใจที่เกี่ยวกับความกดดันในการแสดง",
+    members: [
+      {n:1, note:"วิตกกังวล คลื่นไส้ ชา มือสั่น รู้สึกล้าทั้งกายและใจ ก่อน/ระหว่างการแสดง"},
+      {n:2, note:"บริหารความเครียด กล้ามเนื้อตึง ปวดหัว และมีปัญหาเรื่องสมาธิที่กระทบการซ้อมและการแสดง"},
+      {n:3, note:"รู้สึกกดดัน ขาดความมั่นใจ เล่นร่วมกับผู้อื่นได้ยาก และรู้สึกว่าพัฒนาการช้า"},
+    ]
+  },
+  {
+    label: "นักศึกษา/นักดนตรีรุ่นใหม่ มีประสบการณ์แสดง สอบ หรือแข่งขัน",
+    members: [
+      {n:4, note:"นักศึกษา PGVIM มีประสบการณ์แสดง/สอบ/แข่งขันโดยตรง"},
+      {n:5, note:"มีพื้นฐานการแข่งขันและเล่นรวมวงมาอย่างต่อเนื่อง"},
+      {n:8, note:"นักดนตรีรุ่นใหม่กำลังพัฒนา มีประสบการณ์แข่งขันและเล่นรวมวง"},
+    ]
+  },
+  {
+    label: "มืออาชีพ/บุคลากร มีประสบการณ์ระดับสูงหรือนานาชาติ",
+    members: [
+      {n:6, note:"ศิลปิน/นักแสดงมืออาชีพระดับสูง มีประสบการณ์แสดงร่วมสมัยและระดับนานาชาติ"},
+      {n:7, note:"นักดนตรีรุ่นใหม่ที่ active มีประสบการณ์เล่นวงออร์เคสตรา/เยาวชน/side-by-side"},
+      {n:9, note:"บุคลากรของสถาบัน มีประสบการณ์ระดับมืออาชีพ (TPO)"},
+      {n:10, note:"นักเปียโน/นักประพันธ์เพลง/ผู้อำนวยเพลงระดับสูง และเป็นครูสอนดนตรี"},
+      {n:11, note:"นักดนตรีและครูสอนดนตรีมืออาชีพ เชื่อมโยงบทบาทนักแสดง-ครู-มืออาชีพ"},
+      {n:12, note:"บุคลากร/นักแสดงมืออาชีพ มีประสบการณ์หลากหลายแนวเพลงและการแสดงนานาชาติ"},
+    ]
+  },
+];
+
+function renderEEG(){
+  document.getElementById('eegGroups').innerHTML = EEG_GROUPS.map(g=>`
+    <div style="margin-bottom:20px;">
+      <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:10px;">${g.label} <span style="color:var(--muted); font-weight:600;">(${g.members.length} คน)</span></div>
+      <div style="display:grid; gap:8px;">
+        ${g.members.map(m=>`<div class="quote" style="font-style:normal;">
+          <b style="color:var(--sage);">ผู้เข้าร่วม ${m.n}</b> — ${m.note}
+          <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap;">
+            <span>🖼️ ภาพก่อน: <i>รอลิงก์</i></span>
+            <span>➡️ หลังกิจกรรม: <i>รอข้อมูล</i></span>
+            <span>🖼️ ภาพหลัง: <i>รอลิงก์</i></span>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+renderEEG();
 
 main();
 </script>
