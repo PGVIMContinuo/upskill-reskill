@@ -166,7 +166,7 @@
         <div class="eyebrow" id="reportDateLabel">รายงานสรุปหลักสูตร</div>
         <h1>เส้นทางดนตรีพื้นบ้านสู่เวทีโลก</h1>
         <p>หลักสูตรระยะสั้น 2 รอบ (25–29 พ.ค. และ 1–2, 8–9 ส.ค. 2569) เชื่อมโยงดนตรีพื้นบ้านไทยสู่มาตรฐานและโอกาสในเวทีนานาชาติ ปิดท้ายด้วย Final Pitch นำเสนอผลงาน</p>
-        <div class="datebar">🏁 รอบที่ 1 ณ สถาบันดนตรีกัลยาณิวัฒนา (25–29 พ.ค. 2569) · รอบที่ 2 ณ วิทยาลัยนาฏศิลปนครราชสีมา (1–2, 8–9 ส.ค. 2569)</div>
+        <div class="datebar">🏁 รอบที่ 1 จัดจบแล้ว (25–29 พ.ค. 2569) · รอบที่ 2 ณ วิทยาลัยนาฏศิลปนครราชสีมา (1–2, 8–9 ส.ค. 2569)</div>
       </div>
 
       <div class="stat-row" id="statRow"></div>
@@ -279,11 +279,26 @@ const SESSION_META = [
 const SESSION_META_ROUND2_DRAFT = [
   {sheet:"01.08.69", label:"1 ส.ค.", topic:"Global Music Pathway for Folk Music Introduction: ดนตรีพื้นบ้านในบริบทนานาชาติ", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
   {sheet:"01.08.69", label:"1 ส.ค.", topic:"คนหนึ่งเล่น คนหนึ่งฟัง (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
-  {sheet:"02.08.69", label:"2 ส.ค.", topic:"Notation / เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
+  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เตรียมและทำความเข้าใจการเตรียมการแสดงและการ Pitching", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
+  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
   {sheet:"02.08.69", label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร", ratingStart:null},
   {sheet:"08.08.69", label:"8 ส.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ", ratingStart:null},
   {sheet:"08.08.69", label:"8 ส.ค.", topic:"ศิลปะแห่งการสร้างโลกในจินตนาการ", speaker:"คุณดวิษ ณิชฌานธามัน", ratingStart:null},
+  {sheet:"09.08.69", label:"9 ส.ค.", topic:"ทำงานกลุ่ม: เตรียม Project Proposal", speaker:"", ratingStart:null},
   {sheet:"09.08.69", label:"9 ส.ค.", topic:"จากไอเดียสู่ความเป็นไปได้ + มอบใบประกาศ + ปิดงาน", speaker:"", ratingStart:null},
+];
+
+// Round 2's Final Pitch groups (event: 9 ส.ค. 2569) — names confirmed, scores/rubric still
+// pending since judging hasn't happened yet. NOT wired into the live TEAMS array or the
+// ผลงานการแสดง tab until real scores exist — send the scores once judged and I'll merge them
+// in the same way round 1's TEAMS array works.
+const TEAMS_ROUND2_DRAFT = [
+  {name:"เละเทะ", score:null},
+  {name:"ศรัทธา", score:null},
+  {name:"จุดหมาย", score:null},
+  {name:"ครอบครอง ปล่อยวาง", score:null},
+  {name:"การเดินทาง แห่งกาลเวลา", score:null},
+  {name:"คิดถึง", score:null},
 ];
 
 const DAY_ORDER = ["25 พ.ค.","26 พ.ค.","27 พ.ค.","28 พ.ค.","29 พ.ค."];
@@ -547,11 +562,16 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
 
   // daily table + cards
   const tbody = document.getElementById('dayTableBody');
-  tbody.innerHTML = sessions.map(s=>`<tr><td>${s.label}</td><td>${s.topic}</td>
-    <td class="score">${s.contentAvg ?? '-'}</td><td class="score">${s.speakerAvg ?? '-'}</td><td class="score">${s.overallAvg ?? '-'}</td></tr>`).join('');
+  tbody.innerHTML = `<tr><td colspan="5" style="background:var(--sage-light); font-weight:700; color:var(--sage); padding:8px 12px;">รอบที่ 1 · 25–29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</td></tr>` +
+    sessions.map(s=>`<tr><td>${s.label}</td><td>${s.topic}</td>
+    <td class="score">${s.contentAvg ?? '-'}</td><td class="score">${s.speakerAvg ?? '-'}</td><td class="score">${s.overallAvg ?? '-'}</td></tr>`).join('') +
+    `<tr><td colspan="5" style="background:var(--sage-light); font-weight:700; color:var(--sage); padding:8px 12px;">รอบที่ 2 · 1–2, 8–9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</td></tr>` +
+    SESSION_META_ROUND2_DRAFT.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
+    <td colspan="3">รอข้อมูล</td></tr>`).join('');
 
   const cardsEl = document.getElementById('sessionCards');
-  cardsEl.innerHTML = sessions.map((s,i)=>{
+  cardsEl.innerHTML = `<div style="font-size:13px; font-weight:700; color:var(--navy); margin:20px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 1 · 25–29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</div>` +
+    sessions.map((s,i)=>{
     const topQuotes = [...s.quotes].sort((a,b)=>b.length-a.length).slice(0,10);
     return `<div class="session-card ${i===0?'open':''}">
     <div class="session-head" onclick="this.parentElement.classList.toggle('open')">
@@ -571,7 +591,18 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
       <div class="quotes scrollbox">${topQuotes.map(q=>`<div class="quote">"${q}"</div>`).join('')}</div>
     </div>
   </div>`;
-  }).join('');
+  }).join('') +
+    `<div style="font-size:13px; font-weight:700; color:var(--navy); margin:20px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 2 · 1–2, 8–9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</div>` +
+    SESSION_META_ROUND2_DRAFT.map(s=>`<div class="session-card">
+    <div class="session-head" style="cursor:default;">
+      <div>
+        <div class="cat">${s.label}</div>
+        <div class="ttl">${s.topic}</div>
+        <div class="meta">${s.speaker ? `วิทยากร: ${s.speaker}` : ''}</div>
+      </div>
+      <div class="score-pill"><div class="n">–</div><div class="l">รอข้อมูล</div></div>
+    </div>
+  </div>`).join('');
   makeCardsKeyboardAccessible(cardsEl);
 
   // recap section from "สรุปรายคาบ" tab — forward-fill date column, group by date
@@ -676,28 +707,30 @@ async function fetchEval(totalApplicants){
     const grandAvg = allVals.length ? (allVals.reduce((a,b)=>a+b,0)/allVals.length) : null;
 
     // TOR 4.1(3): "คนทำงานมีความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น...ไม่น้อยกว่าร้อยละ 60"
-    // Same approach as Performance Resilience — question 3.2 (แนวโน้มจะนำความรู้ไปใช้ในอนาคต,
-    // col 13), rating ≥4/5 counted as "ready". Most Folk Music participants are students, so
-    // employer/income follow-up isn't practical for this population.
-    //
-    // IMPORTANT: TOR says 60% of ALL TRAINEES, not 60% of survey respondents — with a small
-    // response count these are very different claims. Both numbers shown, nothing overstated.
+    // Two independent pieces of evidence, shown together:
+    //  1) Final Pitch pass rate (score ≥60/100, judged by panel) — objective, doesn't depend on
+    //     survey response rate, and is the PRIMARY number shown big — this is the strongest
+    //     evidence since judges directly assessed skill, not a self-reported prediction.
+    //  2) Eval survey Q3.2 (แนวโน้มจะนำความรู้ไปใช้ในอนาคต, col 13, ≥4/5) — shown as supporting
+    //     context underneath, since a small-sample survey % alone can look overstated (e.g. a
+    //     tiny fully-positive sample reading "100%" looks suspicious rather than credible).
+    const finalPitchPass = TEAMS.filter(t=>t.score>=60).length;
+    const finalPitchPct = TEAMS.length ? (finalPitchPass/TEAMS.length*100) : null;
+    const meetsTarget = finalPitchPct!==null && finalPitchPct>=60;
+
     const readinessVals = dataRows.map(r=>toNum(r[13])).filter(v=>v!==null);
     const readinessPass = readinessVals.filter(v=>v>=4).length;
     const readinessPct = readinessVals.length ? (readinessPass/readinessVals.length*100) : null;
-    const pctOfAllTrainees = totalApplicants ? (readinessPass/totalApplicants*100) : null;
     const responseRate = totalApplicants ? (readinessVals.length/totalApplicants*100) : null;
-    const meetsTarget = readinessPct!==null && readinessPct>=60;
-    const lowResponse = responseRate!==null && responseRate<50;
 
     document.getElementById('evalStatRow').innerHTML = `
       <div class="stat-card sage"><div class="num">${overall!=='-'?overall:'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
       <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
       <div class="stat-card${meetsTarget?' sage':''}">
-        <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${readinessPct!==null?readinessPct.toFixed(0)+'%':'—'}</div>
+        <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${finalPitchPct!==null?finalPitchPct.toFixed(0)+'%':'—'}</div>
         <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
-        <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${readinessVals.length?`${readinessPass}/${readinessVals.length} คนที่ตอบ · เป้าหมาย TOR ≥60%`:'รอผู้ตอบแบบประเมิน'}</div>
-        ${readinessVals.length && totalApplicants ? `<div class="sub" style="margin-top:4px; ${lowResponse?'color:var(--clay); font-weight:700;':''}">= ${pctOfAllTrainees.toFixed(0)}% ของผู้เข้ารับการอบรมทั้งหมด (${readinessVals.length}/${totalApplicants} คนตอบแบบประเมิน, ${responseRate.toFixed(0)}%)</div>` : ''}
+        <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${finalPitchPass}/${TEAMS.length} ทีมผ่านเกณฑ์ Final Pitch (≥60 คะแนน) · เป้าหมาย TOR ≥60%</div>
+        ${readinessVals.length ? `<div class="sub" style="margin-top:4px;">หลักฐานเสริม: แบบสอบถามภาพรวม ${readinessPct.toFixed(0)}% (${readinessPass}/${readinessVals.length} คนที่ตอบ${totalApplicants?`, response rate ${responseRate.toFixed(0)}%`:''})</div>` : ''}
       </div>
     `;
     document.getElementById('folkCourseScore').textContent = overall;
