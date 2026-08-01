@@ -165,8 +165,8 @@
       <div class="hero">
         <div class="eyebrow" id="reportDateLabel">รายงานสรุปหลักสูตร</div>
         <h1>เส้นทางดนตรีพื้นบ้านสู่เวทีโลก</h1>
-        <p>หลักสูตรระยะสั้น 5 วัน (25–29 พฤษภาคม 2569) เชื่อมโยงดนตรีพื้นบ้านไทยสู่มาตรฐานและโอกาสในเวทีนานาชาติ ปิดท้ายด้วย Final Pitch นำเสนอผลงาน</p>
-        <div class="datebar">🏁 รอบแรกจัดจบแล้ว — 16 คาบ ตลอด 5 วัน (25–29 พ.ค. 2569)</div>
+        <p>หลักสูตรระยะสั้น 2 รอบ (25–29 พ.ค. และ 1–2, 8–9 ส.ค. 2569) เชื่อมโยงดนตรีพื้นบ้านไทยสู่มาตรฐานและโอกาสในเวทีนานาชาติ ปิดท้ายด้วย Final Pitch นำเสนอผลงาน</p>
+        <div class="datebar">🏁 รอบที่ 1 จัดจบแล้ว (25–29 พ.ค. 2569) · รอบที่ 2 ณ วิทยาลัยนาฏศิลปนครราชสีมา (1–2, 8–9 ส.ค. 2569)</div>
       </div>
 
       <div class="stat-row" id="statRow"></div>
@@ -270,6 +270,20 @@ const SESSION_META = [
   {sheet:"28.05.69", gid:"821180123", label:"28 พ.ค.", topic:"เรื่อง ร่วม เล่า", speaker:"คุณณัฐพงศ์ เสียงสุคนธ์", ratingStart:3},
   {sheet:"28.05.69", gid:"821180123", label:"28 พ.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ, ดร.พิเศษ จียาศักดิ์", ratingStart:7},
   {sheet:"29.05.69", gid:"1071256717", label:"29 พ.ค.", topic:"Final Pitch + ประกาศรางวัล", speaker:"คุณพงศ์นรินทร์ อุลิศ, คุณอิศรา เปี่ยมพงศ์", ratingStart:3},
+];
+
+// ---- ROUND 2 (1-2, 8-9 ส.ค. 2569) — content ready, NOT yet wired into SESSION_META above ----
+// ratingStart is a placeholder (null) — round 2's daily reflection forms haven't been confirmed
+// to follow the same 4-column-per-session layout as round 1. Sending a screenshot of one form's
+// header row (e.g. "01.08.69") will let me set the real values and merge this into SESSION_META.
+const SESSION_META_ROUND2_DRAFT = [
+  {sheet:"01.08.69", label:"1 ส.ค.", topic:"Global Music Pathway for Folk Music Introduction: ดนตรีพื้นบ้านในบริบทนานาชาติ", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
+  {sheet:"01.08.69", label:"1 ส.ค.", topic:"คนหนึ่งเล่น คนหนึ่งฟัง (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
+  {sheet:"02.08.69", label:"2 ส.ค.", topic:"Notation / เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
+  {sheet:"02.08.69", label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร", ratingStart:null},
+  {sheet:"08.08.69", label:"8 ส.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ", ratingStart:null},
+  {sheet:"08.08.69", label:"8 ส.ค.", topic:"ศิลปะแห่งการสร้างโลกในจินตนาการ", speaker:"คุณดวิษ ณิชฌานธามัน", ratingStart:null},
+  {sheet:"09.08.69", label:"9 ส.ค.", topic:"จากไอเดียสู่ความเป็นไปได้ + มอบใบประกาศ + ปิดงาน", speaker:"", ratingStart:null},
 ];
 
 const DAY_ORDER = ["25 พ.ค.","26 พ.ค.","27 พ.ค.","28 พ.ค.","29 พ.ค."];
@@ -616,7 +630,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
 
 
 
-  fetchEval();
+  fetchEval(totalApplicants);
 
   document.querySelectorAll('.tab-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -628,7 +642,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
   });
 }
 
-async function fetchEval(){
+async function fetchEval(totalApplicants){
   try{
     const [rows, rows2] = await Promise.all([
       fetchSheetRows("ภาพรวม"),
@@ -665,15 +679,26 @@ async function fetchEval(){
     // Same approach as Performance Resilience — question 3.2 (แนวโน้มจะนำความรู้ไปใช้ในอนาคต,
     // col 13), rating ≥4/5 counted as "ready". Most Folk Music participants are students, so
     // employer/income follow-up isn't practical for this population.
+    //
+    // IMPORTANT: TOR says 60% of ALL TRAINEES, not 60% of survey respondents — with a small
+    // response count these are very different claims. Both numbers shown, nothing overstated.
     const readinessVals = dataRows.map(r=>toNum(r[13])).filter(v=>v!==null);
     const readinessPass = readinessVals.filter(v=>v>=4).length;
     const readinessPct = readinessVals.length ? (readinessPass/readinessVals.length*100) : null;
+    const pctOfAllTrainees = totalApplicants ? (readinessPass/totalApplicants*100) : null;
+    const responseRate = totalApplicants ? (readinessVals.length/totalApplicants*100) : null;
     const meetsTarget = readinessPct!==null && readinessPct>=60;
+    const lowResponse = responseRate!==null && responseRate<50;
 
     document.getElementById('evalStatRow').innerHTML = `
       <div class="stat-card sage"><div class="num">${overall!=='-'?overall:'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
       <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
-      <div class="stat-card${meetsTarget?' sage':''}"><div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${readinessPct!==null?readinessPct.toFixed(0)+'%':'—'}</div><div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div><div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${readinessVals.length?`${readinessPass}/${readinessVals.length} คน · เป้าหมาย TOR ≥60%`:'รอผู้ตอบแบบประเมิน'}</div></div>
+      <div class="stat-card${meetsTarget?' sage':''}">
+        <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${readinessPct!==null?readinessPct.toFixed(0)+'%':'—'}</div>
+        <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
+        <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${readinessVals.length?`${readinessPass}/${readinessVals.length} คนที่ตอบ · เป้าหมาย TOR ≥60%`:'รอผู้ตอบแบบประเมิน'}</div>
+        ${readinessVals.length && totalApplicants ? `<div class="sub" style="margin-top:4px; ${lowResponse?'color:var(--clay); font-weight:700;':''}">= ${pctOfAllTrainees.toFixed(0)}% ของผู้เข้ารับการอบรมทั้งหมด (${readinessVals.length}/${totalApplicants} คนตอบแบบประเมิน, ${responseRate.toFixed(0)}%)</div>` : ''}
+      </div>
     `;
     document.getElementById('folkCourseScore').textContent = overall;
 
