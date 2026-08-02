@@ -593,20 +593,34 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
     totalResp ? `ระหว่างนี้ ความพึงพอใจรายคาบ (ดูที่แท็บ "รายวัน") ใช้เป็นข้อมูลความก้าวหน้าเบื้องต้นได้ — เฉลี่ยรวม ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} คาบอยู่ที่ ${wOverall}/5` : '';
 
   // recap section from "สรุปรายคาบ" tab — columns: วันที่, หัวข้อ, วิทยากร, [ความเชี่ยวชาญ], เนื้อหาถอดความ, เสียงจากผู้เรียน
+  // Grouped by date with a day header, matching Folk Music's recap layout — no separate time
+  // column exists here (unlike Folk Music), so each entry just omits the time sub-line.
   if(recapRows && recapRows.length>1){
+    let lastDate = '';
     const entries = recapRows.slice(1)
       .filter(r=>r.some(c=>c && String(c).trim()!==""))
-      .map(r=>({date:r[0]||'', topic:r[1]||'', speaker:r[2]||'', transcript:r[4]||'', voices:r[5]||''}))
+      .map(r=>{
+        if(r[0] && String(r[0]).trim()) lastDate = String(r[0]).trim();
+        return {date:lastDate, topic:r[1]||'', speaker:r[2]||'', transcript:r[4]||'', voices:r[5]||''};
+      })
       .filter(e=>(e.transcript && String(e.transcript).trim()) || (e.voices && String(e.voices).trim()));
 
-    document.getElementById('recapSection').innerHTML = entries.length ? entries.map(it=>{
-      const body = [it.transcript, it.voices].filter(t=>t && String(t).trim()).join('\n\n');
-      return `<div class="recap-slot">
-        <div class="topic">${String(it.topic).split('\n')[0]}</div>
-        ${it.speaker ? `<div class="speaker">วิทยากร: ${String(it.speaker).replace(/\n/g,', ')}</div>` : ''}
-        <div class="body">${body}</div>
-      </div>`;
-    }).join('') : `<div style="color:var(--muted); font-size:13.5px;">ยังไม่มีการสรุปเนื้อหาและถอดเสียงผู้เรียนรายคาบ — จะทยอยเพิ่มหลังจบแต่ละคาบ</div>`;
+    const byDate = {};
+    entries.forEach(e=>{ (byDate[e.date] = byDate[e.date]||[]).push(e); });
+
+    document.getElementById('recapSection').innerHTML = entries.length ? Object.entries(byDate).map(([date, items])=>`
+      <div class="recap-day">
+        <div class="day-label">📅 ${date}</div>
+        ${items.map(it=>{
+          const body = [it.transcript, it.voices].filter(t=>t && String(t).trim()).join('\n\n');
+          return `<div class="recap-slot">
+            <div class="topic">${String(it.topic).split('\n')[0]}</div>
+            ${it.speaker ? `<div class="speaker">วิทยากร: ${String(it.speaker).replace(/\n/g,', ')}</div>` : ''}
+            <div class="body">${body}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    `).join('') : `<div style="color:var(--muted); font-size:13.5px;">ยังไม่มีการสรุปเนื้อหาและถอดเสียงผู้เรียนรายคาบ — จะทยอยเพิ่มหลังจบแต่ละคาบ</div>`;
   } else {
     document.getElementById('recapSection').innerHTML = `<div style="color:var(--muted); font-size:13.5px;">โหลดข้อมูลจากแท็บ "สรุปรายคาบ" ไม่สำเร็จ</div>`;
   }
