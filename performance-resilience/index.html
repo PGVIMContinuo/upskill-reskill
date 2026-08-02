@@ -222,6 +222,11 @@
 
     <!-- ================= EVALUATION (live from "ภาพรวม" tab once responses come in) ================= -->
     <div class="panel" id="eval">
+      <!-- Readiness card lives OUTSIDE the pending/content toggle below — it's built from
+           per-session data (11 sessions' worth), not the final ภาพรวม survey, so it should
+           never be hidden just because that one survey has zero responses. -->
+      <div class="stat-row" id="evalReadinessRow" style="grid-template-columns:1fr; margin-bottom:24px;"></div>
+
       <div class="pending-card" id="evalPending">
         <div class="icon">⏳</div>
         <h3>ผลการประเมินโครงการ — รอผู้ตอบแบบประเมิน</h3>
@@ -229,7 +234,7 @@
       </div>
 
       <div id="evalContent" style="display:none;">
-        <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(3,1fr);"></div>
+        <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(2,1fr);"></div>
 
         <div class="card">
           <h3><span>⭐</span> ความพึงพอใจรายด้าน</h3>
@@ -404,13 +409,13 @@ async function main(){
       const rows = dailyResults[idx];
       const isFuture = new Date(meta.dateISO) > today;
       const attend = attendByLabel[meta.label] ?? 0;
-      let resp = 0, learn=null, instr=null, overall=null, quotes=[];
+      let resp = 0, learn=null, instr=null, overall=null, quotes=[], learnAvgs=[];
       if(rows && rows.length > 1){
         const dataRows = rows.slice(1).filter(r => r.some(c => c && String(c).trim() !== ""));
         resp = dataRows.length;
         // columns 4-8: learning outcomes (content). column 12: activity format — also content, not speaker.
         // columns 9-11: speaker-specific only. column 13: respondent's own overall-satisfaction answer — kept separate, not blended.
-        const learnAvgs=[], instrAvgs=[], overallVals=[];
+        const instrAvgs=[], overallVals=[];
         dataRows.forEach(r=>{
           const learnVals = [4,5,6,7,8,12].map(i=>toNum(r[i])).filter(v=>v!==null);
           const instrVals = [9,10,11].map(i=>toNum(r[i])).filter(v=>v!==null);
@@ -424,7 +429,7 @@ async function main(){
         if(instrAvgs.length) instr = +(instrAvgs.reduce((a,b)=>a+b,0)/instrAvgs.length).toFixed(2);
         if(overallVals.length) overall = +(overallVals.reduce((a,b)=>a+b,0)/overallVals.length).toFixed(2);
       }
-      return {...meta, attend, resp, learn, instr, overall, quotes, done: !isFuture && resp>0};
+      return {...meta, attend, resp, learn, instr, overall, quotes, learnAvgs, done: !isFuture && resp>0};
     });
 
     render(sessions, applyRows, recapRows, signRows, evalRows);
@@ -467,6 +472,15 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   const totalResp = doneSessions.reduce((a,s)=>a+s.resp,0);
   const wOverallNum = doneSessions.reduce((a,s)=>a+(s.overall||0)*s.resp,0)/(totalResp||1);
   const wOverall = totalResp ? wOverallNum.toFixed(2) : "—";
+  const wLearnNum = doneSessions.reduce((a,s)=>a+(s.learn||0)*s.resp,0)/(totalResp||1);
+  const wLearn = totalResp ? wLearnNum.toFixed(2) : "—";
+  // All individual per-respondent knowledge-gained averages, pooled across every session —
+  // the real large-N base for a TOR-literal "% of responses" readiness figure (not just an
+  // average score). Each entry is one person's average across that session's 6 learn-related
+  // sub-questions, so this is genuinely per-response, not per-session.
+  const allLearnAvgs = doneSessions.flatMap(s=>s.learnAvgs);
+  const learnReadyCount = allLearnAvgs.filter(v=>v>=4).length;
+  const learnReadyPct = allLearnAvgs.length ? (learnReadyCount/allLearnAvgs.length*100) : null;
 
   // Overall course satisfaction from the final "ภาพรวม" survey (col 6 = 2.1 ความพึงพอใจโดยรวมต่อกิจกรรม)
   // — a separate, end-of-course measure, distinct from the per-session averages above.
@@ -576,7 +590,8 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   }
 
   // ---- evaluation (final "ภาพรวม" survey) ----
-  renderEval(evalRows, totalApplicants);
+  renderReadinessCard(evalRows, totalApplicants, wLearn, learnReadyPct, allLearnAvgs.length);
+  renderEval(evalRows);
 
   // ---- tabs ----
   document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -589,7 +604,33 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   });
 }
 
-function renderEval(evalRows, totalApplicants){
+// Renders the readiness card independently of the final ภาพรวม survey's response count —
+// its PRIMARY evidence is per-session data (11 sessions' worth, computed in render() before
+// this is called), so it should show real data even when the final survey has zero responses.
+// The survey-based line is supporting/secondary and gracefully shows "–" if there's no data.
+function renderReadinessCard(evalRows, totalApplicants, wLearn, learnReadyPct, learnN){
+  const PRACTICE_PLAN_SUBMISSIONS = 6;
+  const meetsTarget = learnReadyPct!==null && learnReadyPct>=60;
+
+  let readinessPct = null, hasReadinessVals = false;
+  if(evalRows){
+    const rows = evalRows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
+    const readinessVals = rows.map(r=>toNum(r[13])).filter(v=>v!==null);
+    hasReadinessVals = readinessVals.length>0;
+    if(hasReadinessVals) readinessPct = readinessVals.filter(v=>v>=4).length/readinessVals.length*100;
+  }
+
+  document.getElementById('evalReadinessRow').innerHTML = `
+    <div class="stat-card${meetsTarget?' sage':''}">
+      <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${learnReadyPct!==null?learnReadyPct.toFixed(0)+'%':'—'}</div>
+      <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
+      <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${learnN?`จาก ${learnN} คำตอบรายคาบ · เป้าหมาย TOR ≥60%`:'รอข้อมูล'}</div>
+      <div class="sub" style="margin-top:6px; opacity:.8;">หลักฐานเสริม: แบบสอบถามภาพรวม ${hasReadinessVals?readinessPct.toFixed(0)+'%':'–'} · แผนซ้อมส่วนบุคคล ${PRACTICE_PLAN_SUBMISSIONS}/${totalApplicants||50} คน</div>
+    </div>
+  `;
+}
+
+function renderEval(evalRows){
   const pendingEl = document.getElementById('evalPending');
   const contentEl = document.getElementById('evalContent');
   const footEl = document.getElementById('evalFootnote');
@@ -638,43 +679,9 @@ function renderEval(evalRows, totalApplicants){
   const allVals = rows.flatMap(r=>allIdx.map(i=>toNum(r[i])).filter(v=>v!==null));
   const grandAvg = allVals.length ? allVals.reduce((a,b)=>a+b,0)/allVals.length : null;
 
-  // TOR 4.1(3): "คนทำงานมีความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น...ไม่น้อยกว่าร้อยละ 60"
-  // Operationalized via the TOR-permitted alternative wording "ความพึงพอใจของผู้เข้าอบรมในด้าน
-  // การนำทักษะไปใช้ประโยชน์ได้จริง" — using question 3.2 (แนวโน้มจะนำความรู้ไปใช้ในอนาคต, col 13),
-  // counting a rating of 4-5/5 as "ready". Doesn't depend on attendance or employer follow-up,
-  // both of which aren't practical to track for this population.
-  //
-  // IMPORTANT: the TOR says "ร้อยละ 60 ของผู้เข้ารับการอบรม" — 60% of all TRAINEES, not 60% of
-  // survey respondents. With a small response count this matters a lot (e.g. 5/5 respondents
-  // rating high is NOT "100% of trainees"). Both numbers are shown so nothing is overstated —
-  // the respondent-based % is the headline (matches how the metric itself is usually discussed),
-  // but the "% of all trainees" and raw response count are always visible alongside it.
-  //
-  // PRACTICE_PLAN_SUBMISSIONS: unlike Folk Music's Final Pitch (judged, wired live from TEAMS),
-  // PR&AW has no equally strong objective alternative on the dashboard — the personal practice
-  // plan submissions (via LINE) aren't tracked in a live sheet, just a manually-reported count.
-  // Update this constant directly if the number changes; it's a closed submission window
-  // (deadline 29 ก.ค.), so it shouldn't need frequent updates.
-  const PRACTICE_PLAN_SUBMISSIONS = 6;
-  const readinessVals = rows.map(r=>toNum(r[13])).filter(v=>v!==null);
-  const readinessPass = readinessVals.filter(v=>v>=4).length;
-  const readinessPct = readinessVals.length ? (readinessPass/readinessVals.length*100) : null;
-  const pctOfAllTrainees = totalApplicants ? (readinessPass/totalApplicants*100) : null;
-  const responseRate = totalApplicants ? (readinessVals.length/totalApplicants*100) : null;
-  const meetsTarget = readinessPct!==null && readinessPct>=60;
-  const lowResponse = responseRate!==null && responseRate<50;
-  const practicePlanPct = totalApplicants ? (PRACTICE_PLAN_SUBMISSIONS/totalApplicants*100) : null;
-
   document.getElementById('evalStatRow').innerHTML = `
     <div class="stat-card sage"><div class="num">${overall!==null?overall.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
     <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
-    <div class="stat-card${meetsTarget?' sage':''}">
-      <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${readinessPct!==null?readinessPct.toFixed(0)+'%':'—'}</div>
-      <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
-      <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${readinessVals.length?`${readinessPass}/${readinessVals.length} คนที่ตอบ · เป้าหมาย TOR ≥60%`:'รอผู้ตอบแบบประเมิน'}</div>
-      ${readinessVals.length && totalApplicants ? `<div class="sub" style="margin-top:4px; ${lowResponse?'color:var(--clay); font-weight:700;':''}">= ${pctOfAllTrainees.toFixed(0)}% ของผู้เข้ารับการอบรมทั้งหมด (${readinessVals.length}/${totalApplicants} คนตอบแบบประเมิน, ${responseRate.toFixed(0)}%)</div>` : ''}
-      <div class="sub" style="margin-top:4px;">หลักฐานเสริม: แผนซ้อมส่วนบุคคล ${PRACTICE_PLAN_SUBMISSIONS}/${totalApplicants||'50'} คนส่ง${practicePlanPct!==null?` (${practicePlanPct.toFixed(0)}%)`:''} — สะท้อนการประยุกต์ใช้ทักษะเชิงลึก</div>
-    </div>
   `;
 
   function renderRatingBars(elId, dims){
