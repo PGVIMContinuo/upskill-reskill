@@ -225,6 +225,7 @@
       <!-- Readiness card lives OUTSIDE the pending/content toggle below — it's built from
            per-session data (11 sessions' worth), not the final ภาพรวม survey, so it should
            never be hidden just because that one survey has zero responses. -->
+      <div style="font-size:12px; font-weight:700; color:var(--sage); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;">📋 จากแบบประเมินรายคาบ (เก็บทันทีหลังจบแต่ละคาบ ตลอด 11 คาบ)</div>
       <div class="stat-row" id="evalReadinessRow" style="grid-template-columns:1fr; margin-bottom:24px;"></div>
 
       <div class="pending-card" id="evalPending">
@@ -234,6 +235,7 @@
       </div>
 
       <div id="evalContent" style="display:none;">
+        <div style="font-size:12px; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;">📋 จากแบบประเมินภาพรวม (เก็บครั้งเดียว หลังจบหลักสูตรทั้งหมด)</div>
         <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(2,1fr);"></div>
 
         <div class="card">
