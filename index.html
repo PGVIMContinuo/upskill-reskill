@@ -131,14 +131,14 @@
     <a class="course-card loading" id="card-folk" href="folk-music/">
       <div class="poster">
         <img src="assets/poster-folk-music.jpg" alt="โปสเตอร์ Global Pathways for Folk Music">
-        <div class="status done">จัดจบแล้ว</div>
+        <div class="status ongoing">กำลังดำเนินการ</div>
       </div>
       <div class="top">
         <h2>Global Pathways for Folk Music</h2>
-        <div class="sub">เส้นทางดนตรีพื้นบ้านสู่เวทีโลก · 25–29 พ.ค. 2569</div>
+        <div class="sub">เส้นทางดนตรีพื้นบ้านสู่เวทีโลก · 25–29 พ.ค. และ 1–2, 8–9 ส.ค. 2569</div>
         <div class="mini-stats">
-          <div class="mini-stat"><div class="n" id="folk-applicants">–</div><div class="l">ผู้สมัคร</div></div>
-          <div class="mini-stat"><div class="n" id="folk-sessions">16</div><div class="l">คาบทั้งหมด</div></div>
+          <div class="mini-stat"><div class="n" id="folk-applicants">–</div><div class="l">ผู้สมัคร (รวม 2 รอบ)</div><div class="l" id="folk-applicants-breakdown" style="margin-top:2px; font-size:10.5px;"></div></div>
+          <div class="mini-stat"><div class="n" id="folk-sessions">16</div><div class="l">คาบ (รอบ 1)</div></div>
           <div class="mini-stat"><div class="n" id="folk-persession-score">–</div><div class="l">พึงพอใจรายคาบ /5</div></div>
           <div class="mini-stat"><div class="n" id="folk-score">–</div><div class="l">พึงพอใจโดยรวม /5</div></div>
         </div>
@@ -262,8 +262,15 @@ const FOLK_SESSION_META = [
   try{
     const data = await loadFolkData();
     const apply = data.sheets["สมัคร"] || [];
-    document.getElementById('folk-applicants').textContent = apply.filter((r,i)=>i>0 && r[0]).length;
+    const apply2 = data.sheets["สมัคร_รอบ2"] || [];
+    const r1Count = apply.filter((r,i)=>i>0 && r[0]).length;
+    const r2Count = apply2.filter((r,i)=>i>0 && r[0]).length;
+    const totalApplicants = r1Count + r2Count;
+    document.getElementById('folk-applicants').textContent = totalApplicants;
+    document.getElementById('folk-applicants-breakdown').textContent = `รอบ 1: ${r1Count} · รอบ 2: ${r2Count}`;
 
+    // Per-session score still reflects round 1 only — round 2's daily-tab column layout
+    // (01.08.69 etc.) hasn't been confirmed yet, so not guessing at it here.
     let sumWeighted=0, sumN=0;
     FOLK_SESSION_META.forEach(meta=>{
       const rows = data.sheets[meta.gid];
@@ -274,16 +281,18 @@ const FOLK_SESSION_META = [
     });
     document.getElementById('folk-persession-score').textContent = sumN ? (sumWeighted/sumN).toFixed(2) : '–';
 
+    // Overall satisfaction combines both rounds' eval responses.
     const evalRows = data.sheets["ภาพรวม"];
-    if(evalRows){
-      const dataRows = evalRows.slice(1).filter(r=>r[0]);
-      const vals = dataRows.map(r=>toNum(r[6])).filter(v=>v!==null);
-      document.getElementById('folk-score').textContent = vals.length ? avg(vals).toFixed(2) : '–';
-    } else {
-      document.getElementById('folk-score').textContent = '–';
-    }
+    const evalRows2 = data.sheets["ภาพรวม_รอบสอง"];
+    const dataRows = [
+      ...(evalRows ? evalRows.slice(1).filter(r=>r[0]) : []),
+      ...(evalRows2 ? evalRows2.slice(1).filter(r=>r[0]) : []),
+    ];
+    const vals = dataRows.map(r=>toNum(r[6])).filter(v=>v!==null);
+    document.getElementById('folk-score').textContent = vals.length ? avg(vals).toFixed(2) : '–';
   }catch(e){
     document.getElementById('folk-applicants').textContent = '–';
+    document.getElementById('folk-applicants-breakdown').textContent = '';
     document.getElementById('folk-persession-score').textContent = '–';
     document.getElementById('folk-score').textContent = '–';
   }
