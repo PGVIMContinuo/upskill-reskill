@@ -122,6 +122,7 @@
   <a href="./" class="current">Performance Resilience</a>
   <a href="../folk-music/">Folk Music</a>
   <a href="../lessons-learned/">📖 ถอดบทเรียน</a>
+  <a href="../gallery/">📷 ประมวลภาพ</a>
   <a href="../manual/">📘 คู่มือ</a>
 </div>
 <div class="nav">
@@ -213,7 +214,7 @@
       <div class="card">
         <h3><span>🗓️</span> สรุปคะแนนทุกคาบ</h3>
         <table class="daytbl">
-          <thead><tr><th>วันที่</th><th>หัวข้อ</th><th>ความรู้ที่ได้รับ</th><th>วิทยากร</th><th>พึงพอใจโดยรวม</th><th>อัตราการตอบ</th></tr></thead>
+          <thead><tr><th>วันที่</th><th>หัวข้อ</th><th>ความรู้ที่ได้รับ</th><th>วิทยากร</th><th>พึงพอใจโดยรวม</th></tr></thead>
           <tbody id="dayTableBody"></tbody>
         </table>
       </div>
@@ -465,7 +466,9 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   const REAL_SESSION_COUNT = sessions.length;
   document.getElementById('reportDateLabel').textContent = 'รายงานสรุปหลักสูตร';
   document.getElementById('progressBar').textContent =
-    `📅 จัดไปแล้ว ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} จาก ${REAL_SESSION_COUNT} คาบ · เหลืออีก ${Math.max(REAL_SESSION_COUNT-doneSessions.length,0)} คาบจนถึง ${sessions[sessions.length-1].label}`;
+    doneSessions.length >= REAL_SESSION_COUNT
+      ? `🏁 จัดจบแล้ว — ${REAL_SESSION_COUNT} คาบ ณ สถาบันดนตรีกัลยาณิวัฒนา`
+      : `📅 จัดไปแล้ว ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} จาก ${REAL_SESSION_COUNT} คาบ · เหลืออีก ${Math.max(REAL_SESSION_COUNT-doneSessions.length,0)} คาบจนถึง ${sessions[sessions.length-1].label}`;
 
   // ---- stat cards ----
   const attendedNames = new Set();
@@ -539,12 +542,10 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   const tbody = document.getElementById('dayTableBody');
   tbody.innerHTML = sessions.map(s=>{
     if(!s.done){
-      return `<tr class="future"><td>${s.label}</td><td>${s.topic}</td><td colspan="4">ยังไม่ถึงกำหนดจัดกิจกรรม</td></tr>`;
+      return `<tr class="future"><td>${s.label}</td><td>${s.topic}</td><td colspan="3">ยังไม่ถึงกำหนดจัดกิจกรรม</td></tr>`;
     }
-    const respRate = s.attend ? (s.resp/s.attend*100) : null;
     return `<tr><td>${s.label}</td><td>${s.topic}</td>
-      <td class="score${s.learn<4?' low':''}">${s.learn}</td><td class="score${s.instr<4?' low':''}">${s.instr}</td><td class="score">${s.overall}</td>
-      <td class="score${respRate!==null && respRate<60?' low':''}">${respRate!==null?respRate.toFixed(0)+'%':'—'} <span style="color:var(--muted); font-size:11px;">(${s.resp}/${s.attend})</span></td></tr>`;
+      <td class="score${s.learn<4?' low':''}">${s.learn}</td><td class="score${s.instr<4?' low':''}">${s.instr}</td><td class="score">${s.overall}</td></tr>`;
   }).join('');
 
   const cardsEl = document.getElementById('sessionCards');
@@ -617,7 +618,7 @@ function renderReadinessCard(wLearn, learnReadyPct, learnN){
     <div class="stat-card${meetsTarget?' sage':''}">
       <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${learnReadyPct!==null?learnReadyPct.toFixed(0)+'%':'—'}</div>
       <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
-      <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${learnN?`จาก ${learnN} คำตอบรายคาบ · เป้าหมาย TOR ≥60%`:'รอข้อมูล'}</div>
+      <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${learnN?`จากผู้ประเมินรายคาบ ${learnN} คำตอบ ตลอด 11 คาบ · เป้าหมาย ≥60%`:'รอข้อมูล'}</div>
     </div>
   `;
 }
