@@ -136,6 +136,7 @@
   <a href="../performance-resilience/">Performance Resilience</a>
   <a href="./" class="current">Folk Music</a>
   <a href="../lessons-learned/">📖 ถอดบทเรียน</a>
+  <a href="../gallery/">📷 ประมวลภาพ</a>
   <a href="../manual/">📘 คู่มือ</a>
 </div>
 <div class="nav">
@@ -166,7 +167,7 @@
         <div class="eyebrow" id="reportDateLabel">รายงานสรุปหลักสูตร</div>
         <h1>เส้นทางดนตรีพื้นบ้านสู่เวทีโลก</h1>
         <p>หลักสูตรระยะสั้น 2 รอบ (25–29 พ.ค. และ 1–2, 8–9 ส.ค. 2569) เชื่อมโยงดนตรีพื้นบ้านไทยสู่มาตรฐานและโอกาสในเวทีนานาชาติ ปิดท้ายด้วย Final Pitch นำเสนอผลงาน</p>
-        <div class="datebar">🏁 รอบที่ 1 ณ สถาบันดนตรีกัลยาณิวัฒนา (25–29 พ.ค. 2569) · รอบที่ 2 ณ วิทยาลัยนาฏศิลปนครราชสีมา (1–2, 8–9 ส.ค. 2569)</div>
+        <div class="datebar">🏁 รอบที่ 1 จัดจบแล้ว (25–29 พ.ค. 2569) · รอบที่ 2 ณ วิทยาลัยนาฏศิลปนครราชสีมา (1–2, 8–9 ส.ค. 2569)</div>
       </div>
 
       <div class="stat-row" id="statRow"></div>
@@ -718,19 +719,13 @@ async function fetchEval(totalApplicants){
     const finalPitchPct = TEAMS.length ? (finalPitchPass/TEAMS.length*100) : null;
     const meetsTarget = finalPitchPct!==null && finalPitchPct>=60;
 
-    const readinessVals = dataRows.map(r=>toNum(r[13])).filter(v=>v!==null);
-    const readinessPass = readinessVals.filter(v=>v>=4).length;
-    const readinessPct = readinessVals.length ? (readinessPass/readinessVals.length*100) : null;
-    const responseRate = totalApplicants ? (readinessVals.length/totalApplicants*100) : null;
-
     document.getElementById('evalStatRow').innerHTML = `
       <div class="stat-card sage"><div class="num">${overall!=='-'?overall:'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
       <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
       <div class="stat-card${meetsTarget?' sage':''}">
         <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${finalPitchPct!==null?finalPitchPct.toFixed(0)+'%':'—'}</div>
         <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
-        <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${finalPitchPass}/${TEAMS.length} ทีมผ่านเกณฑ์ Final Pitch (≥60 คะแนน) · เป้าหมาย TOR ≥60%</div>
-        ${readinessVals.length ? `<div class="sub" style="margin-top:4px;">หลักฐานเสริม: แบบสอบถามภาพรวม ${readinessPct.toFixed(0)}% (${readinessPass}/${readinessVals.length} คนที่ตอบ${totalApplicants?`, response rate ${responseRate.toFixed(0)}%`:''})</div>` : ''}
+        <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${finalPitchPass}/${TEAMS.length} ทีมผ่านเกณฑ์ Final Pitch (≥60 คะแนน) · เป้าหมาย ≥60%</div>
       </div>
     `;
     document.getElementById('folkCourseScore').textContent = overall;
