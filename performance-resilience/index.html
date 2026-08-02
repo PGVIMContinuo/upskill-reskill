@@ -213,7 +213,7 @@
       <div class="card">
         <h3><span>🗓️</span> สรุปคะแนนทุกคาบ</h3>
         <table class="daytbl">
-          <thead><tr><th>วันที่</th><th>หัวข้อ</th><th>ความรู้ที่ได้รับ</th><th>วิทยากร</th><th>พึงพอใจโดยรวม</th></tr></thead>
+          <thead><tr><th>วันที่</th><th>หัวข้อ</th><th>ความรู้ที่ได้รับ</th><th>วิทยากร</th><th>พึงพอใจโดยรวม</th><th>อัตราการตอบ</th></tr></thead>
           <tbody id="dayTableBody"></tbody>
         </table>
       </div>
@@ -537,10 +537,12 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   const tbody = document.getElementById('dayTableBody');
   tbody.innerHTML = sessions.map(s=>{
     if(!s.done){
-      return `<tr class="future"><td>${s.label}</td><td>${s.topic}</td><td colspan="3">ยังไม่ถึงกำหนดจัดกิจกรรม</td></tr>`;
+      return `<tr class="future"><td>${s.label}</td><td>${s.topic}</td><td colspan="4">ยังไม่ถึงกำหนดจัดกิจกรรม</td></tr>`;
     }
+    const respRate = s.attend ? (s.resp/s.attend*100) : null;
     return `<tr><td>${s.label}</td><td>${s.topic}</td>
-      <td class="score${s.learn<4?' low':''}">${s.learn}</td><td class="score${s.instr<4?' low':''}">${s.instr}</td><td class="score">${s.overall}</td></tr>`;
+      <td class="score${s.learn<4?' low':''}">${s.learn}</td><td class="score${s.instr<4?' low':''}">${s.instr}</td><td class="score">${s.overall}</td>
+      <td class="score${respRate!==null && respRate<60?' low':''}">${respRate!==null?respRate.toFixed(0)+'%':'—'} <span style="color:var(--muted); font-size:11px;">(${s.resp}/${s.attend})</span></td></tr>`;
   }).join('');
 
   const cardsEl = document.getElementById('sessionCards');
@@ -590,7 +592,7 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   }
 
   // ---- evaluation (final "ภาพรวม" survey) ----
-  renderReadinessCard(evalRows, totalApplicants, wLearn, learnReadyPct, allLearnAvgs.length);
+  renderReadinessCard(wLearn, learnReadyPct, allLearnAvgs.length);
   renderEval(evalRows);
 
   // ---- tabs ----
@@ -605,27 +607,15 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
 }
 
 // Renders the readiness card independently of the final ภาพรวม survey's response count —
-// its PRIMARY evidence is per-session data (11 sessions' worth, computed in render() before
-// this is called), so it should show real data even when the final survey has zero responses.
-// The survey-based line is supporting/secondary and gracefully shows "–" if there's no data.
-function renderReadinessCard(evalRows, totalApplicants, wLearn, learnReadyPct, learnN){
-  const PRACTICE_PLAN_SUBMISSIONS = 6;
+// built entirely from per-session data (11 sessions' worth, computed in render() before this
+// is called), so it always shows real data regardless of the final survey's response count.
+function renderReadinessCard(wLearn, learnReadyPct, learnN){
   const meetsTarget = learnReadyPct!==null && learnReadyPct>=60;
-
-  let readinessPct = null, hasReadinessVals = false;
-  if(evalRows){
-    const rows = evalRows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
-    const readinessVals = rows.map(r=>toNum(r[13])).filter(v=>v!==null);
-    hasReadinessVals = readinessVals.length>0;
-    if(hasReadinessVals) readinessPct = readinessVals.filter(v=>v>=4).length/readinessVals.length*100;
-  }
-
   document.getElementById('evalReadinessRow').innerHTML = `
     <div class="stat-card${meetsTarget?' sage':''}">
       <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${learnReadyPct!==null?learnReadyPct.toFixed(0)+'%':'—'}</div>
       <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
       <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${learnN?`จาก ${learnN} คำตอบรายคาบ · เป้าหมาย TOR ≥60%`:'รอข้อมูล'}</div>
-      <div class="sub" style="margin-top:6px; opacity:.8;">หลักฐานเสริม: แบบสอบถามภาพรวม ${hasReadinessVals?readinessPct.toFixed(0)+'%':'–'} · แผนซ้อมส่วนบุคคล ${PRACTICE_PLAN_SUBMISSIONS}/${totalApplicants||50} คน</div>
     </div>
   `;
 }
