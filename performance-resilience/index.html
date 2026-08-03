@@ -14,9 +14,10 @@
   *{box-sizing:border-box;}
   body{margin:0; font-family:'Sarabun',sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;}
   h1,h2,h3{font-family:'Fraunces',serif; margin:0;}
+  .sticky-header{position:sticky; top:0; z-index:50;}
   .nav{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%); color:#fff; padding:18px 32px;
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
-    position:sticky; top:0; z-index:50; box-shadow:0 2px 12px rgba(20,26,69,.25);}
+    box-shadow:0 2px 12px rgba(20,26,69,.25);}
   .nav-brand{display:flex; align-items:center; gap:10px;}
   .nav-brand .mark{width:34px;height:34px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:18px;}
   .nav-brand .titles{line-height:1.15;}
@@ -107,14 +108,14 @@
   .footnote{font-size:12px; color:var(--muted); margin-top:20px; line-height:1.7; padding:16px 20px; background:#fbfaf6; border-radius:10px; border:1px solid var(--line);}
   .loading{text-align:center; padding:80px 20px; color:var(--muted); font-size:14px;}
   .errbox{background:#fdeceb; border:1px solid #f2b9b3; color:#8a2e22; padding:16px 20px; border-radius:10px; font-size:13.5px; line-height:1.7;}
-  .sitelinks{background:#fbfaf6; border-bottom:1px solid var(--line); padding:9px 32px; display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px; position:sticky; top:0; z-index:50;}
+  .sitelinks{background:#fbfaf6; border-bottom:1px solid var(--line); padding:9px 32px; display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px;}
   .sitelinks a{color:var(--muted); text-decoration:none; font-weight:600;}
   .sitelinks a.current{color:var(--navy);}
   .sitelinks a:hover{color:#b8792c;}
   .credit-badge{display:inline-flex; gap:8px; align-items:center; background:var(--sage-light); color:var(--sage);
     padding:10px 16px; border-radius:999px; font-size:13px; font-weight:600; margin-bottom:24px;}
   .photo{position:relative; border-radius:10px; overflow:hidden; aspect-ratio:4/3; background:var(--line); cursor:pointer;}
-  .photo img{width:100%; height:100%; object-fit:cover; display:block; transition:.25s;}
+  .photo img{width:100%; height:100%; object-fit:cover; object-position: center 30%; display:block; transition:.25s;}
   .photo:hover img{transform:scale(1.04);}
   .photo .cap{position:absolute; left:0; right:0; bottom:0; padding:10px 12px 8px; font-size:12px; color:#fff;
     background:linear-gradient(to top, rgba(20,26,69,.85), transparent); opacity:0; transition:.2s;}
@@ -128,6 +129,7 @@
 </head>
 <body>
 
+<div class="sticky-header">
 <div class="sitelinks">
   <a href="../">🏠 หน้าแรก</a>
   <a href="./" class="current">Performance Resilience</a>
@@ -150,6 +152,7 @@
     <button class="tab-btn" data-tab="photos">📷 ภาพกิจกรรม</button>
     <button class="tab-btn" data-tab="eval">ประเมินภาพรวม</button>
   </div>
+</div>
 </div>
 
 <div class="wrap">
@@ -271,6 +274,8 @@
         <div id="eegGroups"></div>
         <div class="footnote" style="margin-top:16px;">หมายเหตุ: ไม่ระบุชื่อผู้เข้าร่วมรายบุคคล — แสดงเป็นหมายเลขและจัดกลุ่มตามประเด็นร่วมแทน เนื่องจากเหตุผลการคัดเลือกมีรายละเอียดสภาพร่างกาย/จิตใจส่วนบุคคล ซึ่งไม่เหมาะเผยแพร่แบบระบุตัวตนบนหน้ารายงานสาธารณะ</div>
       </div>
+    </div>
+
     <!-- ================= PHOTOS ================= -->
     <div class="panel" id="photos">
       <div class="card">
@@ -279,6 +284,7 @@
       </div>
     </div>
 
+  </div>
 </div>
 
 <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
