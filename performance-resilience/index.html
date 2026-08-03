@@ -244,7 +244,7 @@
       </div>
 
       <div id="evalContent" style="display:none;">
-        <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(2,1fr);"></div>
+        <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(3,1fr);"></div>
 
         <div class="card">
           <h3><span>⭐</span> ความพึงพอใจรายด้าน</h3>
@@ -632,7 +632,7 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   }
 
   // ---- evaluation (final "ภาพรวม" survey) ----
-  renderEval(evalRows);
+  renderEval(evalRows, learnReadyPct);
 
   // ---- tabs ----
   document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -645,7 +645,7 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   });
 }
 
-function renderEval(evalRows){
+function renderEval(evalRows, learnReadyPct){
   const pendingEl = document.getElementById('evalPending');
   const contentEl = document.getElementById('evalContent');
   const footEl = document.getElementById('evalFootnote');
@@ -697,6 +697,11 @@ function renderEval(evalRows){
   document.getElementById('evalStatRow').innerHTML = `
     <div class="stat-card sage"><div class="num">${overall!==null?overall.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
     <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
+    <div class="stat-card">
+      <div class="num">${learnReadyPct!==null?learnReadyPct.toFixed(0)+'%':'—'}</div>
+      <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
+      <div class="sub">จากคำตอบแบบสะท้อนคิดรายคาบตลอดหลักสูตร</div>
+    </div>
   `;
 
   function renderRatingBars(elId, dims){
