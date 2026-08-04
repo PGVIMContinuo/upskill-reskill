@@ -309,15 +309,13 @@ const SESSION_META = [
 const SESSION_META_ROUND2 = [
   {sheet:"01.08.69", label:"1 ส.ค.", topic:"Global Music Pathway for Folk Music Introduction: ดนตรีพื้นบ้านในบริบทนานาชาติ", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:3},
   {sheet:"01.08.69", label:"1 ส.ค.", topic:"คนหนึ่งเล่น คนหนึ่งฟัง (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:7},
-  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เตรียมและทำความเข้าใจการเตรียมการแสดงและการ Pitching", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:3},
-  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:7},
+  // 02.08.69's form scores these two topics together as one combined block (C-F) — not separately.
+  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เตรียมและทำความเข้าใจการเตรียมการแสดงและการ Pitching + เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:3, pooled:true},
+  {sheet:"02.08.69", label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร", ratingStart:7},
 ];
-// This topic shares the 02.08.69 date but was confirmed to have no reflection-form evaluation
-// of its own (only 2 rating blocks exist in that sheet) — shown permanently as "ไม่มีการประเมิน",
-// distinct from "รอข้อมูล" (which implies data is merely pending).
-const SESSION_NO_EVAL_ROUND2 = [
-  {label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร"},
-];
+// No topics currently lack their own evaluation block — kept as an array (rather than removed)
+// so the render logic below doesn't need a separate code path if this becomes non-empty again.
+const SESSION_NO_EVAL_ROUND2 = [];
 // Still in the future relative to today — dates haven't happened yet, so genuinely "รอข้อมูล".
 const SESSION_META_ROUND2_FUTURE = [
   {sheet:"08.08.69", label:"8 ส.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ", ratingStart:null},
@@ -675,7 +673,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
     return `<div class="session-card">
     <div class="session-head" onclick="this.parentElement.classList.toggle('open')">
       <div>
-        <div class="cat">${s.label}</div>
+        <div class="cat">${s.label}${s.pooled ? ' · ประเมินรวมกัน' : ''}</div>
         <div class="ttl">${s.topic}</div>
         <div class="meta">วิทยากร: ${s.speaker}</div>
       </div>
@@ -685,7 +683,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
       </div>
     </div>
     <div class="session-body">
-      <div class="rate-note">เนื้อหา ${s.contentAvg ?? '-'}/5 · วิทยากร ${s.speakerAvg ?? '-'}/5</div>
+      <div class="rate-note">เนื้อหา ${s.contentAvg ?? '-'}/5 · วิทยากร ${s.speakerAvg ?? '-'}/5${s.pooled ? ' · คะแนนนี้ประเมินรวมทั้ง 2 กิจกรรมด้วยแบบฟอร์มเดียวกัน' : ''}</div>
       ${topQuotes.length ? `<div class="quote-count">ตัวอย่างเสียงจากผู้เรียน (${topQuotes.length} คน)</div>` : ''}
       <div class="quotes scrollbox">${topQuotes.map(q=>`<div class="quote">"${q}"</div>`).join('')}</div>
     </div>
