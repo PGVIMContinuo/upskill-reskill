@@ -302,16 +302,24 @@ const SESSION_META = [
   {sheet:"29.05.69", gid:"1071256717", label:"29 พ.ค.", topic:"Final Pitch + ประกาศรางวัล", speaker:"คุณพงศ์นรินทร์ อุลิศ, คุณอิศรา เปี่ยมพงศ์", ratingStart:3},
 ];
 
-// ---- ROUND 2 (1-2, 8-9 ส.ค. 2569) — content ready, NOT yet wired into SESSION_META above ----
-// ratingStart is a placeholder (null) — round 2's daily reflection forms haven't been confirmed
-// to follow the same 4-column-per-session layout as round 1. Sending a screenshot of one form's
-// header row (e.g. "01.08.69") will let me set the real values and merge this into SESSION_META.
-const SESSION_META_ROUND2_DRAFT = [
-  {sheet:"01.08.69", label:"1 ส.ค.", topic:"Global Music Pathway for Folk Music Introduction: ดนตรีพื้นบ้านในบริบทนานาชาติ", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
-  {sheet:"01.08.69", label:"1 ส.ค.", topic:"คนหนึ่งเล่น คนหนึ่งฟัง (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
-  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เตรียมและทำความเข้าใจการเตรียมการแสดงและการ Pitching", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
-  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:null},
-  {sheet:"02.08.69", label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร", ratingStart:null},
+// ---- ROUND 2 (1-2, 8-9 ส.ค. 2569) ----
+// Confirmed against the real form (2026-08-04): 01.08.69 and 02.08.69 sheets follow the SAME
+// 4-column-per-topic layout as round 1 (prompt, content, speaker, satisfaction), fetched by
+// sheet NAME (not gid, since fetch-sheets.js already syncs these named tabs directly).
+const SESSION_META_ROUND2 = [
+  {sheet:"01.08.69", label:"1 ส.ค.", topic:"Global Music Pathway for Folk Music Introduction: ดนตรีพื้นบ้านในบริบทนานาชาติ", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:3},
+  {sheet:"01.08.69", label:"1 ส.ค.", topic:"คนหนึ่งเล่น คนหนึ่งฟัง (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:7},
+  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เตรียมและทำความเข้าใจการเตรียมการแสดงและการ Pitching", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:3},
+  {sheet:"02.08.69", label:"2 ส.ค.", topic:"เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:7},
+];
+// This topic shares the 02.08.69 date but was confirmed to have no reflection-form evaluation
+// of its own (only 2 rating blocks exist in that sheet) — shown permanently as "ไม่มีการประเมิน",
+// distinct from "รอข้อมูล" (which implies data is merely pending).
+const SESSION_NO_EVAL_ROUND2 = [
+  {label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร"},
+];
+// Still in the future relative to today — dates haven't happened yet, so genuinely "รอข้อมูล".
+const SESSION_META_ROUND2_FUTURE = [
   {sheet:"08.08.69", label:"8 ส.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ", ratingStart:null},
   {sheet:"08.08.69", label:"8 ส.ค.", topic:"ศิลปะแห่งการสร้างโลกในจินตนาการ", speaker:"คุณดวิษ ณิชฌานธามัน", ratingStart:null},
   {sheet:"09.08.69", label:"9 ส.ค.", topic:"ทำงานกลุ่ม: เตรียม Project Proposal", speaker:"", ratingStart:null},
@@ -455,11 +463,12 @@ function avg(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : nul
 
 async function main(){
   try{
-    const [signRows, applyRows, recapRows, applyRows2] = await Promise.all([
+    const [signRows, applyRows, recapRows, applyRows2, recapRows2] = await Promise.all([
       fetchSheetRows("ลงชื่อแต่ละวัน"),
       fetchSheetRows("สมัคร"),
       fetchSheetRows("สรุปรายคาบ").catch(()=>null),
       fetchSheetRows("สมัคร_รอบ2").catch(()=>null), // round 2 (1-2, 8-9 Aug) — same course, second batch
+      fetchSheetRows("สรุปรายคาบ_รอบสอง").catch(()=>null),
     ]);
     const totalsRow = signRows.find(r => (r[0]||"").trim() === "รวมผู้เข้าร่วม");
     const signHeader = signRows[0];
@@ -508,7 +517,41 @@ async function main(){
         attend: attendByLabel[meta.label] ?? 0};
     });
 
-    render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2);
+    // Round 2 daily sheets are fetched by NAME (already synced under their tab name by
+    // fetch-sheets.js), unlike round 1's gid-based lookup above — no metadata resolution needed.
+    const round2SheetNames = [...new Set(SESSION_META_ROUND2.map(s=>s.sheet))];
+    const round2Results = await Promise.allSettled(round2SheetNames.map(name=>fetchSheetRows(name)));
+    const round2RowsMap = {};
+    round2SheetNames.forEach((name,i)=>{
+      round2RowsMap[name] = round2Results[i].status==='fulfilled' ? round2Results[i].value : null;
+    });
+    const sessions2 = SESSION_META_ROUND2.map(meta=>{
+      const rows = round2RowsMap[meta.sheet];
+      let resp=0, contentAvg=null, speakerAvg=null, overallAvg=null, quotes=[];
+      const contentVals=[], speakerVals=[], overallVals=[];
+      if(rows && rows.length>1){
+        const dataRows = rows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
+        const c0=meta.ratingStart, c1=meta.ratingStart+1, c2=meta.ratingStart+2;
+        const promptCol = meta.ratingStart-1;
+        dataRows.forEach(r=>{
+          const v0=toNum(r[c0]), v1=toNum(r[c1]), v2=toNum(r[c2]);
+          if(v0!==null||v1!==null||v2!==null) resp++;
+          if(v0!==null) contentVals.push(v0);
+          if(v1!==null) speakerVals.push(v1);
+          if(v2!==null) overallVals.push(v2);
+          if(r[promptCol] && String(r[promptCol]).trim()) quotes.push(String(r[promptCol]).trim());
+        });
+        contentAvg = avg(contentVals); speakerAvg = avg(speakerVals); overallAvg = avg(overallVals);
+      }
+      return {...meta, resp,
+        contentAvg: contentAvg!==null?+contentAvg.toFixed(2):null,
+        speakerAvg: speakerAvg!==null?+speakerAvg.toFixed(2):null,
+        overallAvg: overallAvg!==null?+overallAvg.toFixed(2):null,
+        contentN: contentVals.length, speakerN: speakerVals.length, overallN: overallVals.length,
+        quotes: quotes};
+    });
+
+    render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2, sessions2, recapRows2);
   }catch(err){
     document.getElementById('loadingMsg').style.display='none';
     const box=document.getElementById('errMsg'); box.style.display='block';
@@ -517,7 +560,7 @@ async function main(){
   }
 }
 
-function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2){
+function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2, sessions2, recapRows2){
   document.getElementById('loadingMsg').style.display='none';
   document.getElementById('appContent').style.display='block';
 
@@ -596,7 +639,11 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
     sessions.map(s=>`<tr><td>${s.label}</td><td>${s.topic}</td>
     <td class="score">${s.contentAvg ?? '-'}</td><td class="score">${s.speakerAvg ?? '-'}</td><td class="score">${s.overallAvg ?? '-'}</td></tr>`).join('') +
     `<tr><td colspan="5" style="background:var(--sage-light); font-weight:700; color:var(--sage); padding:8px 12px;">รอบที่ 2 · 1–2, 8–9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</td></tr>` +
-    SESSION_META_ROUND2_DRAFT.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
+    sessions2.map(s=>`<tr><td>${s.label}</td><td>${s.topic}</td>
+    <td class="score">${s.contentAvg ?? '-'}</td><td class="score">${s.speakerAvg ?? '-'}</td><td class="score">${s.overallAvg ?? '-'}</td></tr>`).join('') +
+    SESSION_NO_EVAL_ROUND2.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
+    <td colspan="3" style="font-style:italic; color:var(--muted);">ไม่มีการประเมิน</td></tr>`).join('') +
+    SESSION_META_ROUND2_FUTURE.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
     <td colspan="3">รอข้อมูล</td></tr>`).join('');
 
   const cardsEl = document.getElementById('sessionCards');
@@ -623,7 +670,38 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
   </div>`;
   }).join('') +
     `<div style="font-size:13px; font-weight:700; color:var(--navy); margin:20px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 2 · 1–2, 8–9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</div>` +
-    SESSION_META_ROUND2_DRAFT.map(s=>`<div class="session-card">
+    sessions2.map((s,i)=>{
+    const topQuotes = [...s.quotes].sort((a,b)=>b.length-a.length).slice(0,10);
+    return `<div class="session-card">
+    <div class="session-head" onclick="this.parentElement.classList.toggle('open')">
+      <div>
+        <div class="cat">${s.label}</div>
+        <div class="ttl">${s.topic}</div>
+        <div class="meta">วิทยากร: ${s.speaker}</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <div class="score-pill"><div class="n">${s.overallAvg ?? '-'}</div><div class="l">/5</div></div>
+        <div class="chev">▾</div>
+      </div>
+    </div>
+    <div class="session-body">
+      <div class="rate-note">เนื้อหา ${s.contentAvg ?? '-'}/5 · วิทยากร ${s.speakerAvg ?? '-'}/5</div>
+      ${topQuotes.length ? `<div class="quote-count">ตัวอย่างเสียงจากผู้เรียน (${topQuotes.length} คน)</div>` : ''}
+      <div class="quotes scrollbox">${topQuotes.map(q=>`<div class="quote">"${q}"</div>`).join('')}</div>
+    </div>
+  </div>`;
+  }).join('') +
+    SESSION_NO_EVAL_ROUND2.map(s=>`<div class="session-card">
+    <div class="session-head" style="cursor:default;">
+      <div>
+        <div class="cat">${s.label}</div>
+        <div class="ttl">${s.topic}</div>
+        <div class="meta">${s.speaker ? `วิทยากร: ${s.speaker}` : ''}</div>
+      </div>
+      <div class="score-pill"><div class="n">–</div><div class="l" style="font-style:italic;">ไม่มีการประเมิน</div></div>
+    </div>
+  </div>`).join('') +
+    SESSION_META_ROUND2_FUTURE.map(s=>`<div class="session-card">
     <div class="session-head" style="cursor:default;">
       <div>
         <div class="cat">${s.label}</div>
@@ -635,17 +713,22 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
   </div>`).join('');
   makeCardsKeyboardAccessible(cardsEl);
 
-  // recap section from "สรุปรายคาบ" tab — forward-fill date column, group by date
-  if(recapRows && recapRows.length>1){
+  // recap section from "สรุปรายคาบ" (round 1) + "สรุปรายคาบ_รอบสอง" (round 2) — forward-fill
+  // date column per sheet (each sheet's fill resets independently), then merge and group by date.
+  function parseRecapSheet(rows){
+    if(!rows || rows.length<=1) return [];
     let lastDate = '';
-    const entries = recapRows.slice(1)
+    return rows.slice(1)
       .filter(r=>r.some(c=>c && String(c).trim()!==""))
       .map(r=>{
         if(r[0] && String(r[0]).trim()) lastDate = String(r[0]).trim();
         return {date:lastDate, time:r[1]||'', topic:r[2]||'', speaker:r[3]||'', transcript:r[4]||'', voices:r[5]||''};
       });
+  }
+  const recapEntries = [...parseRecapSheet(recapRows), ...parseRecapSheet(recapRows2)];
+  if(recapEntries.length){
     const byDate = {};
-    entries.forEach(e=>{ (byDate[e.date] = byDate[e.date]||[]).push(e); });
+    recapEntries.forEach(e=>{ (byDate[e.date] = byDate[e.date]||[]).push(e); });
 
     document.getElementById('recapSection').innerHTML = Object.entries(byDate).map(([date, items])=>`
       <div class="recap-day">
