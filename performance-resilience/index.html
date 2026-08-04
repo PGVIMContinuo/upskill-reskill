@@ -817,26 +817,74 @@ function renderEEG(){
   `).join('');
 }
 
-// Add photos here as they're uploaded to assets/gallery/ — just add one line per photo.
-const PHOTOS = [
-  // {file:"pr-01.jpg", cap:"20 พ.ค. 2569 — นักดนตรีในฐานะ High-Performance Human"},
+// Photos grouped into 3 sections, matching the Folk Music dashboard's pattern. Filenames use
+// plain ASCII (no spaces, no Thai) to avoid the encoding/matching issues hit earlier — upload
+// files to assets/gallery/ with exactly these names.
+const PHOTO_GROUPS = [
+  {
+    label: "🧠 Pre-test วัดคลื่นสมอง (EEG Workshop)",
+    files: [
+      "eeg-pre-1.jpg",
+      "eeg-pre-2.jpg",
+      "eeg-pre-3.jpg",
+      "eeg-pre-4.jpg",
+    ]
+  },
+  {
+    label: "📚 ภาพบรรยากาศการเรียนรู้ (หลายคาบ)",
+    files: [
+      "class-01.jpg",
+      "class-02.jpg",
+      "class-03.jpg",
+      "class-04.jpg",
+      "class-05.jpg",
+      "class-06.jpg",
+      "class-07.jpg",
+      "class-08.jpg",
+      "class-09.jpg",
+      "class-10.jpg",
+      "class-11.jpg",
+      "class-12.jpg",
+      "class-13.jpg",
+      "class-14.jpg",
+    ]
+  },
+  {
+    label: "🧠 Post-test วัดคลื่นสมอง (EEG Workshop)",
+    files: [] // empty until post-test photos are available — add filenames here later, same format as pre-test above
+  },
 ];
+// Flattened list used by the lightbox (keeps group label as caption)
+const PHOTOS = PHOTO_GROUPS.flatMap(g => g.files.map(file => ({file, cap: g.label})));
+
 function renderPhotos(){
   const el = document.getElementById('photoGrid');
   if(!PHOTOS.length){
-    el.innerHTML = `<div class="photo-empty">ยังไม่มีภาพ — เพิ่มได้โดยอัปโหลดไฟล์ไปที่ assets/gallery/ แล้วเพิ่มรายการในโค้ด (PHOTOS array)</div>`;
+    el.innerHTML = `<div class="photo-empty">ยังไม่มีภาพ — เพิ่มได้โดยอัปโหลดไฟล์ไปที่ assets/gallery/ แล้วเพิ่มรายการในโค้ด (PHOTO_GROUPS array)</div>`;
     return;
   }
-  el.innerHTML = PHOTOS.map((p,i)=>`
-    <div class="photo" onclick="openLightbox(${i})">
-      <img src="../assets/gallery/${p.file}" alt="${p.cap||''}" loading="lazy">
-      ${p.cap ? `<div class="cap">${p.cap}</div>` : ''}
-    </div>
-  `).join('');
+  let html = '';
+  let idx = 0;
+  PHOTO_GROUPS.forEach((group, gi)=>{
+    html += `<div style="grid-column:1/-1; font-size:14px; font-weight:700; color:var(--sage); margin:${gi===0?'0':'28px'} 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);">${group.label}</div>`;
+    if(!group.files.length){
+      html += `<div class="photo-empty" style="padding:24px;">ยังไม่มีภาพในส่วนนี้</div>`;
+      return;
+    }
+    group.files.forEach(file=>{
+      const encoded = encodeURIComponent(file);
+      html += `<div class="photo" onclick="openLightbox(${idx})">
+        <img src="../assets/gallery/${encoded}" alt="${group.label}" loading="lazy">
+        <div class="cap">${group.label}</div>
+      </div>`;
+      idx++;
+    });
+  });
+  el.innerHTML = html;
 }
 function openLightbox(i){
   const p = PHOTOS[i];
-  document.getElementById('lightbox-img').src = `../assets/gallery/${p.file}`;
+  document.getElementById('lightbox-img').src = `../assets/gallery/${encodeURIComponent(p.file)}`;
   document.getElementById('lightbox-cap').textContent = p.cap||'';
   document.getElementById('lightbox').classList.add('open');
 }
