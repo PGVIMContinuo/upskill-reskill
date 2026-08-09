@@ -313,15 +313,19 @@ const SESSION_META_ROUND2 = [
   {sheet:"02.08.69", label:"2 ส.ค.", topic:"เตรียมและทำความเข้าใจการเตรียมการแสดงและการ Pitching + เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:3, pooled:true},
   {sheet:"02.08.69", label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร", ratingStart:7},
 ];
-// No topics currently lack their own evaluation block — kept as an array (rather than removed)
-// so the render logic below doesn't need a separate code path if this becomes non-empty again.
-const SESSION_NO_EVAL_ROUND2 = [];
-// Still in the future relative to today — dates haven't happened yet, so genuinely "รอข้อมูล".
+// Topics that never had a dedicated evaluation form — participants went straight into the
+// hands-on task itself (rehearsal → straight to the real thing), so there's no rating data to
+// show for these. Rendered with "ไม่มีการประเมิน" instead of "รอข้อมูล".
+const SESSION_NO_EVAL_ROUND2 = [
+  {sheet:"09.08.69", label:"9 ส.ค.", topic:"ทำงานกลุ่ม: เตรียม Project Proposal", speaker:""},
+  {sheet:"09.08.69", label:"9 ส.ค.", topic:"จากไอเดียสู่ความเป็นไปได้ + มอบใบประกาศ + ปิดงาน", speaker:""},
+];
+// Genuinely still pending — 8 ส.ค. has a real evaluation form but real column headers haven't
+// been confirmed yet; ratingStart stays null until confirmed, then this moves into
+// SESSION_META_ROUND2 above.
 const SESSION_META_ROUND2_FUTURE = [
   {sheet:"08.08.69", label:"8 ส.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ", ratingStart:null},
   {sheet:"08.08.69", label:"8 ส.ค.", topic:"ศิลปะแห่งการสร้างโลกในจินตนาการ", speaker:"คุณดวิษ ณิชฌานธามัน", ratingStart:null},
-  {sheet:"09.08.69", label:"9 ส.ค.", topic:"ทำงานกลุ่ม: เตรียม Project Proposal", speaker:"", ratingStart:null},
-  {sheet:"09.08.69", label:"9 ส.ค.", topic:"จากไอเดียสู่ความเป็นไปได้ + มอบใบประกาศ + ปิดงาน", speaker:"", ratingStart:null},
 ];
 
 // Round 2's Final Pitch groups (event: 9 ส.ค. 2569) — names confirmed, scores/rubric still
@@ -588,7 +592,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
 
   document.getElementById('statRow').innerHTML = `
     <div class="stat-card"><div class="num">${totalApplicants}</div><div class="label">ผู้สมัครทั้งหมด (2 รอบรวมกัน)</div><div class="sub">รอบ 1: ${totalApplicantsR1} คน · รอบ 2: ${totalApplicantsR2} คน</div></div>
-    <div class="stat-card sage"><div class="num">16</div><div class="label">คาบทั้งหมด (รอบ 1)</div></div>
+    <div class="stat-card sage"><div class="num">${sessions.length}</div><div class="label">คาบทั้งหมด (รอบ 1)</div></div>
     <div class="stat-card"><div class="num">${wOverall.toFixed(2)}</div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div></div>
     <div class="stat-card gold"><div class="num" id="folkCourseScore">–</div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div></div>
   `;
@@ -639,10 +643,10 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
     `<tr><td colspan="5" style="background:var(--sage-light); font-weight:700; color:var(--sage); padding:8px 12px;">รอบที่ 2 · 1–2, 8–9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</td></tr>` +
     sessions2.map(s=>`<tr><td>${s.label}</td><td>${s.topic}</td>
     <td class="score">${s.contentAvg ?? '-'}</td><td class="score">${s.speakerAvg ?? '-'}</td><td class="score">${s.overallAvg ?? '-'}</td></tr>`).join('') +
-    SESSION_NO_EVAL_ROUND2.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
-    <td colspan="3" style="font-style:italic; color:var(--muted);">ไม่มีการประเมิน</td></tr>`).join('') +
     SESSION_META_ROUND2_FUTURE.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
-    <td colspan="3">รอข้อมูล</td></tr>`).join('');
+    <td colspan="3">รอข้อมูล</td></tr>`).join('') +
+    SESSION_NO_EVAL_ROUND2.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
+    <td colspan="3" style="font-style:italic; color:var(--muted);">ไม่มีการประเมิน</td></tr>`).join('');
 
   const cardsEl = document.getElementById('sessionCards');
   cardsEl.innerHTML = `<div style="font-size:13px; font-weight:700; color:var(--navy); margin:20px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 1 · 25–29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</div>` +
@@ -689,16 +693,6 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
     </div>
   </div>`;
   }).join('') +
-    SESSION_NO_EVAL_ROUND2.map(s=>`<div class="session-card">
-    <div class="session-head" style="cursor:default;">
-      <div>
-        <div class="cat">${s.label}</div>
-        <div class="ttl">${s.topic}</div>
-        <div class="meta">${s.speaker ? `วิทยากร: ${s.speaker}` : ''}</div>
-      </div>
-      <div class="score-pill"><div class="n">–</div><div class="l" style="font-style:italic;">ไม่มีการประเมิน</div></div>
-    </div>
-  </div>`).join('') +
     SESSION_META_ROUND2_FUTURE.map(s=>`<div class="session-card">
     <div class="session-head" style="cursor:default;">
       <div>
@@ -707,6 +701,16 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
         <div class="meta">${s.speaker ? `วิทยากร: ${s.speaker}` : ''}</div>
       </div>
       <div class="score-pill"><div class="n">–</div><div class="l">รอข้อมูล</div></div>
+    </div>
+  </div>`).join('') +
+    SESSION_NO_EVAL_ROUND2.map(s=>`<div class="session-card">
+    <div class="session-head" style="cursor:default;">
+      <div>
+        <div class="cat">${s.label}</div>
+        <div class="ttl">${s.topic}</div>
+        <div class="meta">${s.speaker ? `วิทยากร: ${s.speaker}` : ''}</div>
+      </div>
+      <div class="score-pill"><div class="n">–</div><div class="l" style="font-style:italic;">ไม่มีการประเมิน</div></div>
     </div>
   </div>`).join('');
   makeCardsKeyboardAccessible(cardsEl);
