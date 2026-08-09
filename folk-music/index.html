@@ -241,11 +241,11 @@
       <div class="card">
         <h3><span>🏆</span> Final Showcase</h3>
         <div style="font-size:13px; font-weight:700; color:var(--navy); margin:0 0 6px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 1 · 29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</div>
-        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 5 ท่าน คะแนนเต็ม 100 (ข้อมูลนี้คงที่ เนื่องจากงานแสดงจบแล้ว)</p>
+        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 5 ท่าน | คะแนนเต็ม 100 </p>
         <div class="team-grid" id="teamGrid"></div>
 
         <div style="font-size:13px; font-weight:700; color:var(--navy); margin:28px 0 6px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 2 · 9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</div>
-        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 4 ท่าน (ผอ, อ.นำภาค, อ.ต้อม, รอง ผอ) คะแนนเต็ม 100 (ข้อมูลนี้คงที่ เนื่องจากงานแสดงจบแล้ว) — เกณฑ์ badge ของรอบนี้ต่างจากรอบ 1 เล็กน้อย (85/70/55 แทน 80/70/60) ตามที่กำหนดในชีตให้คะแนน</p>
+        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 4 ท่าน | คะแนนเต็ม 100 </p>
         <div class="team-grid" id="teamGrid2"></div>
       </div>
     </div>
@@ -346,10 +346,10 @@ const TEAMS_ROUND2 = [
   {name:"เบญจะ", score:45.90, canva:null, rider:null, rubric:{"Identity & Creative Direction":[16.45,30],"Audience & Experience":[9.60,20],"Presentation & Production":[9.85,25],"Communication & Team":[6.50,15],"Cultural Responsibility":[3.50,10]}},
 ].sort((a,b)=>b.score-a.score);
 
-// Round 1 and round 2 use DIFFERENT badge cut-offs — round 2's rubric sheet explicitly defines
-// 85/70/55 tiers (vs round 1's 80/70/60), so don't reuse one threshold set for both.
-const BADGE_THRESHOLDS_R1 = [[80,'green','Ready for Global Development'],[70,'blue','High Potential'],[60,'orange','Emerging Potential'],[0,'red','Needs Further Development']];
-const BADGE_THRESHOLDS_R2 = [[85,'green','Ready for Global Development'],[70,'blue','High Potential'],[55,'orange','Emerging Potential'],[0,'red','Needs Further Development']];
+// Unified badge thresholds — confirmed 2026-08-09 to apply the same tiers to both rounds
+// (80 Ready for Global Development / 70 High Potential / 55 Emerging Potential / below Needs
+// Further Development), replacing the earlier mismatched 80/70/60 vs 85/70/55 sets.
+const BADGE_THRESHOLDS = [[80,'green','Ready for Global Development'],[70,'blue','High Potential'],[55,'orange','Emerging Potential'],[0,'red','Needs Further Development']];
 function getBadge(score, thresholds){
   for(const [min,cls,label] of thresholds){ if(score>=min) return [cls,label]; }
   return [thresholds[thresholds.length-1][1], thresholds[thresholds.length-1][2]];
@@ -790,8 +790,8 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
   }
 
   // showcase (static) — both rounds, using round-specific badge thresholds
-  document.getElementById('teamGrid').innerHTML = renderTeamGrid(TEAMS, BADGE_THRESHOLDS_R1);
-  document.getElementById('teamGrid2').innerHTML = renderTeamGrid(TEAMS_ROUND2, BADGE_THRESHOLDS_R2);
+  document.getElementById('teamGrid').innerHTML = renderTeamGrid(TEAMS, BADGE_THRESHOLDS);
+  document.getElementById('teamGrid2').innerHTML = renderTeamGrid(TEAMS_ROUND2, BADGE_THRESHOLDS);
 
 
 
