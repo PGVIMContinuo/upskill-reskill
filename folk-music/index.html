@@ -354,14 +354,14 @@ function getBadge(score, thresholds){
   for(const [min,cls,label] of thresholds){ if(score>=min) return [cls,label]; }
   return [thresholds[thresholds.length-1][1], thresholds[thresholds.length-1][2]];
 }
-function renderTeamGrid(teams, thresholds, primaryLinkIcon='🎨', primaryLinkLabel='Canva'){
+function renderTeamGrid(teams, thresholds, primaryLinkIcon='🎨', primaryLinkLabel='Canva', showRider=true){
   return teams.map((t,i)=>{
     const [badgeCls, badgeLabel] = getBadge(t.score, thresholds);
     const badgeColor = {green:'var(--sage)', blue:'#2f6fb8', orange:'#b8792c', red:'var(--clay)'}[badgeCls];
     const rubricHtml = t.rubric ? `<div class="team-rubric">${Object.entries(t.rubric).map(([k,v])=>`<div class="r"><span>${k}</span><span>${v[0]}/${v[1]}</span></div>`).join('')}</div>` : '';
     const links = `<div class="team-links">
       ${t.canva ? `<a href="${t.canva}" target="_blank" rel="noopener" class="link-badge">${primaryLinkIcon} ${primaryLinkLabel}</a>` : `<span class="link-badge disabled">${primaryLinkIcon} ${primaryLinkLabel}</span>`}
-      ${t.rider ? `<a href="${t.rider}" target="_blank" rel="noopener" class="link-badge">📋 Rider</a>` : `<span class="link-badge disabled">📋 Rider</span>`}
+      ${showRider ? (t.rider ? `<a href="${t.rider}" target="_blank" rel="noopener" class="link-badge">📋 Rider</a>` : `<span class="link-badge disabled">📋 Rider</span>`) : ''}
       <span class="link-badge disabled">🎥 รอลิงก์ VDO</span>
     </div>`;
     return `<div class="team-card">
@@ -791,7 +791,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
 
   // showcase (static) — both rounds, using round-specific badge thresholds
   document.getElementById('teamGrid').innerHTML = renderTeamGrid(TEAMS, BADGE_THRESHOLDS);
-  document.getElementById('teamGrid2').innerHTML = renderTeamGrid(TEAMS_ROUND2, BADGE_THRESHOLDS, '🖼️', 'ภาพวาด');
+  document.getElementById('teamGrid2').innerHTML = renderTeamGrid(TEAMS_ROUND2, BADGE_THRESHOLDS, '🎨', 'ออกแบบ', false);
 
 
 
