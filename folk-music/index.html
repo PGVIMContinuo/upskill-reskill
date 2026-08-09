@@ -241,11 +241,11 @@
       <div class="card">
         <h3><span>🏆</span> Final Showcase</h3>
         <div style="font-size:13px; font-weight:700; color:var(--navy); margin:0 0 6px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 1 · 29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</div>
-        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 5 ท่าน | คะแนนเต็ม 100 </p>
+        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 5 ท่าน คะแนนเต็ม 100 (ข้อมูลนี้คงที่ เนื่องจากงานแสดงจบแล้ว)</p>
         <div class="team-grid" id="teamGrid"></div>
 
         <div style="font-size:13px; font-weight:700; color:var(--navy); margin:28px 0 6px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 2 · 9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</div>
-        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 4 ท่าน | คะแนนเต็ม 100 </p>
+        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 4 ท่าน (ผอ, อ.นำภาค, อ.ต้อม, รอง ผอ) คะแนนเต็ม 100 (ข้อมูลนี้คงที่ เนื่องจากงานแสดงจบแล้ว)</p>
         <div class="team-grid" id="teamGrid2"></div>
       </div>
     </div>
@@ -338,12 +338,12 @@ const SESSION_META_ROUND2_FUTURE = [];
 // Pulled from the "คะแนนวันแสดงรอบสอง" rubric sheet (2026-08-09) — rubric category subtotals
 // verified against the sheet's own row-19 totals for every team.
 const TEAMS_ROUND2 = [
-  {name:"ลุยน้ำ", score:85.50, canva:null, rider:null, rubric:{"Identity & Creative Direction":[27.25,30],"Audience & Experience":[17.25,20],"Presentation & Production":[19.20,25],"Communication & Team":[12.30,15],"Cultural Responsibility":[9.50,10]}},
-  {name:"Power Ranger", score:81.10, canva:null, rider:null, rubric:{"Identity & Creative Direction":[26.15,30],"Audience & Experience":[16.20,20],"Presentation & Production":[19.85,25],"Communication & Team":[12.40,15],"Cultural Responsibility":[6.50,10]}},
-  {name:"ต้นน้ำมูล", score:77.60, canva:null, rider:null, rubric:{"Identity & Creative Direction":[23.20,30],"Audience & Experience":[16.50,20],"Presentation & Production":[17.85,25],"Communication & Team":[11.55,15],"Cultural Responsibility":[8.50,10]}},
-  {name:"ยั่งยืน", score:76.05, canva:null, rider:null, rubric:{"Identity & Creative Direction":[24.00,30],"Audience & Experience":[14.90,20],"Presentation & Production":[17.35,25],"Communication & Team":[11.30,15],"Cultural Responsibility":[8.50,10]}},
-  {name:"My Turn", score:72.90, canva:null, rider:null, rubric:{"Identity & Creative Direction":[21.30,30],"Audience & Experience":[14.00,20],"Presentation & Production":[18.70,25],"Communication & Team":[11.90,15],"Cultural Responsibility":[7.00,10]}},
-  {name:"เบญจะ", score:45.90, canva:null, rider:null, rubric:{"Identity & Creative Direction":[16.45,30],"Audience & Experience":[9.60,20],"Presentation & Production":[9.85,25],"Communication & Team":[6.50,15],"Cultural Responsibility":[3.50,10]}},
+  {name:"ลุยน้ำ", score:85.50, canva:"https://drive.google.com/file/d/1UoTLuvyi7ILkrFGXT26n-N7UtQeJO4bR/view?usp=sharing", rider:null, rubric:{"Identity & Creative Direction":[27.25,30],"Audience & Experience":[17.25,20],"Presentation & Production":[19.20,25],"Communication & Team":[12.30,15],"Cultural Responsibility":[9.50,10]}},
+  {name:"Power Ranger", score:81.10, canva:"https://drive.google.com/file/d/1DIURkCyN6xAcTuQHNOaaEQ3vQsdWF1Gk/view?usp=drive_link", rider:null, rubric:{"Identity & Creative Direction":[26.15,30],"Audience & Experience":[16.20,20],"Presentation & Production":[19.85,25],"Communication & Team":[12.40,15],"Cultural Responsibility":[6.50,10]}},
+  {name:"ต้นน้ำมูล", score:77.60, canva:"https://drive.google.com/file/d/1F4iXVNKKWc7iiNtHBM8vEqjhVMzPvqw0/view?usp=sharing", rider:null, rubric:{"Identity & Creative Direction":[23.20,30],"Audience & Experience":[16.50,20],"Presentation & Production":[17.85,25],"Communication & Team":[11.55,15],"Cultural Responsibility":[8.50,10]}},
+  {name:"ยั่งยืน", score:76.05, canva:"https://drive.google.com/file/d/1l031SoVZp_6VC7EPTDDfn9BazybQgXXu/view?usp=drive_link", rider:null, rubric:{"Identity & Creative Direction":[24.00,30],"Audience & Experience":[14.90,20],"Presentation & Production":[17.35,25],"Communication & Team":[11.30,15],"Cultural Responsibility":[8.50,10]}},
+  {name:"My Turn", score:72.90, canva:"https://drive.google.com/file/d/161bJ0tegtYGdeQ7a99s2-rfWkMERR5fY/view?usp=drive_link", rider:null, rubric:{"Identity & Creative Direction":[21.30,30],"Audience & Experience":[14.00,20],"Presentation & Production":[18.70,25],"Communication & Team":[11.90,15],"Cultural Responsibility":[7.00,10]}},
+  {name:"เบญจะ", score:45.90, canva:"https://drive.google.com/file/d/1k-1WVsAyVvoLejQ_RiPIO_FX6Qhg8pOr/view?usp=drive_link", rider:null, rubric:{"Identity & Creative Direction":[16.45,30],"Audience & Experience":[9.60,20],"Presentation & Production":[9.85,25],"Communication & Team":[6.50,15],"Cultural Responsibility":[3.50,10]}},
 ].sort((a,b)=>b.score-a.score);
 
 // Unified badge thresholds — confirmed 2026-08-09 to apply the same tiers to both rounds
@@ -354,13 +354,13 @@ function getBadge(score, thresholds){
   for(const [min,cls,label] of thresholds){ if(score>=min) return [cls,label]; }
   return [thresholds[thresholds.length-1][1], thresholds[thresholds.length-1][2]];
 }
-function renderTeamGrid(teams, thresholds){
+function renderTeamGrid(teams, thresholds, primaryLinkIcon='🎨', primaryLinkLabel='Canva'){
   return teams.map((t,i)=>{
     const [badgeCls, badgeLabel] = getBadge(t.score, thresholds);
     const badgeColor = {green:'var(--sage)', blue:'#2f6fb8', orange:'#b8792c', red:'var(--clay)'}[badgeCls];
     const rubricHtml = t.rubric ? `<div class="team-rubric">${Object.entries(t.rubric).map(([k,v])=>`<div class="r"><span>${k}</span><span>${v[0]}/${v[1]}</span></div>`).join('')}</div>` : '';
     const links = `<div class="team-links">
-      ${t.canva ? `<a href="${t.canva}" target="_blank" rel="noopener" class="link-badge">🎨 Canva</a>` : `<span class="link-badge disabled">🎨 Canva</span>`}
+      ${t.canva ? `<a href="${t.canva}" target="_blank" rel="noopener" class="link-badge">${primaryLinkIcon} ${primaryLinkLabel}</a>` : `<span class="link-badge disabled">${primaryLinkIcon} ${primaryLinkLabel}</span>`}
       ${t.rider ? `<a href="${t.rider}" target="_blank" rel="noopener" class="link-badge">📋 Rider</a>` : `<span class="link-badge disabled">📋 Rider</span>`}
       <span class="link-badge disabled">🎥 รอลิงก์ VDO</span>
     </div>`;
@@ -791,7 +791,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
 
   // showcase (static) — both rounds, using round-specific badge thresholds
   document.getElementById('teamGrid').innerHTML = renderTeamGrid(TEAMS, BADGE_THRESHOLDS);
-  document.getElementById('teamGrid2').innerHTML = renderTeamGrid(TEAMS_ROUND2, BADGE_THRESHOLDS);
+  document.getElementById('teamGrid2').innerHTML = renderTeamGrid(TEAMS_ROUND2, BADGE_THRESHOLDS, '🖼️', 'ภาพวาด');
 
 
 
