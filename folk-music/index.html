@@ -181,7 +181,7 @@
         <div class="eyebrow" id="reportDateLabel">รายงานสรุปหลักสูตร</div>
         <h1>เส้นทางดนตรีพื้นบ้านสู่เวทีโลก</h1>
         <p>หลักสูตรระยะสั้น 2 รอบ (25–29 พ.ค. และ 1–2, 8–9 ส.ค. 2569) เชื่อมโยงดนตรีพื้นบ้านไทยสู่มาตรฐานและโอกาสในเวทีนานาชาติ ปิดท้ายด้วย Final Pitch นำเสนอผลงาน</p>
-        <div class="datebar">🏁 รอบที่ 1 จัดจบแล้ว (25–29 พ.ค. 2569) · รอบที่ 2 ณ วิทยาลัยนาฏศิลปนครราชสีมา (1–2, 8–9 ส.ค. 2569)</div>
+        <div class="datebar">🏁 ทั้ง 2 รอบจัดจบแล้ว · รอบที่ 1 (25–29 พ.ค. 2569) · รอบที่ 2 ณ วิทยาลัยนาฏศิลปนครราชสีมา (1–2, 8–9 ส.ค. 2569)</div>
       </div>
 
       <div class="stat-row" id="statRow"></div>
@@ -236,12 +236,17 @@
       <div id="sessionCards"></div>
     </div>
 
-    <!-- ================= SHOWCASE (static — event already concluded) ================= -->
+    <!-- ================= SHOWCASE (static — both rounds concluded) ================= -->
     <div class="panel" id="showcase">
       <div class="card">
-        <h3><span>🏆</span> Final Showcase — 29 พ.ค. 2569</h3>
+        <h3><span>🏆</span> Final Showcase</h3>
+        <div style="font-size:13px; font-weight:700; color:var(--navy); margin:0 0 6px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 1 · 29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</div>
         <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 5 ท่าน คะแนนเต็ม 100 (ข้อมูลนี้คงที่ เนื่องจากงานแสดงจบแล้ว)</p>
         <div class="team-grid" id="teamGrid"></div>
+
+        <div style="font-size:13px; font-weight:700; color:var(--navy); margin:28px 0 6px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 2 · 9 ส.ค. 2569 · วิทยาลัยนาฏศิลปนครราชสีมา</div>
+        <p style="font-size:13.5px; color:var(--muted); margin:0 0 18px;">ประเมินโดยกรรมการ 4 ท่าน (ผอ, อ.นำภาค, อ.ต้อม, รอง ผอ) คะแนนเต็ม 100 (ข้อมูลนี้คงที่ เนื่องจากงานแสดงจบแล้ว) — เกณฑ์ badge ของรอบนี้ต่างจากรอบ 1 เล็กน้อย (85/70/55 แทน 80/70/60) ตามที่กำหนดในชีตให้คะแนน</p>
+        <div class="team-grid" id="teamGrid2"></div>
       </div>
     </div>
 
@@ -329,18 +334,46 @@ const SESSION_NO_EVAL_ROUND2 = [
 // if a future day needs this "awaiting real form" state again.
 const SESSION_META_ROUND2_FUTURE = [];
 
-// Round 2's Final Pitch groups (event: 9 ส.ค. 2569) — names confirmed, scores/rubric still
-// pending since judging hasn't happened yet. NOT wired into the live TEAMS array or the
-// ผลงานการแสดง tab until real scores exist — send the scores once judged and I'll merge them
-// in the same way round 1's TEAMS array works.
-const TEAMS_ROUND2_DRAFT = [
-  {name:"เละเทะ", score:null},
-  {name:"ศรัทธา", score:null},
-  {name:"จุดหมาย", score:null},
-  {name:"ครอบครอง ปล่อยวาง", score:null},
-  {name:"การเดินทาง แห่งกาลเวลา", score:null},
-  {name:"คิดถึง", score:null},
-];
+// Round 2's Final Pitch scores (event: 9 ส.ค. 2569, judged by ผอ / อ.นำภาค / อ.ต้อม / รอง ผอ).
+// Pulled from the "คะแนนวันแสดงรอบสอง" rubric sheet (2026-08-09) — rubric category subtotals
+// verified against the sheet's own row-19 totals for every team.
+const TEAMS_ROUND2 = [
+  {name:"ลุยน้ำ", score:85.50, canva:null, rider:null, rubric:{"Identity & Creative Direction":[27.25,30],"Audience & Experience":[17.25,20],"Presentation & Production":[19.20,25],"Communication & Team":[12.30,15],"Cultural Responsibility":[9.50,10]}},
+  {name:"Power Ranger", score:81.10, canva:null, rider:null, rubric:{"Identity & Creative Direction":[26.15,30],"Audience & Experience":[16.20,20],"Presentation & Production":[19.85,25],"Communication & Team":[12.40,15],"Cultural Responsibility":[6.50,10]}},
+  {name:"ต้นน้ำมูล", score:77.60, canva:null, rider:null, rubric:{"Identity & Creative Direction":[23.20,30],"Audience & Experience":[16.50,20],"Presentation & Production":[17.85,25],"Communication & Team":[11.55,15],"Cultural Responsibility":[8.50,10]}},
+  {name:"ยั่งยืน", score:76.05, canva:null, rider:null, rubric:{"Identity & Creative Direction":[24.00,30],"Audience & Experience":[14.90,20],"Presentation & Production":[17.35,25],"Communication & Team":[11.30,15],"Cultural Responsibility":[8.50,10]}},
+  {name:"My Turn", score:72.90, canva:null, rider:null, rubric:{"Identity & Creative Direction":[21.30,30],"Audience & Experience":[14.00,20],"Presentation & Production":[18.70,25],"Communication & Team":[11.90,15],"Cultural Responsibility":[7.00,10]}},
+  {name:"เบญจะ", score:45.90, canva:null, rider:null, rubric:{"Identity & Creative Direction":[16.45,30],"Audience & Experience":[9.60,20],"Presentation & Production":[9.85,25],"Communication & Team":[6.50,15],"Cultural Responsibility":[3.50,10]}},
+].sort((a,b)=>b.score-a.score);
+
+// Round 1 and round 2 use DIFFERENT badge cut-offs — round 2's rubric sheet explicitly defines
+// 85/70/55 tiers (vs round 1's 80/70/60), so don't reuse one threshold set for both.
+const BADGE_THRESHOLDS_R1 = [[80,'green','Ready for Global Development'],[70,'blue','High Potential'],[60,'orange','Emerging Potential'],[0,'red','Needs Further Development']];
+const BADGE_THRESHOLDS_R2 = [[85,'green','Ready for Global Development'],[70,'blue','High Potential'],[55,'orange','Emerging Potential'],[0,'red','Needs Further Development']];
+function getBadge(score, thresholds){
+  for(const [min,cls,label] of thresholds){ if(score>=min) return [cls,label]; }
+  return [thresholds[thresholds.length-1][1], thresholds[thresholds.length-1][2]];
+}
+function renderTeamGrid(teams, thresholds){
+  return teams.map((t,i)=>{
+    const [badgeCls, badgeLabel] = getBadge(t.score, thresholds);
+    const badgeColor = {green:'var(--sage)', blue:'#2f6fb8', orange:'#b8792c', red:'var(--clay)'}[badgeCls];
+    const rubricHtml = t.rubric ? `<div class="team-rubric">${Object.entries(t.rubric).map(([k,v])=>`<div class="r"><span>${k}</span><span>${v[0]}/${v[1]}</span></div>`).join('')}</div>` : '';
+    const links = `<div class="team-links">
+      ${t.canva ? `<a href="${t.canva}" target="_blank" rel="noopener" class="link-badge">🎨 Canva</a>` : `<span class="link-badge disabled">🎨 Canva</span>`}
+      ${t.rider ? `<a href="${t.rider}" target="_blank" rel="noopener" class="link-badge">📋 Rider</a>` : `<span class="link-badge disabled">📋 Rider</span>`}
+      <span class="link-badge disabled">🎥 รอลิงก์ VDO</span>
+    </div>`;
+    return `<div class="team-card">
+      <div class="rank">อันดับ ${i+1}</div>
+      <h3>${t.name}</h3>
+      <div class="score" style="color:${badgeColor}">${t.score}</div>
+      <div class="badge ${badgeCls}">${badgeLabel}</div>
+      ${rubricHtml}
+      ${links}
+    </div>`;
+  }).join('');
+}
 
 const DAY_ORDER = ["25 พ.ค.","26 พ.ค.","27 พ.ค.","28 พ.ค.","29 พ.ค."];
 
@@ -733,10 +766,8 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
     const byDate = {};
     recapEntries.forEach(e=>{ (byDate[e.date] = byDate[e.date]||[]).push(e); });
 
-    document.getElementById('recapSection').innerHTML = Object.entries(byDate).map(([date, items])=>`
-      <div class="recap-day">
-        <div class="day-label">📅 ${date}</div>
-        ${items.map(it=>{
+    document.getElementById('recapSection').innerHTML = Object.entries(byDate).map(([date, items])=>{
+      const slotsHtml = items.map(it=>{
           const body = [it.transcript, it.voices].filter(t=>t && String(t).trim()).join('\n\n');
           if(!body) return '';
           return `<div class="recap-slot">
@@ -745,35 +776,22 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
             ${it.speaker ? `<div class="speaker">วิทยากร: ${String(it.speaker).replace(/\n/g,', ')}</div>` : ''}
             <div class="body">${body}</div>
           </div>`;
-        }).join('')}
+        }).join('');
+      if(!slotsHtml) return ''; // no filled-in content for this date yet — skip the empty header
+      return `
+      <div class="recap-day">
+        <div class="day-label">📅 ${date}</div>
+        ${slotsHtml}
       </div>
-    `).join('');
+    `;
+    }).join('');
   } else {
     document.getElementById('recapSection').innerHTML = `<div style="color:var(--muted); font-size:13.5px;">โหลดข้อมูลจากแท็บ "สรุปรายคาบ" ไม่สำเร็จ</div>`;
   }
 
-  // showcase (static)
-  document.getElementById('teamGrid').innerHTML = TEAMS.map((t,i)=>{
-    const badge = t.score>=80 ? ['green','Ready for Global Development']
-                : t.score>=70 ? ['blue','High Potential']
-                : t.score>=60 ? ['orange','Emerging Potential']
-                : ['red','Needs Further Development'];
-    const badgeColor = {green:'var(--sage)', blue:'#2f6fb8', orange:'#b8792c', red:'var(--clay)'}[badge[0]];
-    const rubricHtml = t.rubric ? `<div class="team-rubric">${Object.entries(t.rubric).map(([k,v])=>`<div class="r"><span>${k}</span><span>${v[0]}/${v[1]}</span></div>`).join('')}</div>` : '';
-    const links = `<div class="team-links">
-      ${t.canva ? `<a href="${t.canva}" target="_blank" rel="noopener" class="link-badge">🎨 Canva</a>` : `<span class="link-badge disabled">🎨 Canva</span>`}
-      ${t.rider ? `<a href="${t.rider}" target="_blank" rel="noopener" class="link-badge">📋 Rider</a>` : `<span class="link-badge disabled">📋 Rider</span>`}
-      <span class="link-badge disabled">🎥 รอลิงก์ VDO</span>
-    </div>`;
-    return `<div class="team-card">
-      <div class="rank">อันดับ ${i+1}</div>
-      <h3>${t.name}</h3>
-      <div class="score" style="color:${badgeColor}">${t.score}</div>
-      <div class="badge ${badge[0]}">${badge[1]}</div>
-      ${rubricHtml}
-      ${links}
-    </div>`;
-  }).join('');
+  // showcase (static) — both rounds, using round-specific badge thresholds
+  document.getElementById('teamGrid').innerHTML = renderTeamGrid(TEAMS, BADGE_THRESHOLDS_R1);
+  document.getElementById('teamGrid2').innerHTML = renderTeamGrid(TEAMS_ROUND2, BADGE_THRESHOLDS_R2);
 
 
 
@@ -830,8 +848,11 @@ async function fetchEval(totalApplicants){
     //  2) Eval survey Q3.2 (แนวโน้มจะนำความรู้ไปใช้ในอนาคต, col 13, ≥4/5) — shown as supporting
     //     context underneath, since a small-sample survey % alone can look overstated (e.g. a
     //     tiny fully-positive sample reading "100%" looks suspicious rather than credible).
-    const finalPitchPass = TEAMS.filter(t=>t.score>=60).length;
-    const finalPitchPct = TEAMS.length ? (finalPitchPass/TEAMS.length*100) : null;
+    // Combine both rounds' Final Pitch results now that round 2 has real scores too — this is
+    // the strongest, most complete evidence for the TOR skill-readiness KPI.
+    const finalPitchPass = TEAMS.filter(t=>t.score>=60).length + TEAMS_ROUND2.filter(t=>t.score>=60).length;
+    const finalPitchTotal = TEAMS.length + TEAMS_ROUND2.length;
+    const finalPitchPct = finalPitchTotal ? (finalPitchPass/finalPitchTotal*100) : null;
     const meetsTarget = finalPitchPct!==null && finalPitchPct>=60;
 
     document.getElementById('evalStatRow').innerHTML = `
@@ -840,7 +861,7 @@ async function fetchEval(totalApplicants){
       <div class="stat-card${meetsTarget?' sage':''}">
         <div class="num" style="${meetsTarget?'':'color:var(--clay);'}">${finalPitchPct!==null?finalPitchPct.toFixed(0)+'%':'—'}</div>
         <div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div>
-        <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${finalPitchPass}/${TEAMS.length} ทีมผ่านเกณฑ์ Final Pitch (≥60 คะแนน) · เป้าหมาย ≥60%</div>
+        <div class="sub" style="${meetsTarget?'':'color:var(--clay);'}">${finalPitchPass}/${finalPitchTotal} ทีมผ่านเกณฑ์ Final Pitch (≥60 คะแนน) รวม 2 รอบ · เป้าหมาย ≥60%</div>
       </div>
     `;
     document.getElementById('folkCourseScore').textContent = overall;
