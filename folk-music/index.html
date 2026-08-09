@@ -312,21 +312,22 @@ const SESSION_META_ROUND2 = [
   // 02.08.69's form scores these two topics together as one combined block (C-F) — not separately.
   {sheet:"02.08.69", label:"2 ส.ค.", topic:"เตรียมและทำความเข้าใจการเตรียมการแสดงและการ Pitching + เสียงของฉัน เสียงของเธอ เสียงของเรา (Jamming & Showcase)", speaker:"อ.นำภาค ศรีบัณฑิตมงคล, ผศ.ดร.อโณทัย นิติพน", ratingStart:3, pooled:true},
   {sheet:"02.08.69", label:"2 ส.ค.", topic:"การสื่อสารตัวตนในโลกดิจิทัล (รายกลุ่ม)", speaker:"คุณพงศ์จักร พิษฐานพร", ratingStart:7},
+  // Confirmed against the real form (2026-08-09): same 4-column-per-topic layout as the other
+  // days (Timestamp, ชื่อ-นามสกุล, then [prompt, rate, rate, rate] repeating from column 2).
+  {sheet:"08.08.69", label:"8 ส.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ", ratingStart:3},
+  {sheet:"08.08.69", label:"8 ส.ค.", topic:"ศิลปะแห่งการสร้างโลกในจินตนาการ", speaker:"คุณดวิษ ณิชฌานธามัน", ratingStart:7},
 ];
 // Topics that never had a dedicated evaluation form — participants went straight into the
 // hands-on task itself (rehearsal → straight to the real thing), so there's no rating data to
 // show for these. Rendered with "ไม่มีการประเมิน" instead of "รอข้อมูล".
 const SESSION_NO_EVAL_ROUND2 = [
-  {sheet:"09.08.69", label:"9 ส.ค.", topic:"ทำงานกลุ่ม: เตรียม Project Proposal", speaker:""},
-  {sheet:"09.08.69", label:"9 ส.ค.", topic:"จากไอเดียสู่ความเป็นไปได้ + มอบใบประกาศ + ปิดงาน", speaker:""},
+  {sheet:"09.08.69", label:"9 ส.ค.", topic:"ซ้อมใหญ่ (ช่วงเช้า)", speaker:"", note:"วันซ้อมและแสดงจริง — ไม่มีแบบประเมิน"},
+  {sheet:"09.08.69", label:"9 ส.ค.", topic:"Final Showcase: การแสดงจริง + มอบใบประกาศ + ปิดงาน", speaker:"", note:"วันซ้อมและแสดงจริง — ไม่มีแบบประเมิน"},
 ];
-// Genuinely still pending — 8 ส.ค. has a real evaluation form but real column headers haven't
-// been confirmed yet; ratingStart stays null until confirmed, then this moves into
-// SESSION_META_ROUND2 above.
-const SESSION_META_ROUND2_FUTURE = [
-  {sheet:"08.08.69", label:"8 ส.ค.", topic:"รู้สิทธิ รู้ทางรอด: กฎหมายกับงานดนตรีพื้นบ้าน", speaker:"คุณสิริญา บุญญาธิการ", ratingStart:null},
-  {sheet:"08.08.69", label:"8 ส.ค.", topic:"ศิลปะแห่งการสร้างโลกในจินตนาการ", speaker:"คุณดวิษ ณิชฌานธามัน", ratingStart:null},
-];
+// All round 2 daily topics now have confirmed column mappings — nothing currently pending.
+// Kept as an array (rather than removed) so the render logic doesn't need a separate code path
+// if a future day needs this "awaiting real form" state again.
+const SESSION_META_ROUND2_FUTURE = [];
 
 // Round 2's Final Pitch groups (event: 9 ส.ค. 2569) — names confirmed, scores/rubric still
 // pending since judging hasn't happened yet. NOT wired into the live TEAMS array or the
@@ -646,7 +647,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
     SESSION_META_ROUND2_FUTURE.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
     <td colspan="3">รอข้อมูล</td></tr>`).join('') +
     SESSION_NO_EVAL_ROUND2.map(s=>`<tr class="future"><td>${s.label}</td><td>${s.topic}</td>
-    <td colspan="3" style="font-style:italic; color:var(--muted);">ไม่มีการประเมิน</td></tr>`).join('');
+    <td colspan="3" style="font-style:italic; color:var(--muted);">${s.note || 'ไม่มีการประเมิน'}</td></tr>`).join('');
 
   const cardsEl = document.getElementById('sessionCards');
   cardsEl.innerHTML = `<div style="font-size:13px; font-weight:700; color:var(--navy); margin:20px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line);">รอบที่ 1 · 25–29 พ.ค. 2569 · สถาบันดนตรีกัลยาณิวัฒนา</div>` +
@@ -710,7 +711,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
         <div class="ttl">${s.topic}</div>
         <div class="meta">${s.speaker ? `วิทยากร: ${s.speaker}` : ''}</div>
       </div>
-      <div class="score-pill"><div class="n">–</div><div class="l" style="font-style:italic;">ไม่มีการประเมิน</div></div>
+      <div class="score-pill"><div class="n">–</div><div class="l" style="font-style:italic;">${s.note || 'ไม่มีการประเมิน'}</div></div>
     </div>
   </div>`).join('');
   makeCardsKeyboardAccessible(cardsEl);
