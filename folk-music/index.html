@@ -43,7 +43,7 @@
   .hero p{color:#d3d5ef; font-size:14.5px; margin:0;}
   .hero .datebar{margin-top:18px; display:inline-flex; gap:10px; align-items:center; background:rgba(255,255,255,.08);
     padding:8px 14px; border-radius:999px; font-size:13px; color:#e8e9fb;}
-  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px;}
+  .stat-row{display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:24px;}
   @media(max-width:900px){.stat-row{grid-template-columns:repeat(2,1fr);}}
   .stat-card{background:var(--card); border-radius:14px; padding:20px; border:1px solid var(--line); box-shadow:0 1px 3px rgba(20,26,69,.04);}
   .stat-card .num{font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--navy);}
@@ -629,6 +629,7 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
     <div class="stat-card sage"><div class="num">${sessions.length}</div><div class="label">คาบทั้งหมด (รอบ 1)</div></div>
     <div class="stat-card"><div class="num">${wOverall.toFixed(2)}</div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div></div>
     <div class="stat-card gold"><div class="num" id="folkCourseScore">–</div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div></div>
+    <div class="stat-card" id="torReadinessCard"><div class="num" id="torReadinessNum">–</div><div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div><div class="sub" id="torReadinessSub"></div></div>
   `;
   document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<div class="credit-badge">📚 หลักสูตรนี้ให้หน่วยกิตสะสม 1.5 หน่วยกิต ภายใต้ระบบ Credit Bank ของสถาบัน</div>`);
 
@@ -865,6 +866,17 @@ async function fetchEval(totalApplicants){
       </div>
     `;
     document.getElementById('folkCourseScore').textContent = overall;
+
+    // Mirror the TOR skill-readiness stat onto the overview tab's 5th stat card too, so the
+    // most report-critical KPI is visible without needing to click into "ประเมินภาพรวม".
+    const torCard = document.getElementById('torReadinessCard');
+    if(torCard){
+      if(meetsTarget) torCard.classList.add('sage'); else torCard.classList.remove('sage');
+      document.getElementById('torReadinessNum').textContent = finalPitchPct!==null?finalPitchPct.toFixed(0)+'%':'—';
+      document.getElementById('torReadinessNum').style.color = meetsTarget ? '' : 'var(--clay)';
+      document.getElementById('torReadinessSub').textContent = `${finalPitchPass}/${finalPitchTotal} ทีมผ่านเกณฑ์ Final Pitch รวม 2 รอบ`;
+      document.getElementById('torReadinessSub').style.color = meetsTarget ? '' : 'var(--clay)';
+    }
 
     const maxDim=5;
     document.getElementById('evalBars').innerHTML = dimAvgs.map(([label,val])=>
