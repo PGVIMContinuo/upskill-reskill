@@ -41,7 +41,7 @@
   .hero p{color:#d3d5ef; font-size:14.5px; margin:0;}
   .hero .datebar{margin-top:18px; display:inline-flex; gap:10px; align-items:center; background:rgba(255,255,255,.08);
     padding:8px 14px; border-radius:999px; font-size:13px; color:#e8e9fb;}
-  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px;}
+  .stat-row{display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:16px; margin-bottom:24px;}
   @media(max-width:900px){.stat-row{grid-template-columns:repeat(2,1fr);}}
   .stat-card{background:var(--card); border-radius:14px; padding:20px; border:1px solid var(--line); box-shadow:0 1px 3px rgba(20,26,69,.04);}
   .stat-card .num{font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--navy);}
@@ -525,6 +525,7 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
     <div class="stat-card sage"><div class="num">${Math.min(doneSessions.length, REAL_SESSION_COUNT)}/${REAL_SESSION_COUNT}</div><div class="label">คาบที่จัดไปแล้ว</div></div>
     <div class="stat-card"><div class="num">${wOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div></div>
     <div class="stat-card gold"><div class="num">${courseOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div><div class="sub">${courseRespN ? '' : 'รอผู้ตอบแบบประเมิน'}</div></div>
+    <div class="stat-card sage"><div class="num">${learnReadyPct!==null?learnReadyPct.toFixed(0)+'%':'—'}</div><div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div><div class="sub">${learnReadyPct!==null ? 'จากคำตอบสะท้อนคิดรายคาบ' : 'รอข้อมูล'}</div></div>
   `;
 
   // ---- applicant breakdown ----
