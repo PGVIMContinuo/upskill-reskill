@@ -626,7 +626,14 @@ function render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, appl
 
   document.getElementById('statRow').innerHTML = `
     <div class="stat-card"><div class="num">${totalApplicants}</div><div class="label">ผู้สมัครทั้งหมด (2 รอบรวมกัน)</div><div class="sub">รอบ 1: ${totalApplicantsR1} คน · รอบ 2: ${totalApplicantsR2} คน</div></div>
-    <div class="stat-card sage"><div class="num">${sessions.length}</div><div class="label">คาบทั้งหมด (รอบ 1)</div></div>
+    <div class="stat-card sage">
+      <div style="display:flex; align-items:baseline; gap:16px;">
+        <div><div class="num" style="font-size:28px;">${sessions.length}</div><div style="font-size:11px; color:var(--muted); margin-top:2px;">รอบ 1</div></div>
+        <div style="width:1px; align-self:stretch; background:var(--line);"></div>
+        <div><div class="num" style="font-size:28px;">${sessions2.length + SESSION_NO_EVAL_ROUND2.length}</div><div style="font-size:11px; color:var(--muted); margin-top:2px;">รอบ 2</div></div>
+      </div>
+      <div class="label" style="margin-top:8px;">คาบทั้งหมด</div>
+    </div>
     <div class="stat-card"><div class="num">${wOverall.toFixed(2)}</div><div class="label">พึงพอใจต่อการเรียนรู้เฉลี่ย (รายคาบ)</div></div>
     <div class="stat-card gold"><div class="num" id="folkCourseScore">–</div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div></div>
     <div class="stat-card" id="torReadinessCard"><div class="num" id="torReadinessNum">–</div><div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div><div class="sub" id="torReadinessSub"></div></div>
