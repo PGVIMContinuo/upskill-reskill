@@ -125,10 +125,13 @@
   .lightbox.open{display:flex;}
   .lightbox img{max-width:100%; max-height:85vh; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,.4);}
   .lightbox .cap{color:#fff; text-align:center; margin-top:14px; font-size:14px;}
+  .eeg-condrow{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+  .eeg-cond{font-size:11px; padding:4px 9px; border-radius:7px; background:#efeee6; color:var(--muted); font-weight:600;}
+  .eeg-cond.full{background:var(--sage-light); color:var(--sage);}
+  .eeg-cond.partial{background:#fbeedd; color:#b8792c;}
 </style>
 </head>
 <body>
-
 <div class="sticky-header">
 <div class="sitelinks">
   <a href="../">🏠 หน้าแรก</a>
@@ -154,15 +157,11 @@
   </div>
 </div>
 </div>
-
 <div class="wrap">
   <div id="loadingMsg" class="loading">กำลังโหลดข้อมูลจาก Google Sheet…</div>
   <div id="errMsg" style="display:none;"></div>
-
   <div id="appContent" style="display:none;">
-
     <div class="credit-badge">📚 หลักสูตรนี้ให้หน่วยกิตสะสม 2 หน่วยกิต ภายใต้ระบบ Credit Bank ของสถาบัน</div>
-
     <!-- ================= OVERVIEW ================= -->
     <div class="panel active" id="overview">
       <div class="hero">
@@ -171,9 +170,7 @@
         <p>หลักสูตรระยะสั้น 11 คาบ (20 พ.ค. – 29 ก.ค. 2569) บูรณาการประสาทวิทยา จิตวิทยา และสรีรวิทยา เพื่อพัฒนาความยืดหยุ่นในการแสดงของนักดนตรีอาชีพและผู้เรียนดนตรี</p>
         <div class="datebar" id="progressBar">📅 กำลังคำนวณ…</div>
       </div>
-
       <div class="stat-row" id="statRow"></div>
-
       <div class="grid2">
         <div>
           <div class="card">
@@ -210,19 +207,15 @@
           </div>
         </div>
       </div>
-
       <div class="card">
         <h3><span>💼</span> สถานะผู้เข้าอบรม (กำลังศึกษา / มีงานทำ / ว่างงาน)</h3>
         <div id="statusBars"></div>
       </div>
-
       <div class="card">
         <h3><span>💬</span> สรุปเนื้อหาและเสียงจากผู้เรียนรายคาบ</h3>
         <div id="recapSection"></div>
       </div>
-
     </div>
-
     <!-- ================= DAILY ================= -->
     <div class="panel" id="daily">
       <div class="card">
@@ -234,7 +227,6 @@
       </div>
       <div id="sessionCards"></div>
     </div>
-
     <!-- ================= EVALUATION (live from "ภาพรวม" tab once responses come in) ================= -->
     <div class="panel" id="eval">
       <div class="pending-card" id="evalPending">
@@ -242,40 +234,52 @@
         <h3>ผลการประเมินโครงการ — รอผู้ตอบแบบประเมิน</h3>
         <p>แบบประเมินภาพรวม (ความพึงพอใจ ผลลัพธ์การเรียนรู้ และเสียงจากผู้เรียน) เปิดรับคำตอบแล้ว แต่ยังไม่มีผู้ตอบเข้ามาในระบบ — ส่วนนี้จะแสดงผลโดยอัตโนมัติทันทีที่มีคำตอบ</p>
       </div>
-
       <div id="evalContent" style="display:none;">
         <div class="stat-row" id="evalStatRow" style="grid-template-columns:repeat(3,1fr);"></div>
-
         <div class="card">
           <h3><span>⭐</span> ความพึงพอใจรายด้าน</h3>
           <div id="evalSatBars"></div>
         </div>
-
         <div class="card">
           <h3><span>🌱</span> ผลลัพธ์และผลกระทบด้านการเรียนรู้</h3>
           <div id="evalImpactBars"></div>
         </div>
-
         <div class="card">
           <h3><span>💬</span> เสียงจากผู้ตอบแบบประเมิน</h3>
           <div id="evalQuotes" class="quotes scrollbox"></div>
         </div>
       </div>
-
       <div class="footnote" id="evalFootnote" style="margin-top:16px;"></div>
     </div>
-
     <!-- ================= EEG / BRAINWAVE MEASUREMENT ================= -->
     <div class="panel" id="eeg">
       <div class="card">
         <h3><span>🧠</span> วัดคลื่นสมอง (EEG Workshop)</h3>
-        <div style="font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--gold); margin-bottom:4px;">12</div>
-        <div style="font-size:13px; color:var(--muted); margin-bottom:18px;">คนได้รับคัดเลือกเข้าร่วมกิจกรรมวัดคลื่นสมอง (EEG Workshop) จัดกลุ่มตามประเด็นร่วม — มีข้อมูล "ก่อนกิจกรรม" ครบแล้ว ส่วน "หลังกิจกรรม" และลิงก์ภาพยังรอข้อมูล</div>
+        <div style="font-family:'Fraunces',serif; font-size:34px; font-weight:600; color:var(--gold); margin-bottom:4px;">9</div>
+        <div style="font-size:13px; color:var(--muted); margin-bottom:18px;">คนที่มีข้อมูลครบทั้งก่อน-หลัง จากผู้เข้าร่วมคัดเลือกเชิงลึก 12 คน วัดด้วยเครื่อง BrainMaster Discovery 24E (19 ช่องสัญญาณ) เปรียบเทียบก่อน-หลังห่างกันประมาณ 3 เดือน วิเคราะห์ด้วย exact Wilcoxon signed-rank test และปรับค่าด้วย False Discovery Rate (FDR)</div>
+        <img src="../assets/gallery/eeg-setup.jpg" alt="การ Setup วัดสัญญาณสมองเพื่อวิเคราะห์ qEEG" style="width:100%; border-radius:10px; margin-bottom:18px; display:block;" loading="lazy">
+        <div class="footnote" style="margin-top:0; margin-bottom:18px;">ภาพ: การติดตั้งอุปกรณ์วัดคลื่นสมอง (qEEG Setup) ก่อนเริ่มกิจกรรม</div>
+      </div>
+      <div class="card">
+        <h3><span>📊</span> ผลการวิเคราะห์เบื้องต้น (Preliminary Findings)</h3>
+        <div style="display:grid; gap:12px;">
+          <div class="quote" style="font-style:normal;">
+            <b style="color:var(--sage);">Performance Imagery</b> — ขณะจินตนาการการแสดงดนตรี พบแนวโน้มการลดลงของ Sensorimotor Alpha บริเวณตำแหน่ง C3–Cz–C4 (Δ≈−0.51, g≈−0.66) ซึ่งเป็นรูปแบบที่สอดคล้องกับกลไกทางประสาทสรีรวิทยาของ motor imagery ในวรรณกรรมที่เกี่ยวข้อง
+            <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; color:var(--muted);">p=0.078 — ยังไม่ผ่านเกณฑ์นัยสำคัญทางสถิติที่ปรับค่าแล้ว จัดเป็นแนวโน้มเชิงสำรวจ (exploratory)</div>
+          </div>
+          <div class="quote" style="font-style:normal; border-left-color:var(--gold);">
+            <b style="color:var(--gold);">Post-task (หลังทำกิจกรรม)</b> — พบการเปลี่ยนแปลงของความไม่สมมาตรระหว่างสมองซีกขวา-ซ้ายบริเวณ Temporal Beta โดยมีทิศทางเอียงไปทางขวามากขึ้นหลังผ่านไป 3 เดือน (Δ≈+0.48)
+            <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; color:var(--muted);">p=0.0078 ผ่านเกณฑ์ FDR (q≈0.023) — เป็นผลที่มีนัยสำคัญทางสถิติชัดเจนที่สุดในชุดข้อมูลนี้</div>
+          </div>
+        </div>
+        <div class="footnote" style="margin-top:16px;">การวิเคราะห์แบบบูรณาการทั้ง 6 เงื่อนไข (Friedman test) ไม่พบความแตกต่างระดับ global frequency band อย่างมีนัยสำคัญ ผลที่แสดงจึงเป็นข้อค้นพบเชิงสำรวจจากขนาดตัวอย่างจำกัด (n=9) ควรตีความด้วยความระมัดระวังและรอการศึกษาต่อยอดในกลุ่มตัวอย่างที่ใหญ่ขึ้น</div>
+      </div>
+      <div class="card">
+        <h3><span>👥</span> สถานะการเก็บข้อมูลรายบุคคล</h3>
         <div id="eegGroups"></div>
-        <div class="footnote" style="margin-top:16px;">หมายเหตุ: ไม่ระบุชื่อผู้เข้าร่วมรายบุคคล — แสดงเป็นหมายเลขและจัดกลุ่มตามประเด็นร่วมแทน เนื่องจากเหตุผลการคัดเลือกมีรายละเอียดสภาพร่างกาย/จิตใจส่วนบุคคล ซึ่งไม่เหมาะเผยแพร่แบบระบุตัวตนบนหน้ารายงานสาธารณะ</div>
+        <div class="footnote" style="margin-top:16px;">หมายเหตุ: ไม่ระบุชื่อผู้เข้าร่วมรายบุคคล — แสดงเป็นรหัส (P1-P9) และจัดกลุ่มตามประเด็นร่วมแทน เนื่องจากเหตุผลการคัดเลือกมีรายละเอียดสภาพร่างกาย/จิตใจส่วนบุคคล ซึ่งไม่เหมาะเผยแพร่แบบระบุตัวตนบนหน้ารายงานสาธารณะ</div>
       </div>
     </div>
-
     <!-- ================= PHOTOS ================= -->
     <div class="panel" id="photos">
       <div class="card">
@@ -283,24 +287,20 @@
         <div class="grid" id="photoGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px;"></div>
       </div>
     </div>
-
   </div>
 </div>
-
 <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
   <div>
     <img id="lightbox-img" src="" alt="">
     <div class="cap" id="lightbox-cap"></div>
   </div>
 </div>
-
 <script>
 /* =========================================================================
    CONFIG — edit these two things when you reuse this dashboard
    ========================================================================= */
 const SHEET_ID = "1owKDOdQ86gmH3Nmp4SBN3tDIJWRZwZLV-ijYbUBD4zk"; // For reference only — actual data now comes from data/performance-resilience.json (see scripts/fetch-sheets.js)
 // The Sheet must be shared as "Anyone with the link — Viewer" for this to load.
-
 // Final overall-evaluation tab. Columns (0-indexed, confirmed against the live header row):
 // 0 Timestamp · 1 เพศ · 2 อายุ · 3 ระดับการศึกษา · 4 อาชีพ · 5 ช่องทางที่ทราบข่าว
 // 6 2.1 ความพึงพอใจโดยรวม · 7 2.2 การจัดงาน/สถานที่ · 8 2.3 คุณภาพเนื้อหา · 9 2.4 ความรู้ความเข้าใจ · 10 2.5 วิทยากร
@@ -308,7 +308,6 @@ const SHEET_ID = "1owKDOdQ86gmH3Nmp4SBN3tDIJWRZwZLV-ijYbUBD4zk"; // For referenc
 // 15 3.3 เห็นคุณค่าดนตรี/วัฒนธรรม · 16 3.4 ได้แรงบันดาลใจ · 17 มูลค่าที่ประเมิน (ข้อความ/ตัวเลข) · 18 หากไม่มีโครงการนี้จะได้ที่อื่นไหม
 // 19 ระยะเวลาที่ประโยชน์จะอยู่กับผู้ตอบ · 20 ข้อเสนอแนะเพิ่มเติม (ข้อความ) · 21 ยินยอมให้ใช้ข้อมูล
 const EVAL_SHEET = "ภาพรวม";
-
 // Static session metadata (dates/topics/speakers rarely change once planned).
 // dateISO is used to auto-detect whether a session is already done or upcoming.
 const SESSION_META = [
@@ -324,7 +323,6 @@ const SESSION_META = [
   {sheet:"22.07.69", label:"22 ก.ค.", dateISO:"2026-07-22", cat:"Neuro-Cognitive & Physical", topic:"การตรวจวัดสัญญาณร่างกายระหว่างการแสดง (Biometrics)", speaker:"อ.ดร. เจษฎา อานิล, อ.ดร. พิมพนิต คอนดี"},
   {sheet:"29.07.69", label:"29 ก.ค.", dateISO:"2026-07-29", cat:"Neuro-Cognitive & Psychological · Online ส่งงาน", topic:"การพัฒนาตนเอง การโค้ชตนเอง และการวางแผนชีวิต + ส่งแผนซ้อมส่วนบุคคล", speaker:"อ. คมสัน ดิลกคุณานันท์"},
 ];
-
 const SCALE_MAP = {"1 น้อยที่สุด":1,"2 น้อย":2,"3 ปานกลาง":3,"4 มาก":4,"5 มากที่สุด":5};
 // Session-card headers toggle open/closed on click; this makes them equally usable from the keyboard.
 function makeCardsKeyboardAccessible(container){
@@ -345,7 +343,6 @@ function makeCardsKeyboardAccessible(container){
     });
   });
 }
-
 // The "สมัคร" tab has a real header row (row 1: ชื่อจริง, นามสกุล, เพศ...). A genuine applicant
 // row is any row after the header with a first name in column A (index 0) — this correctly
 // includes the 4 partial/incomplete registrations, which are missing phone/email/gender but
@@ -353,7 +350,6 @@ function makeCardsKeyboardAccessible(container){
 function isApplicantDataRow(row){
   return !!(row && row[0] && String(row[0]).trim());
 }
-
 function toNum(v){
   if(v===undefined||v===null) return null;
   const s = String(v).trim();
@@ -361,7 +357,6 @@ function toNum(v){
   const m = s.match(/^([1-5])(?:\s|$)/); // only a bare 1-5 digit counts as a rating; guards against picking up unrelated numeric cells
   return m ? parseInt(m[1],10) : null;
 }
-
 // Data now comes from data/performance-resilience.json, refreshed every 15 min by
 // .github/workflows/sync-sheets.yml via the real Sheets API — not fetched from Google
 // directly in the browser anymore. This removes the gviz export's caching unreliability
@@ -380,7 +375,6 @@ async function fetchSheetRows(sheetName){
   if(!rows) throw new Error(`ไม่พบแท็บ "${sheetName}" ในข้อมูลที่ sync มา — ตรวจสอบชื่อแท็บใน scripts/fetch-sheets.js`);
   return rows;
 }
-
 function countBy(rows, colIndex){
   const counts = {};
   rows.forEach(r=>{
@@ -404,12 +398,10 @@ function countByOrdered(rows, colIndex, orderList){
   const extras = Object.entries(counts).filter(([label])=>!orderList.includes(label));
   return [...ordered, ...extras];
 }
-
 // "สมัคร" tab name — fetched directly by name now that data goes through the real Sheets
 // API (fetch-sheets.js) rather than the gviz export, so the earlier name-lookup
 // unreliability no longer applies.
 const SAMAK_GID = "สมัคร";
-
 async function main(){
   try{
     const [signRows, applyRows, recapRows, evalRows] = await Promise.all([
@@ -418,7 +410,6 @@ async function main(){
       fetchSheetRows("สรุปรายคาบ").catch(()=>null),
       fetchSheetRows(EVAL_SHEET).catch(()=>null),
     ]);
-
     // --- attendance totals per session (last row = "รวมผู้เข้าร่วม") ---
     const totalsRow = signRows.find(r => (r[0]||"").trim() === "รวมผู้เข้าร่วม");
     const signHeader = signRows[0];
@@ -426,10 +417,8 @@ async function main(){
     if(totalsRow){
       signHeader.forEach((h,i)=>{ if(h && totalsRow[i] !== undefined) attendByLabel[h.trim()] = parseInt(totalsRow[i])||0; });
     }
-
     // --- fetch each daily reflection tab in parallel ---
     const dailyResults = await Promise.all(SESSION_META.map(s => fetchSheetRows(s.sheet).catch(()=>null)));
-
     const today = new Date();
     const sessions = SESSION_META.map((meta, idx) => {
       const rows = dailyResults[idx];
@@ -457,9 +446,7 @@ async function main(){
       }
       return {...meta, attend, resp, learn, instr, overall, quotes, learnAvgs, done: !isFuture && resp>0};
     });
-
     render(sessions, applyRows, recapRows, signRows, evalRows);
-
   }catch(err){
     document.getElementById('loadingMsg').style.display='none';
     const box = document.getElementById('errMsg');
@@ -468,11 +455,9 @@ async function main(){
       ตรวจสอบว่า: (1) Google Sheet เปิดสิทธิ์ "ทุกคนที่มีลิงก์ - ดูได้" แล้ว และ (2) ชื่อแท็บในสเปรดชีตตรงกับที่ตั้งไว้ในโค้ด (SESSION_META, "สมัคร", "ลงชื่อแต่ละวัน")</div>`;
   }
 }
-
 function render(sessions, applyRows, recapRows, signRows, evalRows){
   document.getElementById('loadingMsg').style.display='none';
   document.getElementById('appContent').style.display='block';
-
   const doneSessions = sessions.filter(s=>s.done);
   const dataApply = applyRows.slice(1).filter(isApplicantDataRow);
   // Google's CSV export has repeatedly served a stale, too-low snapshot of this tab (confirmed
@@ -480,8 +465,6 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   // number). Floor at 47 as a known-good minimum; if the export catches up or grows past it,
   // the real live number takes over automatically — this never suppresses genuine growth.
   const totalApplicants = dataApply.length;
-
-
   // ---- report date + progress ----
   // Reverted to counting all 11 SESSION_META entries — credit-unit documentation cites
   // "11 คาบ / 38 ชั่วโมง", so keeping the dashboard consistent with that rather than
@@ -492,7 +475,6 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
     doneSessions.length >= REAL_SESSION_COUNT
       ? `🏁 จัดจบแล้ว — ${REAL_SESSION_COUNT} คาบ ณ สถาบันดนตรีกัลยาณิวัฒนา`
       : `📅 จัดไปแล้ว ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} จาก ${REAL_SESSION_COUNT} คาบ · เหลืออีก ${Math.max(REAL_SESSION_COUNT-doneSessions.length,0)} คาบจนถึง ${sessions[sessions.length-1].label}`;
-
   // ---- stat cards ----
   const attendedNames = new Set();
   // (rough unique-attendee estimate from sign-in sheet handled below via totals; kept simple here)
@@ -509,7 +491,6 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   const allLearnAvgs = doneSessions.flatMap(s=>s.learnAvgs);
   const learnReadyCount = allLearnAvgs.filter(v=>v>=4).length;
   const learnReadyPct = allLearnAvgs.length ? (learnReadyCount/allLearnAvgs.length*100) : null;
-
   // Overall course satisfaction from the final "ภาพรวม" survey (col 6 = 2.1 ความพึงพอใจโดยรวมต่อกิจกรรม)
   // — a separate, end-of-course measure, distinct from the per-session averages above.
   let courseOverall = "—", courseRespN = 0;
@@ -519,7 +500,6 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
     courseRespN = vals.length;
     if(vals.length) courseOverall = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2);
   }
-
   document.getElementById('statRow').innerHTML = `
     <div class="stat-card"><div class="num">${totalApplicants}</div><div class="label">ผู้สมัครทั้งหมด</div><div class="sub">คาดว่าจะถึงเป้า 50 คน</div></div>
     <div class="stat-card sage"><div class="num">${Math.min(doneSessions.length, REAL_SESSION_COUNT)}/${REAL_SESSION_COUNT}</div><div class="label">คาบที่จัดไปแล้ว</div></div>
@@ -527,7 +507,6 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
     <div class="stat-card gold"><div class="num">${courseOverall}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">พึงพอใจโดยรวมต่อหลักสูตร</div><div class="sub">${courseRespN ? '' : 'รอผู้ตอบแบบประเมิน'}</div></div>
     <div class="stat-card sage"><div class="num">${learnReadyPct!==null?learnReadyPct.toFixed(0)+'%':'—'}</div><div class="label">ความพร้อมด้านทักษะ/สมรรถนะเพิ่มขึ้น</div><div class="sub">${learnReadyPct!==null ? 'จากคำตอบสะท้อนคิดรายคาบ' : 'รอข้อมูล'}</div></div>
   `;
-
   // ---- applicant breakdown ----
   // Column layout as of the form update adding อายุ/ระดับการศึกษา/ประเภทผู้เข้าอบรม:
   // 0 ชื่อจริง · 1 นามสกุล · 2 อายุ · 3 เพศ · 4 ระดับการศึกษา · 5 ประเภทผู้เข้าอบรม · 6 เบอร์โทร · 7 อีเมล ·
@@ -547,7 +526,6 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   }
   const prior = countBy(dataApply, 15);
   renderDonut(prior);
-
   // ---- new fields: อายุ, ระดับการศึกษา, ประเภทผู้เข้าอบรม (added later than the rest of the form) ----
   // Age is a short free-text answer, sometimes given as ">35" rather than an exact number — parse the
   // leading digits for a best-effort average rather than excluding those responses entirely.
@@ -558,10 +536,8 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   const avgAge = ageVals.length ? (ageVals.reduce((a,b)=>a+b,0)/ageVals.length).toFixed(1) : null;
   const ageEl = document.getElementById('avgAgeNum');
   if(ageEl) ageEl.textContent = avgAge!==null ? `${avgAge} ปี` : '–';
-
   renderHBars('eduBars', countByOrdered(dataApply, 4, ['ต่ำกว่าปริญญาตรี','ปริญญาตรี','ปริญญาโท','ปริญญาเอก']));
   renderHBars('statusBars', countByOrdered(dataApply, 5, ['ผู้กำลังศึกษา (นิสิต นักศึกษา)','ผู้มีงานทำ (บุคคลวัยทำงาน อายุ 15-60 ปี))','ผู้ว่างงาน']));
-
   // ---- daily table + session cards ----
   const tbody = document.getElementById('dayTableBody');
   tbody.innerHTML = sessions.map(s=>{
@@ -571,7 +547,6 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
     return `<tr><td>${s.label}</td><td>${s.topic}</td>
       <td class="score${s.learn<4?' low':''}">${s.learn}</td><td class="score${s.instr<4?' low':''}">${s.instr}</td><td class="score">${s.overall}</td></tr>`;
   }).join('');
-
   const cardsEl = document.getElementById('sessionCards');
   cardsEl.innerHTML = doneSessions.map((s,i)=>{
     return `<div class="session-card ${i===0?'open':''}">
@@ -594,11 +569,8 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
     </div>`;
   }).join('');
   makeCardsKeyboardAccessible(cardsEl);
-
-
   document.getElementById('evalFootnote').innerHTML =
     totalResp ? `ระหว่างนี้ ความพึงพอใจรายคาบ (ดูที่แท็บ "รายวัน") ใช้เป็นข้อมูลความก้าวหน้าเบื้องต้นได้ — เฉลี่ยรวม ${Math.min(doneSessions.length, REAL_SESSION_COUNT)} คาบอยู่ที่ ${wOverall}/5` : '';
-
   // recap section from "สรุปรายคาบ" tab — columns: วันที่, หัวข้อ, วิทยากร, [ความเชี่ยวชาญ], เนื้อหาถอดความ, เสียงจากผู้เรียน
   // Grouped by date with a day header, matching Folk Music's recap layout — no separate time
   // column exists here (unlike Folk Music), so each entry just omits the time sub-line.
@@ -611,10 +583,8 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
         return {date:lastDate, topic:r[1]||'', speaker:r[2]||'', transcript:r[4]||'', voices:r[5]||''};
       })
       .filter(e=>(e.transcript && String(e.transcript).trim()) || (e.voices && String(e.voices).trim()));
-
     const byDate = {};
     entries.forEach(e=>{ (byDate[e.date] = byDate[e.date]||[]).push(e); });
-
     document.getElementById('recapSection').innerHTML = entries.length ? Object.entries(byDate).map(([date, items])=>`
       <div class="recap-day">
         <div class="day-label">📅 ${date}</div>
@@ -631,10 +601,8 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
   } else {
     document.getElementById('recapSection').innerHTML = `<div style="color:var(--muted); font-size:13.5px;">โหลดข้อมูลจากแท็บ "สรุปรายคาบ" ไม่สำเร็จ</div>`;
   }
-
   // ---- evaluation (final "ภาพรวม" survey) ----
   renderEval(evalRows, learnReadyPct);
-
   // ---- tabs ----
   document.querySelectorAll('.tab-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -645,12 +613,10 @@ function render(sessions, applyRows, recapRows, signRows, evalRows){
     });
   });
 }
-
 function renderEval(evalRows, learnReadyPct){
   const pendingEl = document.getElementById('evalPending');
   const contentEl = document.getElementById('evalContent');
   const footEl = document.getElementById('evalFootnote');
-
   if(!evalRows){
     pendingEl.querySelector('h3').textContent = 'ผลการประเมินโครงการ — โหลดข้อมูลไม่สำเร็จ';
     pendingEl.querySelector('p').textContent = `โหลดแท็บ "${EVAL_SHEET}" ไม่สำเร็จ ตรวจสอบชื่อแท็บในสเปรดชีต`;
@@ -658,7 +624,6 @@ function renderEval(evalRows, learnReadyPct){
     contentEl.style.display = 'none';
     return;
   }
-
   const rows = evalRows.slice(1).filter(r=>r.some(c=>c && String(c).trim()!==""));
   if(rows.length===0){
     pendingEl.style.display = 'block';
@@ -666,10 +631,8 @@ function renderEval(evalRows, learnReadyPct){
     footEl.textContent = '';
     return;
   }
-
   pendingEl.style.display = 'none';
   contentEl.style.display = 'block';
-
   const SAT_DIMS = [
     {idx:6,  label:"2.1 ความพึงพอใจโดยรวมต่อกิจกรรม"},
     {idx:7,  label:"2.2 การจัดงาน สถานที่/บรรยากาศ/สิ่งอำนวยความสะดวก"},
@@ -683,7 +646,6 @@ function renderEval(evalRows, learnReadyPct){
     {idx:15, label:"3.3 เห็นคุณค่าดนตรี/วัฒนธรรมมากขึ้น"},
     {idx:16, label:"3.4 ได้แรงบันดาลใจ"},
   ];
-
   function avgOf(idx){
     const vals = rows.map(r=>toNum(r[idx])).filter(v=>v!==null);
     return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
@@ -694,7 +656,6 @@ function renderEval(evalRows, learnReadyPct){
   const allIdx = [...SAT_DIMS,...IMPACT_DIMS].map(d=>d.idx);
   const allVals = rows.flatMap(r=>allIdx.map(i=>toNum(r[i])).filter(v=>v!==null));
   const grandAvg = allVals.length ? allVals.reduce((a,b)=>a+b,0)/allVals.length : null;
-
   document.getElementById('evalStatRow').innerHTML = `
     <div class="stat-card sage"><div class="num">${overall!==null?overall.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">ความพึงพอใจโดยรวม (2.1)</div></div>
     <div class="stat-card gold"><div class="num">${grandAvg!==null?grandAvg.toFixed(2):'—'}<span style="font-size:16px;color:var(--muted);">/5</span></div><div class="label">เฉลี่ยรวมทุกด้าน (9 ข้อ)</div></div>
@@ -704,7 +665,6 @@ function renderEval(evalRows, learnReadyPct){
       <div class="sub">จากคำตอบแบบสะท้อนคิดรายคาบตลอดหลักสูตร</div>
     </div>
   `;
-
   function renderRatingBars(elId, dims){
     document.getElementById(elId).innerHTML = dims.map(d=>{
       const pct = d.avg!==null ? (d.avg/5*100) : 0;
@@ -713,8 +673,6 @@ function renderEval(evalRows, learnReadyPct){
   }
   renderRatingBars('evalSatBars', satAvgs);
   renderRatingBars('evalImpactBars', impactAvgs);
-
-
   // open-ended quotes: what they learned (12), how they'll apply it (14), extra comments (20).
   // Grouped into separate labeled subsections rather than one flat tagged list — mirrors the
   // structure used on the Folk Music page for consistency across both courses.
@@ -734,7 +692,6 @@ function renderEval(evalRows, learnReadyPct){
   document.getElementById('evalQuotes').innerHTML = groupsHtml
     || `<div style="color:var(--muted); font-size:13.5px; font-style:normal;">ยังไม่มีคำตอบปลายเปิด</div>`;
 }
-
 function renderHBars(elId, entries){
   const el = document.getElementById(elId);
   const max = Math.max(...entries.map(e=>e[1]), 1);
@@ -751,7 +708,6 @@ function renderHBarsPct(elId, entries){
     `<div class="hbar-row"><div class="name">${name}</div><div class="track"><div class="fill" style="width:${n/total*100}%;"></div></div><div class="n">${(n/total*100).toFixed(0)}%</div></div>`
   ).join('');
 }
-
 function renderDonut2(donutId, legendId, entries, showPct){
   const total = entries.reduce((a,e)=>a+e[1],0) || 1;
   const colors = ['var(--navy)','var(--gold)','#8b8fc4','#d8d6c8','#c9634a'];
@@ -767,57 +723,72 @@ function renderDonut2(donutId, legendId, entries, showPct){
 }
 function renderDonut(entries){ renderDonut2('priorDonut','priorLegend', entries); }
 
-// Curated selection list for the EEG/brainwave workshop (12 participants).
-// Names are intentionally omitted from the public dashboard — each person is shown only
-// as an anonymous number, grouped by the shared theme in their selection rationale.
+// ---- EEG participants: the 9 confirmed people with actual scan files (P1-P9) ----
+// Real names intentionally excluded from this file — see the internal reference doc for the
+// P-code ↔ real-name mapping. Rationale text is drawn from the original selection sheet.
+const EEG_CONDITIONS = ["Baseline","Eyeclose","Imagin","Listen","Visual","RestOC"];
+// Default: everyone has Before+After for every condition, EXCEPT:
+//  - RestOC: nobody has "Before" yet (only "After" has been received so far)
+//  - Visual: P7 (Now) is missing "Before"
+// This mirrors the file-inventory status tracked in the reference doc as of 2026-08-11.
+function eegStatus(code){
+  return EEG_CONDITIONS.map(cond=>{
+    let before = true, after = true;
+    if(cond === "RestOC") before = false;
+    if(cond === "Visual" && code === "P7") before = false;
+    return {cond, before, after};
+  });
+}
 const EEG_GROUPS = [
   {
     label: "มีอาการทางร่างกาย/จิตใจที่เกี่ยวกับความกดดันในการแสดง",
     members: [
-      {n:1, note:"วิตกกังวล คลื่นไส้ ชา มือสั่น รู้สึกล้าทั้งกายและใจ ก่อน/ระหว่างการแสดง"},
-      {n:2, note:"บริหารความเครียด กล้ามเนื้อตึง ปวดหัว และมีปัญหาเรื่องสมาธิที่กระทบการซ้อมและการแสดง"},
-      {n:3, note:"รู้สึกกดดัน ขาดความมั่นใจ เล่นร่วมกับผู้อื่นได้ยาก และรู้สึกว่าพัฒนาการช้า"},
+      {code:"P1", note:"วิตกกังวล คลื่นไส้ ชา มือสั่น รู้สึกล้าทั้งกายและใจ ก่อน/ระหว่างการแสดง"},
+      {code:"P2", note:"บริหารความเครียด กล้ามเนื้อตึง ปวดหัว และมีปัญหาเรื่องสมาธิที่กระทบการซ้อมและการแสดง"},
     ]
   },
   {
     label: "นักศึกษา/นักดนตรีรุ่นใหม่ มีประสบการณ์แสดง สอบ หรือแข่งขัน",
     members: [
-      {n:4, note:"นักศึกษา PGVIM มีประสบการณ์แสดง/สอบ/แข่งขันโดยตรง"},
-      {n:5, note:"มีพื้นฐานการแข่งขันและเล่นรวมวงมาอย่างต่อเนื่อง"},
-      {n:8, note:"นักดนตรีรุ่นใหม่กำลังพัฒนา มีประสบการณ์แข่งขันและเล่นรวมวง"},
+      {code:"P3", note:"มีพื้นฐานการแข่งขันและเล่นรวมวงมาอย่างต่อเนื่อง สนับสนุนการสะท้อนคิดเรื่องแรงกดดันในการแสดง"},
+      {code:"P5", note:"นักดนตรีรุ่นใหม่ที่ active มีประสบการณ์เล่นวงออร์เคสตรา/เยาวชน/side-by-side เกี่ยวข้องโดยตรงกับแรงกดดันในการแสดงและความพร้อมของวง"},
+      {code:"P6", note:"นักดนตรีรุ่นใหม่กำลังพัฒนา มีประสบการณ์แข่งขันและเล่นรวมวง เหมาะสำหรับพัฒนาการของนักดนตรีรุ่นใหม่"},
     ]
   },
   {
     label: "มืออาชีพ/บุคลากร มีประสบการณ์ระดับสูงหรือนานาชาติ",
     members: [
-      {n:6, note:"ศิลปิน/นักแสดงมืออาชีพระดับสูง มีประสบการณ์แสดงร่วมสมัยและระดับนานาชาติ"},
-      {n:7, note:"นักดนตรีรุ่นใหม่ที่ active มีประสบการณ์เล่นวงออร์เคสตรา/เยาวชน/side-by-side"},
-      {n:9, note:"บุคลากรของสถาบัน มีประสบการณ์ระดับมืออาชีพ (TPO)"},
-      {n:10, note:"นักเปียโน/นักประพันธ์เพลง/ผู้อำนวยเพลงระดับสูง และเป็นครูสอนดนตรี"},
-      {n:11, note:"นักดนตรีและครูสอนดนตรีมืออาชีพ เชื่อมโยงบทบาทนักแสดง-ครู-มืออาชีพ"},
-      {n:12, note:"บุคลากร/นักแสดงมืออาชีพ มีประสบการณ์หลากหลายแนวเพลงและการแสดงนานาชาติ"},
+      {code:"P4", note:"เข้าเรียนดนตรีตั้งแต่ชั้นมัธยมศึกษาที่ดุริยางค์ทหารเรือ และรับราชการเล่นดนตรีในวงดุริยางค์ทหารเรืออีกสิบปี"},
+      {code:"P7", note:"นักดนตรีมืออาชีพและครูสอนดนตรี เชื่อมโยงบทบาทนักแสดง-ครู-มืออาชีพเข้าด้วยกัน"},
+      {code:"P8", note:"บุคลากรของสถาบัน/นักแสดงมืออาชีพ มีประสบการณ์เล่นดนตรีหลากหลายแนว (Ska, Reggae, Blues, Pop) และร้องเพลง รวมถึงการแสดงระดับนานาชาติ"},
+      {code:"P9", note:"นักร้องอาวุโสของ PGVIM Singers"},
     ]
   },
 ];
-
 function renderEEG(){
   document.getElementById('eegGroups').innerHTML = EEG_GROUPS.map(g=>`
     <div style="margin-bottom:20px;">
       <div style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:10px;">${g.label} <span style="color:var(--muted); font-weight:600;">(${g.members.length} คน)</span></div>
       <div style="display:grid; gap:8px;">
-        ${g.members.map(m=>`<div class="quote" style="font-style:normal;">
-          <b style="color:var(--sage);">ผู้เข้าร่วม ${m.n}</b> — ${m.note}
-          <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap;">
-            <span>🖼️ ภาพก่อน: <i>รอลิงก์</i></span>
-            <span>➡️ หลังกิจกรรม: <i>รอข้อมูล</i></span>
-            <span>🖼️ ภาพหลัง: <i>รอลิงก์</i></span>
+        ${g.members.map(m=>{
+          const status = eegStatus(m.code);
+          const condHtml = status.map(s=>{
+            const cls = (s.before && s.after) ? 'full' : (s.before || s.after) ? 'partial' : '';
+            const mark = `${s.before?'✓':'✗'}${s.after?'✓':'✗'}`;
+            return `<span class="eeg-cond ${cls}">${s.cond} ${mark}</span>`;
+          }).join('');
+          return `<div class="quote" style="font-style:normal;">
+          <b style="color:var(--sage);">${m.code}</b> — ${m.note}
+          <div class="eeg-condrow">${condHtml}</div>
+          <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; color:var(--muted);">
+            เครื่องหมาย ✓✓ = มีข้อมูลก่อน+หลังครบ · ✓✗ = มีเฉพาะบางช่วง · รูปภาพ/กราฟยังรอลิงก์
           </div>
-        </div>`).join('')}
+        </div>`;
+        }).join('')}
       </div>
     </div>
   `).join('');
 }
-
 // Photos grouped into 3 sections, matching the Folk Music dashboard's pattern. Filenames use
 // plain ASCII (no spaces, no Thai) to avoid the encoding/matching issues hit earlier — upload
 // files to assets/gallery/ with exactly these names.
@@ -867,7 +838,6 @@ const PHOTO_GROUPS = [
 ];
 // Flattened list used by the lightbox (keeps group label as caption)
 const PHOTOS = PHOTO_GROUPS.flatMap(g => g.files.map(file => ({file, cap: g.label})));
-
 function renderPhotos(){
   const el = document.getElementById('photoGrid');
   if(!PHOTOS.length){
@@ -900,9 +870,7 @@ function openLightbox(i){
   document.getElementById('lightbox').classList.add('open');
 }
 renderPhotos();
-
 renderEEG();
-
 main();
 </script>
 </body>
