@@ -129,6 +129,17 @@
   .eeg-cond{font-size:11px; padding:4px 9px; border-radius:7px; background:#efeee6; color:var(--muted); font-weight:600;}
   .eeg-cond.full{background:var(--sage-light); color:var(--sage);}
   .eeg-cond.partial{background:#fbeedd; color:#b8792c;}
+  .topo-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:18px; margin-top:6px;}
+  .topo-pair{background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .topo-pair .topo-code{font-size:12.5px; font-weight:700; color:var(--navy); margin-bottom:10px;}
+  .topo-pair .topo-imgs{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .topo-pair .topo-imgs figure{margin:0;}
+  .topo-pair .topo-imgs img{width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:8px; background:var(--line); cursor:zoom-in; display:block;}
+  .topo-pair .topo-imgs figcaption{font-size:10.5px; color:var(--muted); text-align:center; margin-top:5px; font-weight:600; text-transform:uppercase; letter-spacing:.03em;}
+  .topo-condtabs{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .topo-condtab{font-size:11px; padding:5px 10px; border-radius:7px; background:#efeee6; color:var(--muted); font-weight:600; cursor:pointer; border:1px solid transparent;}
+  .topo-condtab.active{background:var(--sage-light); color:var(--sage); border-color:var(--sage);}
+  .topo-condtab.missing{opacity:.4; cursor:default;}
 </style>
 </head>
 <body>
@@ -273,6 +284,11 @@
           </div>
         </div>
         <div class="footnote" style="margin-top:16px;">การวิเคราะห์แบบบูรณาการทั้ง 6 เงื่อนไข (Friedman test) ไม่พบความแตกต่างระดับ global frequency band อย่างมีนัยสำคัญ ผลที่แสดงจึงเป็นข้อค้นพบเชิงสำรวจจากขนาดตัวอย่างจำกัด (n=9) ควรตีความด้วยความระมัดระวังและรอการศึกษาต่อยอดในกลุ่มตัวอย่างที่ใหญ่ขึ้น</div>
+      </div>
+      <div class="card">
+        <h3><span>🗺️</span> แผนที่คลื่นสมองก่อน–หลัง (Topographic Map)</h3>
+        <div style="font-size:13px; color:var(--muted); margin-bottom:16px;">ภาพแผนที่สีแสดงกิจกรรมคลื่นสมอง (จากระบบ NeuroGuide) เปรียบเทียบก่อน–หลังการเข้าร่วมกิจกรรม แยกตาม 6 เงื่อนไขการวัด (คลิกแท็บเพื่อสลับดู) รายบุคคล (ไม่ระบุชื่อ ใช้รหัส P1–P9 ตามชุดข้อมูลเดียวกับด้านบน)</div>
+        <div class="topo-grid" id="topoGrid"></div>
       </div>
       <div class="card">
         <h3><span>👥</span> สถานะการเก็บข้อมูลรายบุคคล</h3>
@@ -765,6 +781,62 @@ const EEG_GROUPS = [
     ]
   },
 ];
+// Before/after topographic map images — filenames in assets/gallery/
+// Naming convention: eeg-topo-{code}-{condition}-{pre|post}.jpg
+const EEG_CONDS_TH = {
+  baseline: "Baseline (ลืมตาพัก)",
+  eyeclose: "หลับตาพัก",
+  visual: "จดจ่อสายตา",
+  listen: "ฟังดนตรี",
+  imagin: "จินตนาการแสดง",
+  restoc: "พักหลังกิจกรรม",
+};
+const EEG_CODES = ["P1","P2","P3","P4","P5","P6","P7","P8","P9"];
+const EEG_CONDS = ["baseline","eyeclose","visual","listen","imagin","restoc"];
+
+function renderTopo(){
+  const el = document.getElementById('topoGrid');
+  if(!el) return;
+  el.innerHTML = EEG_CODES.map(code=>{
+    const tabs = EEG_CONDS.map((c,i)=>`<span class="topo-condtab ${i===0?'active':''}" data-code="${code}" data-cond="${c}" onclick="switchTopoCond(this)">${EEG_CONDS_TH[c]}</span>`).join('');
+    return `
+    <div class="topo-pair">
+      <div class="topo-code">${code}</div>
+      <div class="topo-condtabs">${tabs}</div>
+      <div class="topo-imgs" id="topoImgs-${code}">
+        ${topoImgsHtml(code, EEG_CONDS[0])}
+      </div>
+    </div>`;
+  }).join('');
+}
+function topoImgsHtml(code, cond){
+  const pre = `eeg-topo-${code}-${cond}-pre.jpg`;
+  const post = `eeg-topo-${code}-${cond}-post.jpg`;
+  return `
+    <figure>
+      <img src="../assets/gallery/${pre}" alt="${code} ${cond} ก่อน" loading="lazy"
+           onclick="openTopoLightbox('${pre}','${code} — ${EEG_CONDS_TH[cond]} — ก่อนเข้าร่วมกิจกรรม')"
+           onerror="this.closest('figure').style.visibility='hidden';">
+      <figcaption>ก่อน</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/gallery/${post}" alt="${code} ${cond} หลัง" loading="lazy"
+           onclick="openTopoLightbox('${post}','${code} — ${EEG_CONDS_TH[cond]} — หลังเข้าร่วมกิจกรรม')"
+           onerror="this.closest('figure').style.visibility='hidden';">
+      <figcaption>หลัง</figcaption>
+    </figure>`;
+}
+function switchTopoCond(tabEl){
+  const code = tabEl.dataset.code, cond = tabEl.dataset.cond;
+  const wrap = tabEl.closest('.topo-pair');
+  wrap.querySelectorAll('.topo-condtab').forEach(t=>t.classList.toggle('active', t===tabEl));
+  document.getElementById(`topoImgs-${code}`).innerHTML = topoImgsHtml(code, cond);
+}
+function openTopoLightbox(file, cap){
+  document.getElementById('lightbox-img').src = `../assets/gallery/${encodeURIComponent(file)}`;
+  document.getElementById('lightbox-cap').textContent = cap||'';
+  document.getElementById('lightbox').classList.add('open');
+}
 function renderEEG(){
   document.getElementById('eegGroups').innerHTML = EEG_GROUPS.map(g=>`
     <div style="margin-bottom:20px;">
@@ -871,6 +943,7 @@ function openLightbox(i){
 }
 renderPhotos();
 renderEEG();
+renderTopo();
 main();
 </script>
 </body>
