@@ -290,11 +290,6 @@
         <div style="font-size:13px; color:var(--muted); margin-bottom:16px;">ภาพแผนที่สีแสดงกิจกรรมคลื่นสมอง (จากระบบ NeuroGuide) เปรียบเทียบก่อน–หลังการเข้าร่วมกิจกรรม แยกตาม 6 เงื่อนไขการวัด (คลิกแท็บเพื่อสลับดู) รายบุคคล (ไม่ระบุชื่อ ใช้รหัส P1–P9 ตามชุดข้อมูลเดียวกับด้านบน)</div>
         <div class="topo-grid" id="topoGrid"></div>
       </div>
-      <div class="card">
-        <h3><span>👥</span> สถานะการเก็บข้อมูลรายบุคคล</h3>
-        <div id="eegGroups"></div>
-        <div class="footnote" style="margin-top:16px;">หมายเหตุ: ไม่ระบุชื่อผู้เข้าร่วมรายบุคคล — แสดงเป็นรหัส (P1-P9) และจัดกลุ่มตามประเด็นร่วมแทน เนื่องจากเหตุผลการคัดเลือกมีรายละเอียดสภาพร่างกาย/จิตใจส่วนบุคคล ซึ่งไม่เหมาะเผยแพร่แบบระบุตัวตนบนหน้ารายงานสาธารณะ</div>
-      </div>
     </div>
     <!-- ================= PHOTOS ================= -->
     <div class="panel" id="photos">
@@ -942,7 +937,6 @@ function openLightbox(i){
   document.getElementById('lightbox').classList.add('open');
 }
 renderPhotos();
-renderEEG();
 renderTopo();
 main();
 </script>
