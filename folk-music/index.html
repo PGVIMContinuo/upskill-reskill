@@ -362,7 +362,7 @@ function renderTeamGrid(teams, thresholds, primaryLinkIcon='🎨', primaryLinkLa
     const links = `<div class="team-links">
       ${t.canva ? `<a href="${t.canva}" target="_blank" rel="noopener" class="link-badge">${primaryLinkIcon} ${primaryLinkLabel}</a>` : `<span class="link-badge disabled">${primaryLinkIcon} ${primaryLinkLabel}</span>`}
       ${showRider ? (t.rider ? `<a href="${t.rider}" target="_blank" rel="noopener" class="link-badge">📋 Rider</a>` : `<span class="link-badge disabled">📋 Rider</span>`) : ''}
-      <span class="link-badge disabled">🎥 รอลิงก์ VDO</span>
+      ${t.vdo ? `<a href="${t.vdo}" target="_blank" rel="noopener" class="link-badge">🎥 VDO</a>` : `<span class="link-badge disabled">🎥 รอลิงก์ VDO</span>`}
     </div>`;
     return `<div class="team-card">
       <div class="rank">อันดับ ${i+1}</div>
@@ -450,6 +450,28 @@ async function fetchDailySheet(gid, label){
     throw new Error(`gid=${gid} (${label}) ดึงข้อมูลผิดชีต`);
   }
   return rows;
+}
+// Pulls VDO links for the showcase team cards live from the "Canva" / "Canva_รอบสอง"
+// tabs (synced by fetch-sheets.js) instead of hardcoding them in TEAMS/TEAMS_ROUND2 —
+// so a new video link just needs to be added to the sheet, no code change needed.
+// Only the VDO column (E) is applied; canva/rider stay as the manually-verified
+// hardcoded values already in TEAMS/TEAMS_ROUND2.
+async function applyVdoLinks(teams, sheetName, nameCol=1, vdoCol=4){
+  try{
+    const rows = await fetchSheetRows(sheetName);
+    const byName = {};
+    rows.slice(1).forEach(r=>{
+      const name = (r[nameCol]||'').trim();
+      if(name) byName[name] = r;
+    });
+    teams.forEach(t=>{
+      const r = byName[t.name];
+      const v = r && r[vdoCol] ? String(r[vdoCol]).trim() : '';
+      if(v) t.vdo = v;
+    });
+  }catch(e){
+    console.warn(`โหลด VDO links จากแท็บ "${sheetName}" ไม่สำเร็จ:`, e.message);
+  }
 }
 function countBy(rows, colIndex){
   const counts = {};
@@ -586,6 +608,11 @@ async function main(){
         contentN: contentVals.length, speakerN: speakerVals.length, overallN: overallVals.length,
         quotes: quotes};
     });
+
+    await Promise.all([
+      applyVdoLinks(TEAMS, 'Canva'),
+      applyVdoLinks(TEAMS_ROUND2, 'Canva_รอบสอง'),
+    ]);
 
     render(sessions, applyRows, attendByLabel, sheetErrors, recapRows, applyRows2, sessions2, recapRows2);
   }catch(err){
