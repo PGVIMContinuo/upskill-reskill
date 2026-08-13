@@ -31,6 +31,9 @@ const FOLK_NAMED_TABS = [
   // Round 2 (1-2, 8-9 Aug 2569, at วิทยาลัยนาฏศิลปนครราชสีมา) — same course, second delivery batch.
   'สมัคร_รอบ2', 'ลงชื่อแต่ละวัน_รอบสอง', 'ภาพรวม_รอบสอง', 'สรุปรายคาบ_รอบสอง',
   '01.08.69', '02.08.69', '08.08.69', '09.08.69',
+  // Canva/Rider/VDO links per team — synced so the site can pick up new video links
+  // as soon as they're added to the sheet, without a code change each time.
+  'Canva', 'Canva_รอบสอง',
 ];
 
 async function getSheetMeta(sheetId) {
